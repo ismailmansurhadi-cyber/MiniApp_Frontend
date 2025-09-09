@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساسية ببجي موبايل</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div id="app-container">
+        <div id="main-view">
+            <h1>أفضل حساسية ببجي</h1>
+            <div id="sensitivity-list">
+                </div>
+        </div>
+
+        <div id="admin-panel" style="display: none;">
+            <h2>لوحة تحكم المالك</h2>
+            <form id="add-sensitivity-form">
+                <input type="text" id="name-input" placeholder="اسم الحساسية" required>
+                <textarea id="code-input" placeholder="كود الحساسية" required></textarea>
+                <button type="submit">إضافة</button>
+            </form>
+            <div id="admin-list">
+                </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
