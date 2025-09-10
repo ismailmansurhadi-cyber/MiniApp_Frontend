@@ -80,3 +80,14 @@ async function deleteSensitivity(id) {
 // تهيئة التطبيق
 Telegram.WebApp.ready();
 fetchSensitivities();
+document.addEventListener('DOMContentLoaded', () => {
+  const buttons = document.querySelectorAll('.button-container button');
+  const codeOutput = document.getElementById('code-output');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const sensitivityCode = button.getAttribute('data-sensitivity-code');
+      codeOutput.textContent = sensitivityCode;
+    });
+  });
+});
