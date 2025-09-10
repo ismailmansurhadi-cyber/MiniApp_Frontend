@@ -99,72 +99,99 @@ form#add-sensitivity-form button {
   font-weight: bold;
   color: #333;
 }/* الخلفية الرئيسية */
+/* استيراد خطوط احترافية من Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+/* الخلفية الرئيسية والألوان */
 body {
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* تدرج ألوان داكن وجذاب */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: #0d0e14; /* لون أسود داكن جداً للخلفية */
+  color: #c0c0c0; /* لون رمادي فاتح للنصوص */
+  font-family: 'Montserrat', sans-serif; /* خط عصري وأنيق */
   min-height: 100vh;
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* خط حديث وواضح */
-  color: #e0e0e0; /* لون نص فاتح ليتناسب مع الخلفية الداكنة */
-  display: flex; /* لتوسيط المحتوى */
-  justify-content: center; /* لتوسيط المحتوى أفقياً */
-  align-items: center; /* لتوسيط المحتوى عمودياً */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   padding: 20px;
-  box-sizing: border-box; /* للتأكد من أن ال padding لا يزيد عن حجم الصفحة */
+  box-sizing: border-box;
 }
 
-/* لتصميم الأزرار بشكل أفضل */
+/* حاوية التطبيق الرئيسية */
+#app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* العنوان الرئيسي */
+h1 {
+  font-size: 2.2em;
+  font-weight: 700;
+  color: #fff; /* لون أبيض نقي للعنوان */
+  text-shadow: 0 4px 15px rgba(255, 255, 255, 0.1); /* ظل خفيف لإبراز العنوان */
+  margin-bottom: 30px;
+  text-align: center;
+  letter-spacing: 1.5px;
+}
+
+/* حاوية الأزرار */
 .button-container {
   display: flex;
-  flex-direction: column; /* الأزرار فوق بعضها البعض بشكل افتراضي للموبايل */
-  gap: 15px; /* زيادة المسافة بين الأزرار */
-  margin-top: 30px;
-  width: 90%; /* الأزرار تأخذ معظم عرض الشاشة */
-  max-width: 400px; /* حد أقصى لعرض الأزرار على الشاشات الكبيرة */
-  z-index: 10; /* للتأكد من أن الأزرار تظهر فوق أي تأثيرات خلفية */
+  flex-direction: column;
+  gap: 15px;
+  width: 90%;
+  max-width: 350px;
 }
 
+/* تصميم الأزرار */
 .button-container button {
-  padding: 18px 25px; /* زيادة حجم الأزرار */
-  font-size: 20px; /* خط أكبر للأزرار */
+  padding: 18px 25px;
+  font-size: 1em;
+  font-weight: 500;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08); /* خلفية شفافة */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
   cursor: pointer;
-  border: none;
-  border-radius: 12px; /* زوايا دائرية أكثر */
-  background-color: #4CAF50; /* لون أخضر جذاب للأزرار */
-  color: white;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* تأثيرات عند التحويم */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* ظل للأزرار لإبرازها */
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px); /* تأثير الزجاج المصنفر الأنيق */
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .button-container button:hover {
-  background-color: #45a049; /* لون أغمق عند التحويم */
-  transform: translateY(-3px); /* تأثير رفع بسيط عند التحويم */
+  background: rgba(255, 255, 255, 0.15); /* إضاءة خفيفة عند التحويم */
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* لتصميم عرض الحساسية */
+/* تصميم مربع عرض الحساسية */
 .sensitivity-display {
   margin-top: 40px;
   padding: 25px;
-  background-color: rgba(255, 255, 255, 0.1); /* خلفية بيضاء شفافة لمربع العرض */
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
+  border-radius: 10px;
   text-align: center;
   width: 90%;
-  max-width: 400px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* ظل أكبر لمربع العرض */
-  backdrop-filter: blur(5px); /* تأثير ضبابي جميل للخلفية خلف المربع */
-  -webkit-backdrop-filter: blur(5px); /* لدعم متصفحات ويب كيت */
-  z-index: 10;
+  max-width: 350px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 #code-output {
-  font-size: 18px;
-  font-weight: bold;
-  color: #fff; /* لون أبيض واضح للكود */
-  word-wrap: break-word; /* لكسر الكود الطويل على عدة أسطر إذا لزم الأمر */
+  font-family: monospace; /* خط أحادي المسافة للأكواد */
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #00ff88; /* لون أخضر فاقع وجميل لكود الحساسية */
+  word-wrap: break-word;
+  letter-spacing: 1px;
 }
 
 #display-image {
@@ -175,30 +202,12 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* لتعديل العنوان الرئيسي */
-h1 {
-  font-size: 3em; /* حجم أكبر للعنوان */
-  color: #f0f0f0;
-  text-shadow: 0 0 10px rgba(76, 175, 80, 0.7); /* ظل متوهج للعنوان */
-  margin-bottom: 20px;
-  text-align: center;
-  z-index: 10;
-}
-
-/* تعديل العنوان الثاني ليتناسب مع التصميم */
-h2 {
-  color: #bdbdbd; /* لون رمادي فاتح */
-  margin-top: 20px;
-  text-align: center;
-  z-index: 10;
-}
-
-/* لتوسيط محتوى الواجهة الأمامية */
-#app-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  width: 100%;
+/* Media Queries لتصميم متجاوب على الموبايل */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8em;
+  }
+  .button-container button, .sensitivity-display {
+    max-width: 100%;
+  }
 }
