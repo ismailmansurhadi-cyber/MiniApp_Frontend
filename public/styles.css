@@ -75,25 +75,6 @@ header h1 {
   margin: 20px auto;
 }
 
-.main-choice-container button {
-  padding: 18px 25px;
-  font-size: 1.2em;
-  font-weight: bold;
-  border: none;
-  border-radius: 12px;
-  background-color: #00aaff;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 15px rgba(0, 170, 255, 0.4);
-}
-
-.main-choice-container button:hover {
-  background-color: #0088cc;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 170, 255, 0.6);
-}
-
 /* تنسيقات حاوية الحساسيات */
 .sensitivities-view {
     text-align: center;
