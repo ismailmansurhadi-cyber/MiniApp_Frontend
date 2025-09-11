@@ -105,9 +105,6 @@ header h1 {
     margin-bottom: 20px;
 }
 
-/* تنسيق الأزرار داخل حاوية الحساسيات */
-
-
 /* تنسيق صندوق عرض الحساسية */
 .sensitivity-display {
   margin-top: 40px;
@@ -315,6 +312,7 @@ header h1 {
     text-shadow: 0 0 3px rgba(0, 255, 255, 0.5);
 }
 
+/* هذا الكود يعطي المربع الرئيسي تأثير الزجاج الشفاف */
 .container {
     background-color: rgba(0, 50, 60, 0.4);
     padding: 20px;
@@ -329,6 +327,7 @@ header h1 {
     z-index: 1;
 }
 
+/* هذا الكود يطبق الستايل الجديد على الأزرار */
 .button {
     background-color: rgba(0, 188, 212, 0.2);
     border: 1px solid rgba(0, 255, 255, 0.5);
