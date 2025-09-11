@@ -317,35 +317,72 @@ header h1 {
     z-index: 1; /* لجعل المحتوى يظهر فوق الجسيمات */
 }
 .title-box {
-    background-color: rgba(0, 50, 60, 0.4); /* خلفية أكثر شفافية */
-    padding: 15px 25px; /* تصغير المسافات الداخلية */
-    border-radius: 10px; /* تصغير الحواف المستديرة */
+    background-color: rgba(0, 50, 60, 0.4);
+    padding: 15px 25px;
+    border-radius: 10px;
     margin-bottom: 25px;
     text-align: center;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* تقليل حدة الظل */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
     border: 1px solid rgba(0, 255, 255, 0.3);
-    transform: perspective(1000px) rotateX(3deg); /* تقليل تأثير الميلان */
+    transform: perspective(1000px) rotateX(3deg);
     transition: transform 0.3s ease-in-out;
     max-width: 90%;
-    width: 350px; /* تصغير عرض المربع */
-    backdrop-filter: blur(5px); /* إضافة تأثير الضبابية */
+    width: 350px;
+    backdrop-filter: blur(5px);
 }
 
 .title-box:hover {
     transform: perspective(1000px) rotateX(0deg) scale(1.02);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* زيادة التوهج عند التمرير */
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
 }
 
 .title-box h1 {
-    font-size: 1.8em; /* تصغير حجم العنوان الرئيسي */
-    margin-bottom: 5px; /* تقليل المسافة بين العنوان والوصف */
+    font-size: 1.8em;
+    margin-bottom: 5px;
     color: #00ffff;
     text-shadow: 0 0 8px rgba(0, 255, 255, 0.9);
 }
 
 .title-box p {
-    font-size: 1em; /* تصغير حجم النص الوصفي */
+    font-size: 1em;
     color: #e0f7fa;
     margin-top: 0;
     text-shadow: 0 0 3px rgba(0, 255, 255, 0.5);
+}
+
+.container {
+    background-color: rgba(0, 50, 60, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    max-width: 90%;
+    width: 350px;
+    backdrop-filter: blur(5px);
+    position: relative;
+    z-index: 1;
+}
+
+.button {
+    background-color: rgba(0, 188, 212, 0.2);
+    border: 1px solid rgba(0, 255, 255, 0.5);
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 1.2em;
+    margin: 15px auto;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    max-width: 250px;
+}
+
+.button:hover {
+    background-color: rgba(0, 188, 212, 0.5);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 255, 255, 0.8);
 }
