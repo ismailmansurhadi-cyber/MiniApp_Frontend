@@ -1,93 +1,247 @@
-// API URL للواجهة الخلفية (Backend)
-const API_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app//api/sensitivities';
-
-// دالة لجلب الحساسيات وعرضها
-async function fetchSensitivities() {
-    try {
-        const response = await fetch(API_URL);
-        const sensitivities = await response.json();
-        
-        // هنا يجب استبدال YOUR_OWNER_ID بمعرّف المستخدم الخاص بك في تيليجرام
-        const isOwner = Telegram.WebApp.initDataUnsafe.user.id == '658500340';
-        
-        if (isOwner) {
-            document.getElementById('main-view').style.display = 'none';
-            document.getElementById('admin-panel').style.display = 'block';
-            renderAdminList(sensitivities);
-        } else {
-            document.getElementById('admin-panel').style.display = 'none';
-            document.getElementById('main-view').style.display = 'block';
-            renderSensitivityList(sensitivities);
-        }
-    } catch (error) {
-        console.error('Failed to fetch sensitivities:', error);
-    }
-}
-
-// عرض الحساسيات للمستخدم العادي
-function renderSensitivityList(sensitivities) {
-    const list = document.getElementById('sensitivity-list');
-    list.innerHTML = '';
-    sensitivities.forEach(s => {
-        const div = document.createElement('div');
-        div.innerHTML = `
-            <h3>${s.name}</h3>
-            <p>${s.code}</p>
-        `;
-        list.appendChild(div);
-    });
-}
-
-// عرض الحساسيات في لوحة التحكم
-function renderAdminList(sensitivities) {
-    const list = document.getElementById('admin-list');
-    list.innerHTML = '';
-    sensitivities.forEach(s => {
-        const div = document.createElement('div');
-        div.innerHTML = `
-            <h3>${s.name}</h3>
-            <p>${s.code}</p>
-            <button onclick="deleteSensitivity(${s.id})">حذف</button>
-        `;
-        list.appendChild(div);
-    });
-}
-
-// إضافة حساسية جديدة
-document.getElementById('add-sensitivity-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const name = document.getElementById('name-input').value;
-    const code = document.getElementById('code-input').value;
-
-    await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, code })
-    });
-
-    fetchSensitivities();
-    document.getElementById('add-sensitivity-form').reset();
-});
-
-// حذف حساسية
-async function deleteSensitivity(id) {
-    await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE'
-    });
-    fetchSensitivities();
-}
-
-// تهيئة التطبيق
-Telegram.WebApp.ready();
-fetchSensitivities();
 document.addEventListener('DOMContentLoaded', () => {
-  const buttons = document.querySelectorAll('.button-container button');
-  const codeOutput = document.getElementById('code-output');
+    // **1. تعريف رابط الواجهة الخلفية (Backend API)**
+    const API_BASE_URL = 'https://mini-app-pubg-backend-ojju.vercel.app';
+    const ADMIN_USER_ID = '658500340'; // <-- تم إضافة الـ ID الخاص بك هنا
 
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      const sensitivityCode = button.getAttribute('data-sensitivity-code');
-      codeOutput.textContent = sensitivityCode;
+    // 2. تعريف العناصر الرئيسية في الواجهة
+    const initialView = document.getElementById('initial-choice-view');
+    const proView = document.getElementById('pro-sensitivities-view');
+    const beginnerView = document.getElementById('beginner-sensitivities-view');
+    const proButtonsContainer = document.getElementById('pro-buttons-container');
+    const beginnerButtonsContainer = document.getElementById('beginner-buttons-container');
+    const displayContainer = document.getElementById('display-container');
+    const codeOutput = document.getElementById('code-output');
+    const displayImage = document.getElementById('display-image');
+    
+    // عناصر لوحة التحكم
+    const adminPanel = document.getElementById('admin-panel');
+    const openAdminBtn = document.getElementById('open-admin-btn');
+    const goBackBtn = document.getElementById('go-back-btn');
+    const addSensitivityForm = document.getElementById('add-sensitivity-form');
+    const adminNameInput = document.getElementById('admin-name-input');
+    const adminCodeInput = document.getElementById('admin-code-input');
+    const adminImageInput = document.getElementById('admin-image-input');
+    const adminTypeSelect = document.getElementById('admin-type-select');
+    const formSubmitBtn = document.getElementById('form-submit-btn');
+    const adminList = document.getElementById('admin-list');
+    
+    // أزرار الاختيار الأولي
+    const proChoiceBtn = document.getElementById('pro-choice');
+    const beginnerChoiceBtn = document.getElementById('beginner-choice');
+    
+    // متغير لتحديد ما إذا كنا في وضع التعديل
+    let editingId = null; // سيتم استخدام ID من الواجهة الخلفية
+    
+    // دالة لإخفاء وإظهار الواجهات
+    const showView = (viewToShow) => {
+        initialView.classList.add('hidden');
+        proView.classList.add('hidden');
+        beginnerView.classList.add('hidden');
+        displayContainer.classList.add('hidden');
+        adminPanel.classList.add('hidden');
+        
+        viewToShow.classList.remove('hidden');
+    };
+
+    // دالة لإنشاء الأزرار بشكل ديناميكي في الواجهة الرئيسية
+    const createSensitivityButtons = (data, container) => {
+        container.innerHTML = '';
+        data.forEach(item => {
+            const button = document.createElement('button');
+            button.classList.add('sensitivity-btn');
+            button.textContent = item.name;
+            button.setAttribute('data-sensitivity-code', item.code);
+            button.setAttribute('data-image-url', item.imageUrl);
+            
+            button.addEventListener('click', () => {
+                handleSensitivityClick(button);
+            });
+            
+            container.appendChild(button);
+        });
+    };
+    
+    // دالة للتعامل مع نقرات أزرار الحساسيات في الواجهة الرئيسية
+    const handleSensitivityClick = (button) => {
+        const sensitivityCode = button.getAttribute('data-sensitivity-code');
+        const imageUrl = button.getAttribute('data-image-url');
+        
+        displayContainer.classList.remove('hidden');
+        
+        codeOutput.textContent = sensitivityCode;
+        displayImage.src = imageUrl;
+        displayImage.style.display = 'block';
+    };
+
+    // **2. دوال الاتصال بالواجهة الخلفية**
+    
+    // دالة لجلب البيانات
+    const fetchSensitivities = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
+            const data = await response.json();
+            
+            createSensitivityButtons(data.pro, proButtonsContainer);
+            createSensitivityButtons(data.beginner, beginnerButtonsContainer);
+            
+            renderAdminList(data);
+            
+        } catch (error) {
+            console.error('Failed to fetch sensitivities:', error);
+            alert('فشل في جلب البيانات من الواجهة الخلفية.');
+        }
+    };
+    
+    // دالة لإضافة حساسية جديدة
+    const addSensitivity = async (newSensitivity, type) => {
+        try {
+            await fetch(`${API_BASE_URL}/api/sensitivities/${type}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newSensitivity)
+            });
+            await fetchSensitivities();
+            alert('تم إضافة الحساسية بنجاح!');
+        } catch (error) {
+            console.error('Failed to add sensitivity:', error);
+            alert('فشل في إضافة الحساسية.');
+        }
+    };
+    
+    // دالة لتحديث حساسية موجودة
+    const updateSensitivity = async (id, updatedSensitivity) => {
+        try {
+            await fetch(`${API_BASE_URL}/api/sensitivities/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedSensitivity)
+            });
+            await fetchSensitivities();
+            alert('تم تعديل الحساسية بنجاح!');
+        } catch (error) {
+            console.error('Failed to update sensitivity:', error);
+            alert('فشل في تعديل الحساسية.');
+        }
+    };
+
+    // دالة لحذف حساسية
+    const deleteSensitivity = async (id) => {
+        try {
+            await fetch(`${API_BASE_URL}/api/sensitivities/${id}`, {
+                method: 'DELETE'
+            });
+            await fetchSensitivities();
+            alert('تم حذف الحساسية بنجاح!');
+        } catch (error) {
+            console.error('Failed to delete sensitivity:', error);
+            alert('فشل في حذف الحساسية.');
+        }
+    };
+
+    // دالة لعرض قائمة الحساسيات في لوحة التحكم
+    const renderAdminList = (data) => {
+        adminList.innerHTML = '';
+        const allProSensitivities = data.pro.map(item => ({ ...item, type: 'pro' }));
+        const allBeginnerSensitivities = data.beginner.map(item => ({ ...item, type: 'beginner' }));
+        const allSensitivities = [...allProSensitivities, ...allBeginnerSensitivities];
+        
+        allSensitivities.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('admin-list-item');
+            
+            itemDiv.innerHTML = `
+                <span>${item.name} (${item.type})</span>
+                <div class="admin-actions">
+                    <button class="edit-btn" data-id="${item.id}">تعديل</button>
+                    <button class="delete-btn" data-id="${item.id}">حذف</button>
+                </div>
+            `;
+            adminList.appendChild(itemDiv);
+        });
+    };
+
+    // دالة لإعادة ضبط النموذج
+    const resetForm = () => {
+        addSensitivityForm.reset();
+        formSubmitBtn.textContent = 'إضافة';
+        editingId = null;
+    };
+
+    // **3. إدارة لوحة التحكم**
+    openAdminBtn.addEventListener('click', () => {
+        showView(adminPanel);
     });
-  });
+
+    goBackBtn.addEventListener('click', () => {
+        showView(initialView);
+    });
+
+    addSensitivityForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const type = adminTypeSelect.value;
+        const newOrUpdatedSensitivity = {
+            name: adminNameInput.value,
+            code: adminCodeInput.value,
+            imageUrl: adminImageInput.value,
+            type: type
+        };
+
+        if (editingId) {
+            await updateSensitivity(editingId, newOrUpdatedSensitivity);
+        } else {
+            await addSensitivity(newOrUpdatedSensitivity, type);
+        }
+        
+        resetForm();
+    });
+    
+    // **4. التعامل مع أزرار التعديل والحذف**
+    adminList.addEventListener('click', async (e) => {
+        const target = e.target;
+        const id = target.getAttribute('data-id');
+
+        if (target.classList.contains('edit-btn')) {
+            const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
+            const data = await response.json();
+            const allSensitivities = [...data.pro, ...data.beginner];
+            const itemToEdit = allSensitivities.find(item => item.id == id);
+            
+            if (itemToEdit) {
+                adminNameInput.value = itemToEdit.name;
+                adminCodeInput.value = itemToEdit.code;
+                adminImageInput.value = itemToEdit.imageUrl;
+                adminTypeSelect.value = itemToEdit.type;
+                
+                formSubmitBtn.textContent = 'تعديل';
+                editingId = id;
+            }
+        } else if (target.classList.contains('delete-btn')) {
+            if (confirm('هل أنت متأكد من حذف هذه الحساسية؟')) {
+                await deleteSensitivity(id);
+            }
+        }
+    });
+
+    // **5. إدارة واجهة التليجرام**
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+        const currentUser = window.Telegram.WebApp.initDataUnsafe.user;
+        const openAdminBtn = document.getElementById('open-admin-btn');
+        
+        if (openAdminBtn && currentUser.id != ADMIN_USER_ID) {
+            openAdminBtn.style.display = 'none';
+        }
+    }
+
+    // جلب وعرض البيانات عند تحميل الصفحة لأول مرة
+    fetchSensitivities();
+
+    // 6. ربط الأحداث بأزرار الواجهة الرئيسية
+    proChoiceBtn.addEventListener('click', () => {
+        showView(proView);
+    });
+
+    beginnerChoiceBtn.addEventListener('click', () => {
+        showView(beginnerView);
+    });
 });

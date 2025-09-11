@@ -180,3 +180,117 @@ header h1 {
     font-size: 1.8em;
   }
 }
+
+/* تنسيقات لوحة التحكم الإدارية */
+.admin-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 400px;
+    margin-top: 50px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 10px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-panel h2 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.admin-panel form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.admin-panel input,
+.admin-panel textarea,
+.admin-panel select,
+.admin-panel button {
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 1em;
+}
+
+.admin-panel input::placeholder,
+.admin-panel textarea::placeholder {
+    color: #aaa;
+}
+
+.admin-panel button {
+    background-color: #00aaff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.admin-panel button:hover {
+    background-color: #0088cc;
+}
+
+#go-back-btn {
+    margin-top: 20px;
+    background-color: transparent;
+    border: 1px solid #c0c0c0;
+    color: #c0c0c0;
+}
+
+#go-back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* تنسيقات قائمة لوحة التحكم */
+.admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.admin-list-item span {
+    color: #fff;
+    font-weight: 500;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.admin-actions button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.admin-actions .edit-btn {
+    background-color: #00aaff;
+    color: #fff;
+}
+
+.admin-actions .delete-btn {
+    background-color: #ff3333;
+    color: #fff;
+}

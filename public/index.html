@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حساسيات ببجي الأسطورية</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 
@@ -19,31 +20,42 @@
             <div class="main-choice-container">
                 <button id="pro-choice">أنا محترف</button>
                 <button id="beginner-choice">أنا مبتدئ</button>
+                <button id="open-admin-btn">لوحة التحكم</button>
             </div>
         </section>
 
         <section id="pro-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المحترفين</h2>
-            <div class="button-container">
-                <button class="sensitivity-btn" data-sensitivity-code="5436-7890-1234-5678-9012" data-image-url="https://via.placeholder.com/400x200?text=Pro+Sensitivity+1">حساسية احترافية 1</button>
-                <button class="sensitivity-btn" data-sensitivity-code="9876-5432-1098-7654-3210" data-image-url="https://via.placeholder.com/400x200?text=Pro+Sensitivity+2">حساسية احترافية 2</button>
-                <button class="sensitivity-btn" data-sensitivity-code="1111-2222-3333-4444-5555" data-image-url="https://via.placeholder.com/400x200?text=Pro+Sensitivity+3">حساسية احترافية 3</button>
-            </div>
+            <div id="pro-buttons-container" class="button-container">
+                </div>
         </section>
 
         <section id="beginner-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المبتدئين</h2>
-            <div class="button-container">
-                <button class="sensitivity-btn" data-sensitivity-code="1234-5678-9012-3456-7890" data-image-url="https://via.placeholder.com/400x200?text=Beginner+Sensitivity+1">حساسية للمبتدئين 1</button>
-                <button class="sensitivity-btn" data-sensitivity-code="2109-8765-4321-0987-6543" data-image-url="https://via.placeholder.com/400x200?text=Beginner+Sensitivity+2">حساسية للمبتدئين 2</button>
-            </div>
+            <div id="beginner-buttons-container" class="button-container">
+                </div>
         </section>
 
         <section id="display-container" class="sensitivity-display hidden">
             <img id="display-image" src="" alt="صورة الحساسية">
             <p id="code-output">اضغط على زر لعرض الكود</p>
         </section>
-
+        
+        <section id="admin-panel" class="admin-panel hidden">
+            <h2>لوحة تحكم المالك</h2>
+            <form id="add-sensitivity-form">
+                <input type="text" id="admin-name-input" placeholder="اسم الحساسية" required>
+                <textarea id="admin-code-input" placeholder="كود الحساسية" required></textarea>
+                <input type="text" id="admin-image-input" placeholder="رابط الصورة" required>
+                <select id="admin-type-select">
+                    <option value="pro">محترف</option>
+                    <option value="beginner">مبتدئ</option>
+                </select>
+                <button type="submit" id="form-submit-btn">إضافة</button>
+            </form>
+            <div id="admin-list" class="admin-list"></div>
+            <button id="go-back-btn">العودة للواجهة الرئيسية</button>
+        </section>
     </main>
     
     <script src="scripts.js"></script>
