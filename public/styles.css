@@ -309,33 +309,35 @@ header h1 {
     z-index: 1; /* لجعل المحتوى يظهر فوق الجسيمات */
 }
 .title-box {
-    background-color: rgba(0, 50, 60, 0.8);
-    padding: 25px 35px;
-    border-radius: 15px;
-    margin-bottom: 30px;
+    background-color: rgba(0, 50, 60, 0.4); /* خلفية أكثر شفافية */
+    padding: 15px 25px; /* تصغير المسافات الداخلية */
+    border-radius: 10px; /* تصغير الحواف المستديرة */
+    margin-bottom: 25px;
     text-align: center;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
-    border: 1px solid rgba(0, 255, 255, 0.5);
-    transform: perspective(1000px) rotateX(5deg);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* تقليل حدة الظل */
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    transform: perspective(1000px) rotateX(3deg); /* تقليل تأثير الميلان */
     transition: transform 0.3s ease-in-out;
     max-width: 90%;
-    width: 400px;
+    width: 350px; /* تصغير عرض المربع */
+    backdrop-filter: blur(5px); /* إضافة تأثير الضبابية */
 }
 
 .title-box:hover {
     transform: perspective(1000px) rotateX(0deg) scale(1.02);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* زيادة التوهج عند التمرير */
 }
 
 .title-box h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
+    font-size: 1.8em; /* تصغير حجم العنوان الرئيسي */
+    margin-bottom: 5px; /* تقليل المسافة بين العنوان والوصف */
     color: #00ffff;
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.9);
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.9);
 }
 
 .title-box p {
-    font-size: 1.2em;
+    font-size: 1em; /* تصغير حجم النص الوصفي */
     color: #e0f7fa;
     margin-top: 0;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    text-shadow: 0 0 3px rgba(0, 255, 255, 0.5);
 }
