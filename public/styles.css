@@ -292,3 +292,19 @@ header h1 {
     background-color: #ff3333;
     color: #fff;
 }
+/* هذا الجزء مهم جداً للجسيمات */
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1; /* لجعل الجسيمات تظهر خلف المحتوى */
+    background-color: #000; /* الخلفية السوداء */
+}
+
+/* هذه القواعد مهمة لجعل المحتوى يظهر فوق الجسيمات */
+.title-box, .container {
+    position: relative;
+    z-index: 1; /* لجعل المحتوى يظهر فوق الجسيمات */
+}
