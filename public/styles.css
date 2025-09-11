@@ -106,42 +106,7 @@ header h1 {
 }
 
 /* تنسيق الأزرار داخل حاوية الحساسيات */
-.container {
-    background-color: rgba(0, 50, 60, 0.4); /* خلفية شفافة بلون أزرق داكن */
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* ظل متوهج ناعم */
-    border: 1px solid rgba(0, 255, 255, 0.3); /* حدود متوهجة */
-    max-width: 90%;
-    width: 350px;
-    backdrop-filter: blur(5px); /* تأثير الضبابية الزجاجي */
-    position: relative;
-    z-index: 1;
-}
 
-.button {
-    background-color: rgba(0, 188, 212, 0.2); /* لون أزرق سماوي أكثر شفافية */
-    border: 1px solid rgba(0, 255, 255, 0.5);
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    font-size: 1.2em;
-    margin: 15px auto;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); /* ظل متوهج ناعم للأزرار */
-    max-width: 250px;
-}
-
-.button:hover {
-    background-color: rgba(0, 188, 212, 0.5); /* لون أغمق وأقل شفافية عند التمرير */
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 8px 20px rgba(0, 255, 255, 0.8);
-}
 
 /* تنسيق صندوق عرض الحساسية */
 .sensitivity-display {
