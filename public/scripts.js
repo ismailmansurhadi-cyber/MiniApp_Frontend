@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // **1. تعريف رابط الواجهة الخلفية (Backend API)**
-    const API_BASE_URL = 'https://mini-app-pubg-backend-31hg5gamn.vercel.app/';
+    const API_BASE_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app/';
     const ADMIN_USER_ID = '658500340'; // <-- تم إضافة الـ ID الخاص بك هنا
 
     // 2. تعريف العناصر الرئيسية في الواجهة
