@@ -27,49 +27,6 @@ body {
     background-color: #000; /* خلفية سوداء صلبة */
     color: #fff;
     overflow-x: hidden;
-
-    /* تأثير الشبكة (Grid effect) */
-    background-image: 
-        linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.1) 25%, rgba(0, 255, 255, 0.1) 26%, transparent 27%),
-        linear-gradient(90deg, transparent 24%, rgba(0, 255, 255, 0.1) 25%, rgba(0, 255, 255, 0.1) 26%, transparent 27%);
-    background-size: 50px 50px; /* حجم خلايا الشبكة */
-    background-position: center center;
-}
-
-/* لتحسين مظهر العناوين فوق الخلفية الجديدة */
-h1, h2 {
-    color: #fff;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.7), 0 0 10px rgba(0, 255, 255, 0.5); /* ظل نصي متوهج */
-}
-
-/* للحفاظ على مظهر الأزرار */
-.button {
-    background-color: #00bcd4; /* لون أزرق سماوي */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 18px;
-    margin: 10px 0;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 5px 15px rgba(0, 188, 212, 0.4);
-}
-
-.button:hover {
-    background-color: #0097a7;
-    transform: translateY(-3px);
-}
-
-.container {
-    background-color: rgba(0, 0, 0, 0.7); /* خلفية شبه شفافة للمحتوى */
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* ظل متوهج خفيف للحاوية */
 }
 
 /* حاوية التطبيق الرئيسية */
