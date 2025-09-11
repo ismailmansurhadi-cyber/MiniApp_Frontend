@@ -308,3 +308,34 @@ header h1 {
     position: relative;
     z-index: 1; /* لجعل المحتوى يظهر فوق الجسيمات */
 }
+.title-box {
+    background-color: rgba(0, 50, 60, 0.8);
+    padding: 25px 35px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
+    border: 1px solid rgba(0, 255, 255, 0.5);
+    transform: perspective(1000px) rotateX(5deg);
+    transition: transform 0.3s ease-in-out;
+    max-width: 90%;
+    width: 400px;
+}
+
+.title-box:hover {
+    transform: perspective(1000px) rotateX(0deg) scale(1.02);
+}
+
+.title-box h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #00ffff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.9);
+}
+
+.title-box p {
+    font-size: 1.2em;
+    color: #e0f7fa;
+    margin-top: 0;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
