@@ -62,16 +62,30 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // دالة للتعامل مع نقرات أزرار الحساسيات في الواجهة الرئيسية
-    const handleSensitivityClick = (button) => {
-        const sensitivityCode = button.getAttribute('data-sensitivity-code');
-        const imageUrl = button.getAttribute('data-image-url');
-        
-        displayContainer.classList.remove('hidden');
-        
-        codeOutput.textContent = sensitivityCode;
-        displayImage.src = imageUrl;
-        displayImage.style.display = 'block';
-    };
+ const handleSensitivityClick = (button) => {
+    const sensitivityCode = button.getAttribute('data-sensitivity-code');
+    const imageUrl = button.getAttribute('data-image-url');
+
+    // إظهار المحتوى
+    displayContainer.classList.remove('hidden');
+
+    // عرض الكود والصورة
+    codeOutput.textContent = sensitivityCode;
+    displayImage.src = imageUrl;
+    displayImage.style.display = 'block';
+
+    const copyBtn = document.getElementById('copy-code-btn');
+    if (copyBtn) {
+        copyBtn.onclick = async () => {
+            try {
+                await navigator.clipboard.writeText(sensitivityCode);
+                Telegram.WebApp.showAlert('تم نسخ الكود بنجاح!');
+            } catch (err) {
+                Telegram.WebApp.showAlert('حدث خطأ أثناء نسخ الكود.');
+            }
+        };
+    }
+};
 
     // **2. دوال الاتصال بالواجهة الخلفية**
     
