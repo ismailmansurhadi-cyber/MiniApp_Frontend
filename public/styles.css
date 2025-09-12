@@ -330,3 +330,29 @@ header h1 {
     position: relative;
     z-index: 1;
 }
+
+/* تنسيقات الأزرار الداخلية (أزرار الحساسيات) */
+.sensitivities-view button {
+    background-color: rgba(0, 188, 212, 0.15); /* خلفية زرقاء سماوية شفافة */
+    border: 1px solid rgba(0, 255, 255, 0.4); /* حدود متوهجة */
+    color: #e0f7fa; /* لون النص أبيض مائل للزرقة */
+    padding: 12px 20px;
+    font-size: 1.1em;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: block; /* لجعل الزر يأخذ عرضاً كاملاً */
+    margin: 10px auto; /* إضافة مسافة بين الأزرار */
+    max-width: 250px;
+}
+
+.sensitivities-view button:hover {
+    background-color: rgba(0, 188, 212, 0.3);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 255, 255, 0.5);
+    border-color: rgba(0, 255, 255, 0.7);
+}
