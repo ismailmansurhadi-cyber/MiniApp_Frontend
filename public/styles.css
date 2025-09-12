@@ -356,3 +356,22 @@ header h1 {
     box-shadow: 0 6px 15px rgba(0, 255, 255, 0.5);
     border-color: rgba(0, 255, 255, 0.7);
 }
+#copy-code-btn {
+    background-color: #f43303; /* لون الخلفية: أزرق حديث */
+    color: white; /* لون النص: أبيض */
+    border: none; /* إزالة الحدود */
+    padding: 10px 20px; /* مسافة داخلية للزر */
+    font-size: 16px; /* حجم الخط */
+    border-radius: 8px; /* زوايا دائرية */
+    cursor: pointer; /* تغيير شكل المؤشر عند الوقوف عليه */
+    transition: background-color 0.3s ease; /* إضافة تأثير انتقالي سلس */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل خفيف */
+}
+
+#copy-code-btn:hover {
+    background-color: #fded07f0; /* لون أغمق عند مرور الماوس */
+}
+
+#copy-code-btn:active {
+    background-color: #004494; /* لون أغمق عند النقر */
+}
