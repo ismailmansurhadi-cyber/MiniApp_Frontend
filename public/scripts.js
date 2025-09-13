@@ -259,3 +259,47 @@ document.addEventListener('DOMContentLoaded', () => {
         showView(beginnerView);
     });
 });
+// الكود الخاص بالزر الجديد في الصفحة الرئيسية
+const performanceButton = document.getElementById('performance-button');
+if (performanceButton) {
+    performanceButton.addEventListener('click', () => {
+        window.location.href = 'performance.html';
+    });
+}
+
+// الكود الخاص بصفحة تحليل الأداء الجديدة
+const getStatsButton = document.getElementById('get-stats-button');
+const playerIDInput = document.getElementById('player-id');
+const resultsDiv = document.getElementById('results');
+
+if (getStatsButton) {
+    getStatsButton.addEventListener('click', async () => {
+        const playerID = playerIDInput.value;
+        resultsDiv.innerHTML = 'جاري البحث...';
+
+        try {
+            const response = await fetch('/api/get-stats', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ playerID: playerID })
+            });
+
+            const data = await response.json();
+            
+            if (response.ok) {
+                resultsDiv.innerHTML = `
+                    <h3>إحصائيات اللاعب: ${data.playerName}</h3>
+                    <p>نسبة القتل: ${data.kdRatio}</p>
+                    <p>معدل الفوز: ${data.winRate}</p>
+                    `;
+            } else {
+                resultsDiv.innerHTML = `حدث خطأ: ${data.error}`;
+            }
+
+        } catch (error) {
+            resultsDiv.innerHTML = 'حدث خطأ في الاتصال.';
+        }
+    });
+}
