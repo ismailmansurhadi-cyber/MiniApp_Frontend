@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // **1. تعريف رابط الواجهة الخلفية (Backend API)**
+    // 1. تعريف رابط الواجهة الخلفية (Backend API)
     const API_BASE_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app';
-    const ADMIN_USER_ID = '658500340'; // <-- تم إضافة الـ ID الخاص بك هنا
+    const ADMIN_USER_ID = '658500340';
 
     // 2. تعريف العناصر الرئيسية في الواجهة
     const initialView = document.getElementById('initial-choice-view');
@@ -29,10 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const proChoiceBtn = document.getElementById('pro-choice');
     const beginnerChoiceBtn = document.getElementById('beginner-choice');
     
-    // متغير لتحديد ما إذا كنا في وضع التعديل
-    let editingId = null; // سيتم استخدام ID من الواجهة الخلفية
+    let editingId = null;
     
-    // دالة لإخفاء وإظهار الواجهات
     const showView = (viewToShow) => {
         initialView.classList.add('hidden');
         proView.classList.add('hidden');
@@ -43,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         viewToShow.classList.remove('hidden');
     };
 
-    // دالة لإنشاء الأزرار بشكل ديناميكي في الواجهة الرئيسية
     const createSensitivityButtons = (data, container) => {
         container.innerHTML = '';
         data.forEach(item => {
@@ -61,68 +58,61 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     
-    // دالة للتعامل مع نقرات أزرار الحساسيات في الواجهة الرئيسية
- const handleSensitivityClick = (button) => {
-    const sensitivityCode = button.getAttribute('data-sensitivity-code');
-    const imageUrl = button.getAttribute('data-image-url');
+    const handleSensitivityClick = (button) => {
+        const sensitivityCode = button.getAttribute('data-sensitivity-code');
+        const imageUrl = button.getAttribute('data-image-url');
 
-    // إظهار المحتوى
-    displayContainer.classList.remove('hidden');
+        displayContainer.classList.remove('hidden');
 
-    // عرض الكود والصورة
-    codeOutput.textContent = sensitivityCode;
-    displayImage.src = imageUrl;
-    displayImage.style.display = 'block';
+        codeOutput.textContent = sensitivityCode;
+        displayImage.src = imageUrl;
+        displayImage.style.display = 'block';
 
-    const copyBtn = document.getElementById('copy-code-btn');
-    if (copyBtn) {
-        copyBtn.onclick = async () => {
-            try {
-                await navigator.clipboard.writeText(sensitivityCode);
-                Telegram.WebApp.showAlert('تم نسخ الكود بنجاح!');
-            } catch (err) {
-                Telegram.WebApp.showAlert('حدث خطأ أثناء نسخ الكود.');
-            }
-        };
-    }
-};
-
-    // **2. دوال الاتصال بالواجهة الخلفية**
-    
- // دالة لجلب وعرض بيانات الحساسيات
-const fetchSensitivities = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
-        
-        // التحقق من أن الاستجابة ناجحة
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        const copyBtn = document.getElementById('copy-code-btn');
+        if (copyBtn) {
+            copyBtn.onclick = async () => {
+                try {
+                    await navigator.clipboard.writeText(sensitivityCode);
+                    Telegram.WebApp.showAlert('تم نسخ الكود بنجاح!');
+                } catch (err) {
+                    Telegram.WebApp.showAlert('حدث خطأ أثناء نسخ الكود.');
+                }
+            };
         }
-        
-        // استلام جميع الحساسيات في قائمة واحدة
-        const allSensitivities = await response.json();
-        
-        // فلترة (تقسيم) الحساسيات إلى مجموعتي "محترف" و "مبتدئ"
-        const proSensitivities = allSensitivities.filter(item => item.type === 'pro');
-        const beginnerSensitivities = allSensitivities.filter(item => item.type === 'beginner');
-
-        // إنشاء الأزرار لكل مجموعة
-        createSensitivityButtons(proSensitivities, proButtonsContainer);
-        createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
-        
-        // عرض القائمة في لوحة التحكم
-        renderAdminList(allSensitivities);
-        
-    } catch (error) {
-        console.error('Failed to fetch sensitivities:', error);
-        alert('فشل في جلب البيانات من الواجهة الخلفية.');
-    }
-};
+    };
     
-    // دالة لإضافة حساسية جديدة
-    const addSensitivity = async (newSensitivity, type) => {
+    // **دالة الاتصال بالواجهة الخلفية (تم تعديلها)**
+    const fetchSensitivities = async () => {
         try {
-            await fetch(`${API_BASE_URL}/api/sensitivities/${type}`, {
+            const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            // استلام جميع الحساسيات في قائمة واحدة
+            const allSensitivities = await response.json();
+            
+            // فلترة (تقسيم) الحساسيات إلى مجموعتي "محترف" و "مبتدئ"
+            const proSensitivities = allSensitivities.filter(item => item.type === 'pro');
+            const beginnerSensitivities = allSensitivities.filter(item => item.type === 'beginner');
+
+            // إنشاء الأزرار لكل مجموعة
+            createSensitivityButtons(proSensitivities, proButtonsContainer);
+            createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
+            
+            // عرض القائمة في لوحة التحكم
+            renderAdminList(allSensitivities);
+            
+        } catch (error) {
+            console.error('Failed to fetch sensitivities:', error);
+            alert('فشل في جلب البيانات من الواجهة الخلفية.');
+        }
+    };
+    
+    const addSensitivity = async (newSensitivity) => {
+        try {
+            await fetch(`${API_BASE_URL}/api/sensitivities`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newSensitivity)
@@ -135,7 +125,6 @@ const fetchSensitivities = async () => {
         }
     };
     
-    // دالة لتحديث حساسية موجودة
     const updateSensitivity = async (id, updatedSensitivity) => {
         try {
             await fetch(`${API_BASE_URL}/api/sensitivities/${id}`, {
@@ -151,7 +140,6 @@ const fetchSensitivities = async () => {
         }
     };
 
-    // دالة لحذف حساسية
     const deleteSensitivity = async (id) => {
         try {
             await fetch(`${API_BASE_URL}/api/sensitivities/${id}`, {
@@ -165,13 +153,9 @@ const fetchSensitivities = async () => {
         }
     };
 
-    // دالة لعرض قائمة الحساسيات في لوحة التحكم
-    const renderAdminList = (data) => {
+    // **دالة عرض قائمة التحكم (تم تعديلها)**
+    const renderAdminList = (allSensitivities) => {
         adminList.innerHTML = '';
-        const allProSensitivities = data.pro.map(item => ({ ...item, type: 'pro' }));
-        const allBeginnerSensitivities = data.beginner.map(item => ({ ...item, type: 'beginner' }));
-        const allSensitivities = [...allProSensitivities, ...allBeginnerSensitivities];
-        
         allSensitivities.forEach(item => {
             const itemDiv = document.createElement('div');
             itemDiv.classList.add('admin-list-item');
@@ -187,14 +171,13 @@ const fetchSensitivities = async () => {
         });
     };
 
-    // دالة لإعادة ضبط النموذج
     const resetForm = () => {
         addSensitivityForm.reset();
         formSubmitBtn.textContent = 'إضافة';
         editingId = null;
     };
 
-    // **3. إدارة لوحة التحكم**
+    // **إدارة لوحة التحكم**
     openAdminBtn.addEventListener('click', () => {
         showView(adminPanel);
     });
@@ -217,22 +200,21 @@ const fetchSensitivities = async () => {
         if (editingId) {
             await updateSensitivity(editingId, newOrUpdatedSensitivity);
         } else {
-            await addSensitivity(newOrUpdatedSensitivity, type);
+            await addSensitivity(newOrUpdatedSensitivity);
         }
         
         resetForm();
     });
     
-    // **4. التعامل مع أزرار التعديل والحذف**
+    // **التعامل مع أزرار التعديل والحذف**
     adminList.addEventListener('click', async (e) => {
         const target = e.target;
         const id = target.getAttribute('data-id');
 
         if (target.classList.contains('edit-btn')) {
             const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
-            const data = await response.json();
-            const allSensitivities = [...data.pro, ...data.beginner];
-            const itemToEdit = allSensitivities.find(item => item.id == id);
+            const allSensitivities = await response.json();
+            const itemToEdit = allSensitivities.find(item => item.id === id);
             
             if (itemToEdit) {
                 adminNameInput.value = itemToEdit.name;
@@ -250,7 +232,7 @@ const fetchSensitivities = async () => {
         }
     });
 
-    // **5. إدارة واجهة التليجرام**
+    // **إدارة واجهة التليجرام**
     if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
         const currentUser = window.Telegram.WebApp.initDataUnsafe.user;
         const openAdminBtn = document.getElementById('open-admin-btn');
@@ -272,47 +254,6 @@ const fetchSensitivities = async () => {
         showView(beginnerView);
     });
 });
-// الكود الخاص بالزر الجديد في الصفحة الرئيسية
-const performanceButton = document.getElementById('performance-button');
-if (performanceButton) {
-    performanceButton.addEventListener('click', () => {
-        window.location.href = 'performance.html';
-    });
-}
 
-// الكود الخاص بصفحة تحليل الأداء الجديدة
-const getStatsButton = document.getElementById('get-stats-button');
-const playerIDInput = document.getElementById('player-id');
-const resultsDiv = document.getElementById('results');
-
-if (getStatsButton) {
-    getStatsButton.addEventListener('click', async () => {
-        const playerID = playerIDInput.value;
-        resultsDiv.innerHTML = 'جاري البحث...';
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/get-stats`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ playerID: playerID })
-            });
-
-            const data = await response.json();
-            
-            if (response.ok) {
-                resultsDiv.innerHTML = `
-                    <h3>إحصائيات اللاعب: ${data.playerName}</h3>
-                    <p>نسبة القتل: ${data.kdRatio}</p>
-                    <p>معدل الفوز: ${data.winRate}</p>
-                    `;
-            } else {
-                resultsDiv.innerHTML = `حدث خطأ: ${data.error}`;
-            }
-
-        } catch (error) {
-            resultsDiv.innerHTML = 'حدث خطأ في الاتصال.';
-        }
-    });
-}
+// الكود الخاص بالزر الجديد في الصفحة الرئيسية (تم حذفه لأنك لا تريده)
+// الكود الخاص بصفحة تحليل الأداء الجديدة (تم حذفه لأنك لا تريده)
