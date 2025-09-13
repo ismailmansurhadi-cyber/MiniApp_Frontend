@@ -278,7 +278,7 @@ if (getStatsButton) {
         resultsDiv.innerHTML = 'جاري البحث...';
 
         try {
-            const response = await fetch('/api/get-stats', {
+            const response = await fetch(`${API_BASE_URL}/api/get-stats`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
