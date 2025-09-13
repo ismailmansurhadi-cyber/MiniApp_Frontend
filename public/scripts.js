@@ -257,16 +257,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // الكود الخاص بالزر الجديد في الصفحة الرئيسية (تم حذفه لأنك لا تريده)
 // الكود الخاص بصفحة تحليل الأداء الجديدة (تم حذفه لأنك لا تريده)
-// **الكود الخاص بزر قائمة تيليجرام**
-if (window.Telegram && window.Telegram.WebApp) {
-    // إعداد زر القائمة في تيليجرام
-    Telegram.WebApp.MainButton.setText('فتح التطبيق');
-    Telegram.WebApp.MainButton.onClick(() => {
-        Telegram.WebApp.openWebApp();
-    });
-    Telegram.WebApp.MainButton.show();
-    
-    // إعداد التطبيق ليعمل بملء الشاشة عند فتحه
-    Telegram.WebApp.ready();
-    Telegram.WebApp.expand();
-}
