@@ -89,22 +89,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // **2. دوال الاتصال بالواجهة الخلفية**
     
-    // دالة لجلب البيانات
-    const fetchSensitivities = async () => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
-            const data = await response.json();
-            
-            createSensitivityButtons(data.pro, proButtonsContainer);
-            createSensitivityButtons(data.beginner, beginnerButtonsContainer);
-            
-            renderAdminList(data);
-            
-        } catch (error) {
-            console.error('Failed to fetch sensitivities:', error);
-            alert('فشل في جلب البيانات من الواجهة الخلفية.');
+ // دالة لجلب وعرض بيانات الحساسيات
+const fetchSensitivities = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
+        
+        // التحقق من أن الاستجابة ناجحة
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    };
+        
+        // استلام جميع الحساسيات في قائمة واحدة
+        const allSensitivities = await response.json();
+        
+        // فلترة (تقسيم) الحساسيات إلى مجموعتي "محترف" و "مبتدئ"
+        const proSensitivities = allSensitivities.filter(item => item.type === 'pro');
+        const beginnerSensitivities = allSensitivities.filter(item => item.type === 'beginner');
+
+        // إنشاء الأزرار لكل مجموعة
+        createSensitivityButtons(proSensitivities, proButtonsContainer);
+        createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
+        
+        // عرض القائمة في لوحة التحكم
+        renderAdminList(allSensitivities);
+        
+    } catch (error) {
+        console.error('Failed to fetch sensitivities:', error);
+        alert('فشل في جلب البيانات من الواجهة الخلفية.');
+    }
+};
     
     // دالة لإضافة حساسية جديدة
     const addSensitivity = async (newSensitivity, type) => {
