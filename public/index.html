@@ -173,14 +173,14 @@
 </script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
-    // هذا السطر يخبر تيليجرام بأن التطبيق المصغر جاهز
     Telegram.WebApp.ready();
 
     const showLootboxButton = document.getElementById('show-lootbox-button');
-    showLootboxButton.onclick = function() {
-        // هذا الأمر يوجه المستخدم إلى صفحة صندوق الغنائم
-        window.location.href = 'https://mini-app-frontend-gamma.vercel.app/performance.html';
-    };
+    if (showLootboxButton) {
+        showLootboxButton.addEventListener('click', function() {
+            Telegram.WebApp.openLink('https://mini-app-frontend-gamma.vercel.app/performance.html');
+        });
+    }
 </script>
 </body>
 </html>
