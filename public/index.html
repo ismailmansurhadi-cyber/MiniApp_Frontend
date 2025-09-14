@@ -178,7 +178,17 @@
     const showLootboxButton = document.getElementById('show-lootbox-button');
     if (showLootboxButton) {
         showLootboxButton.addEventListener('click', function() {
-            Telegram.WebApp.openLink('https://mini-app-frontend-gamma.vercel.app/performance.html');
+            try {
+                // اطبع رسالة في التطبيق لتأكيد أن الكود يعمل
+                Telegram.WebApp.showAlert('Attempting to open link...');
+
+                // حاول فتح الرابط باستخدام أمر تيليجرام
+                Telegram.WebApp.openLink('https://mini-app-frontend-gamma.vercel.app/performance.html');
+
+            } catch (error) {
+                // اطبع رسالة خطأ مباشرة في التطبيق
+                Telegram.WebApp.showAlert('An error occurred: ' + error.message);
+            }
         });
     }
 </script>
