@@ -22,6 +22,7 @@
             <div class="main-choice-container">
                 <button id="pro-choice">أنا محترف</button>
                 <button id="beginner-choice">أنا مبتدئ</button>
+                <button id="open-lootbox-button">صندوق الغنائم العشوائي 🎁</button>
                 <button id="open-admin-btn">لوحة التحكم</button>
             </div>
         </section>
@@ -170,6 +171,11 @@
         "retina_detect": true
     });
 </script>
-<script async src="https://analytics.vercel.com/v1/script.js" data-vercel-analytics="true"></script>
+<script>
+  const openLootboxButton = document.getElementById('open-lootbox-button');
+  openLootboxButton.onclick = function() {
+    Telegram.WebApp.openWebApp('https://mini-app-frontend-gamma.vercel.app/performance.html');
+  };
+</script>
 </body>
 </html>
