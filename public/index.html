@@ -171,11 +171,14 @@
         "retina_detect": true
     });
 </script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
-  const openLootboxButton = document.getElementById('open-lootbox-button');
-  openLootboxButton.onclick = function() {
-    Telegram.WebApp.openWebApp('https://mini-app-frontend-gamma.vercel.app/performance.html');
-  };
+    Telegram.WebApp.ready();
+
+    const openLootboxButton = document.getElementById('open-lootbox-button');
+    openLootboxButton.onclick = function() {
+        Telegram.WebApp.openWebApp('https://mini-app-frontend-gamma.vercel.app/performance.html');
+    };
 </script>
 </body>
 </html>
