@@ -174,23 +174,9 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
     Telegram.WebApp.ready();
-
-    const showLootboxButton = document.getElementById('show-lootbox-button');
-    if (showLootboxButton) {
-        showLootboxButton.addEventListener('click', function() {
-            try {
-                // اطبع رسالة في التطبيق لتأكيد أن الكود يعمل
-                Telegram.WebApp.showAlert('Attempting to open link...');
-
-                // حاول فتح الرابط باستخدام أمر تيليجرام
-                Telegram.WebApp.openLink('https://mini-app-frontend-gamma.vercel.app/performance.html');
-
-            } catch (error) {
-                // اطبع رسالة خطأ مباشرة في التطبيق
-                Telegram.WebApp.showAlert('An error occurred: ' + error.message);
-            }
-        });
-    }
+    Telegram.WebApp.onEvent('mainButtonClicked', function() {
+        Telegram.WebApp.openLink('https://mini-app-frontend-gamma.vercel.app/performance.html');
+    });
 </script>
 </body>
 </html>
