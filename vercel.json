@@ -1,7 +1,5 @@
 {
-  "build": {
-    "src": "frontend/public",
-    "use": "@vercel/static-build",
-    "config": {}
+  "static": {
+    "directory": "public"
   }
 }
