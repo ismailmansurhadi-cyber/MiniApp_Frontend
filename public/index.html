@@ -19,7 +19,7 @@
             background-color: #3a3f36;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             position: relative;
         }
         h1 {
@@ -90,7 +90,7 @@
 <body>
 
     <main id="app-container">
-
+        
         <section id="initial-choice-view">
             <div class="title-box">
                 <h1>إحتراف ببجي يبدأ من هنا</h1>
@@ -160,7 +160,7 @@
                 <button id="hide-lootbox-button">العودة إلى الواجهة الرئيسية</button>
             </div>
         </section>
-
+        
         <section id="admin-panel" class="admin-panel hidden">
             <h2>لوحة تحكم المالك</h2>
             <form id="add-sensitivity-form">
@@ -178,15 +178,17 @@
         </section>
 
     </main>
-
     <div id="particles-js"></div>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="scripts.js"></script>
-
     <script>
-        const showLootboxButton = document.getElementById('show-lootbox-button');
+        const showLootboxButton = document.getElementById('open-lootbox-button');
+        const hideLootboxButton = document.getElementById('hide-lootbox-button');
+        const initialChoiceView = document.getElementById('initial-choice-view');
+        const lootboxView = document.getElementById('lootbox-view');
+
         const initialArea = document.getElementById('initial-area');
         const lootboxArea = document.getElementById('lootbox-area');
         const saveIdButton = document.getElementById('save-id-button');
@@ -195,7 +197,7 @@
         const invitationLink = document.getElementById('invitation-link');
         const openBoxButton = document.getElementById('open-box-button');
         const winnersListContainer = document.getElementById('winners-list-container');
-        const lootboxImage = document = document.getElementById('lootbox-image');
+        const lootboxImage = document.getElementById('lootbox-image');
         const resultArea = document.getElementById('result-area');
 
         let user_id;
@@ -219,9 +221,16 @@
         user_id = getUserId();
         
         showLootboxButton.onclick = function() {
-            initialArea.style.display = 'none';
-            lootboxArea.style.display = 'block';
+            initialChoiceView.classList.add('hidden');
+            lootboxView.classList.remove('hidden');
+            initialArea.style.display = 'block';
+            lootboxArea.style.display = 'none';
             fetchLastLooters();
+        };
+
+        hideLootboxButton.onclick = function() {
+            lootboxView.classList.add('hidden');
+            initialChoiceView.classList.remove('hidden');
         };
 
         saveIdButton.onclick = function() {
@@ -365,6 +374,7 @@
                         "mode": "push"
                     },
                     "resize": true
+                    }
                 },
                 "modes": {
                     "grab": {
