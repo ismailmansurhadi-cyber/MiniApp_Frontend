@@ -123,53 +123,37 @@
         </section>
 
         <section id="lootbox-view" class="sensitivities-view hidden">
-            <div class="container">
+<div class="container">
+    <div id="lootbox-area">
+        <h1>صندوق الغنائم 🎁</h1>
+        <p id="description-text">قم بإدخال ID حسابك في ببجي للمتابعة.</p>
+        <input type="text" id="player-id-input" placeholder="أدخل ID حسابك في ببجي">
+        <button id="save-id-button">حفظ ID</button>
 
-                <div id="lootbox-area" style="display: none;">
-                    <h1>صندوق الغنائم 🎁</h1>
-                    <p id="description-text">قم بإدخال ID حسابك في ببجي للمتابعة.</p>
-                    <input type="text" id="player-id-input" placeholder="أدخل ID حسابك في ببجي">
-                    <button id="save-id-button">حفظ ID</button>
-
-                    <div id="invitation-area" style="display: none;">
-                        <p>الآن، قم بدعوة 3 مستخدمين لفتح الصندوق والحصول على جوائز.</p>
-                        <h2>رابط دعوتك 🔗</h2>
-                        <div id="invitation-link-container">
-                            <span id="invitation-link"></span>
-                        </div>
-                        <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين.</p>
-                        
-                        <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
-                        <br>
-                        <button id="open-box-button" disabled>افتح الصندوق</button>
-                        <div id="result-area"></div>
-                    </div>
-
-                    <div class="winner-list">
-                        <h3>آخر الفائزين 🏆</h3>
-                        <ul id="winners-list-container"></ul>
-                    </div>
-                </div>
+        <div id="invitation-area" style="display: none;">
+            <p>الآن، قم بدعوة 3 مستخدمين لفتح الصندوق والحصول على جوائز.</p>
+            <h2>رابط دعوتك 🔗</h2>
+            <div id="invitation-link-container">
+                <span id="invitation-link"></span>
             </div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button id="hide-lootbox-button">العودة إلى الواجهة الرئيسية</button>
-            </div>
-        </section>
+            <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين.</p>
+            
+            <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
+            <br>
+            <button id="open-box-button" disabled>افتح الصندوق</button>
+            <div id="result-area"></div>
+        </div>
+
+        <div class="winner-list">
+            <h3>آخر الفائزين 🏆</h3>
+            <ul id="winners-list-container"></ul>
+        </div>
         
-        <section id="admin-panel" class="admin-panel hidden">
-            <h2>لوحة تحكم المالك</h2>
-            <form id="add-sensitivity-form">
-                <input type="text" id="admin-name-input" placeholder="اسم الحساسية" required>
-                <textarea id="admin-code-input" placeholder="كود الحساسية" required></textarea>
-                <input type="text" id="admin-image-input" placeholder="رابط الصورة" required>
-                <select id="admin-type-select">
-                    <option value="pro">محترف</option>
-                    <option value="beginner">مبتدئ</option>
-                </select>
-                <button type="submit" id="form-submit-btn">إضافة</button>
-            </form>
-            <div id="admin-list" class="admin-list"></div>
-            <button id="go-back-btn">العودة للواجهة الرئيسية</button>
+    </div>
+</div>
+<div style="text-align: center; margin-top: 20px;">
+    <button id="hide-lootbox-button">العودة إلى الواجهة الرئيسية</button>
+</div>
         </section>
 
     </main>
