@@ -44,7 +44,152 @@
             <p id="code-output">اضغط على زر لعرض الكود</p>
             <button id="copy-code-btn" style="margin-top: 10px;">نسخ الكود</button>
         </section>
+
+        <section id="lootbox-view" class="sensitivities-view hidden">
+            <div class="container">
+    <div id="initial-area">
+        <h1>مرحباً بك!</h1>
+        <p>اضغط على الزر أدناه للمشاركة في مسابقتنا.</p>
+        <button id="show-lootbox-button">صندوق الغنائم العشوائي 🎁</button>
+    </div>
+
+    <div id="lootbox-area" style="display: none;">
+        <h1>صندوق الغنائم 🎁</h1>
+        <p id="description-text">قم بإدخال ID حسابك في ببجي للمتابعة.</p>
+        <input type="text" id="player-id-input" placeholder="أدخل ID حسابك في ببجي">
+        <button id="save-id-button">حفظ ID</button>
+
+        <div id="invitation-area" style="display: none;">
+            <p>الآن، قم بدعوة 3 مستخدمين لفتح الصندوق والحصول على جوائز.</p>
+            <h2>رابط دعوتك 🔗</h2>
+            <div id="invitation-link-container">
+                <span id="invitation-link"></span>
+            </div>
+            <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين.</p>
+            
+            <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
+            <br>
+            <button id="open-box-button" disabled>افتح الصندوق</button>
+            <div id="result-area"></div>
+        </div>
+
+        <div class="winner-list">
+            <h3>آخر الفائزين 🏆</h3>
+            <ul id="winners-list-container"></ul>
+        </div>
         
+    </div>
+</div>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+    const showLootboxButton = document.getElementById('show-lootbox-button');
+    const initialArea = document.getElementById('initial-area');
+    const lootboxArea = document.getElementById('lootbox-area');
+    const saveIdButton = document.getElementById('save-id-button');
+    const playerIdInput = document.getElementById('player-id-input');
+    const invitationArea = document.getElementById('invitation-area');
+    const invitationLink = document.getElementById('invitation-link');
+    const openBoxButton = document.getElementById('open-box-button');
+    const winnersListContainer = document.getElementById('winners-list-container');
+    const lootboxImage = document = document.getElementById('lootbox-image');
+    const resultArea = document.getElementById('result-area');
+
+    let user_id;
+
+    function getUserId() {
+        if (window.Telegram.WebApp.initDataUnsafe.user) {
+            return window.Telegram.WebApp.initDataUnsafe.user.id;
+        }
+        return null;
+    }
+    
+    function getUserName() {
+        const user = window.Telegram.WebApp.initDataUnsafe.user;
+        if (user) {
+            return user.first_name || 'مستخدم';
+        }
+        return 'مستخدم';
+    }
+
+    window.Telegram.WebApp.ready();
+    user_id = getUserId();
+    
+    showLootboxButton.onclick = function() {
+        initialArea.style.display = 'none';
+        lootboxArea.style.display = 'block';
+        fetchLastLooters();
+    };
+
+    saveIdButton.onclick = function() {
+        const pubgId = playerIdInput.value.trim();
+        if (pubgId) {
+            console.log("Player ID saved:", pubgId);
+            document.getElementById('description-text').textContent = 'ادعُ 3 مستخدمين لفتح الصندوق والحصول على جوائز.';
+            playerIdInput.style.display = 'none';
+            saveIdButton.style.display = 'none';
+            invitationArea.style.display = 'block';
+
+            const inviteLink = `https://t.me/your_bot_username?start=${user_id}`;
+            invitationLink.textContent = inviteLink;
+        } else {
+            alert('الرجاء إدخال ID حسابك.');
+        }
+    };
+    
+    openBoxButton.onclick = async function() {
+        if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
+            openBoxButton.disabled = true;
+            resultArea.textContent = 'يتم فتح الصندوق...';
+            lootboxImage.src = 'https://i.ibb.co/6803h7Z/lootbox-closed.png';
+            
+            const userName = getUserName();
+            
+            try {
+                const response = await fetch(`/api/lootbox?user_name=${encodeURIComponent(userName)}`);
+                const result = await response.json();
+                
+                resultArea.textContent = `لقد ربحت: ${result.name}`;
+                lootboxImage.src = result.imageUrl;
+                
+                fetchLastLooters();
+                
+            } catch (error) {
+                console.error('Failed to open lootbox:', error);
+                resultArea.textContent = 'حدث خطأ. حاول مرة أخرى.';
+            } finally {
+                openBoxButton.disabled = false;
+            }
+        }
+    };
+
+    async function fetchLastLooters() {
+        try {
+            const response = await fetch('/api/lastlooters');
+            const winners = await response.json();
+            
+            winnersListContainer.innerHTML = '';
+            
+            if (winners.length > 0) {
+                winners.forEach(winner => {
+                    const li = document.createElement('li');
+                    li.className = 'winner-item';
+                    li.innerHTML = `<span>${winner.name}</span><span>ربح ${winner.prize}</span>`;
+                    winnersListContainer.appendChild(li);
+                });
+            } else {
+                winnersListContainer.innerHTML = '<li>لا يوجد فائزون حتى الآن.</li>';
+            }
+        } catch (error) {
+            console.error('Failed to fetch last looters:', error);
+        }
+    }
+</script>
+    <div style="text-align: center; margin-top: 20px;">
+        <button id="hide-lootbox-button">العودة إلى الواجهة الرئيسية</button>
+    </div>
+</section>>
+
         <section id="admin-panel" class="admin-panel hidden">
             <h2>لوحة تحكم المالك</h2>
             <form id="add-sensitivity-form">
@@ -60,6 +205,7 @@
             <div id="admin-list" class="admin-list"></div>
             <button id="go-back-btn">العودة للواجهة الرئيسية</button>
         </section>
+
     </main>
     <div id="particles-js"></div>
     <script src="scripts.js"></script>
@@ -169,13 +315,6 @@
             }
         },
         "retina_detect": true
-    });
-</script>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script>
-    Telegram.WebApp.ready();
-    Telegram.WebApp.onEvent('mainButtonClicked', function() {
-        Telegram.WebApp.openLink('https://mini-app-frontend-gamma.vercel.app/performance.html');
     });
 </script>
 </body>
