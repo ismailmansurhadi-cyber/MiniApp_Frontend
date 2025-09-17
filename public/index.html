@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <style>
 /* الأنماط العامة للصفحة */
+/* الأنماط العامة لصفحة التطبيق */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #2c2f33;
@@ -31,35 +32,45 @@ body {
 main#app-container {
     width: 100%;
     max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* توسيط المحتوى داخل الحاوية */
 }
 
-/* صندوق العنوان الرئيسي - تم جعله شفافاً وزجاجياً */
+/* صندوق العنوان الرئيسي */
 .title-box {
-    background: rgba(42, 45, 50, 0.7); /* خلفية شبه شفافة */
+    background-color: #7289da;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(114, 137, 218, 0.5); /* حد شفاف بلون الأزرار */
+    border: 1px solid #5b6e9a;
     margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box; /* لضمان أن العرض يشمل الحشوة */
 }
 
 .title-box h1 {
     font-size: 26px;
-    color: #7289da;
+    color: #ffffff;
     margin-bottom: 5px;
 }
 
 .title-box p {
     font-size: 14px;
-    color: #c0c0c0;
+    color: #e0e0e0;
 }
 
+/* حاوية الأزرار الرئيسية */
 .main-choice-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    width: 100%;
+    max-width: 400px;
 }
 
+/* نمط الأزرار - موحد ومرتب */
 button {
     width: 100%;
     padding: 15px;
@@ -87,33 +98,40 @@ button:disabled {
 }
 
 /* -------------------------------------- */
-/* أنماط صفحة الدعوة (صندوق الغنائم) - بخلفية شفافة */
+/* أنماط صفحة الدعوة (صندوق الغنائم) */
 /* -------------------------------------- */
 
 .container {
     max-width: 320px;
     margin: 20px auto;
     padding: 20px;
-    background: rgba(42, 45, 50, 0.7);
+    background-color: #7289da;
     border-radius: 12px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(114, 137, 218, 0.5);
+    border: 1px solid #5b6e9a;
+    box-sizing: border-box;
+}
+
+#lootbox-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* توسيط المحتوى */
 }
 
 #lootbox-area h1 {
     font-size: 24px;
     margin-bottom: 10px;
-    color: #00e6e6;
+    color: #ffffff;
 }
 
 #lootbox-area p, #lootbox-area h2 {
     font-size: 14px;
-    color: #c0c0c0;
+    color: #e0e0e0;
     margin-top: 5px;
 }
 
 #lootbox-area input {
-    width: calc(100% - 20px);
+    width: 90%;
     margin: 10px 0;
     padding: 12px;
     border: 1px solid #555;
@@ -123,46 +141,53 @@ button:disabled {
 }
 
 #lootbox-area button {
-    width: calc(100% - 20px);
+    width: 90%;
     margin: 10px 0;
     padding: 12px;
     font-size: 15px;
     border-radius: 8px;
-    background-color: #00e6e6;
-    color: #000;
+    background-color: #5b6e9a;
+    color: #fff;
 }
 
 #invitation-link-container {
-    background-color: rgba(26, 29, 32, 0.7);
+    background-color: #5b6e9a;
     padding: 10px;
     border-radius: 8px;
-    border: 1px solid rgba(114, 137, 218, 0.5);
+    border: 1px solid #4a4f44;
     margin-top: 15px;
+    width: 90%;
 }
 
 #invitation-link-container span {
     font-size: 12px;
-    color: #aaa;
+    color: #e0e0e0;
+}
+
+#copy-link-button {
+    width: 70%;
+    margin-top: 10px;
 }
 
 .winner-list {
-    background-color: rgba(26, 29, 32, 0.7);
+    background-color: #5b6e9a;
     padding: 10px;
     border-radius: 8px;
     margin-top: 20px;
-    border: 1px solid rgba(114, 137, 218, 0.5);
+    border: 1px solid #4a4f44;
+    width: 90%;
 }
 
 .winner-list h3 {
     margin-top: 0;
-    color: #43b581;
+    color: #e0e0e0;
     font-size: 16px;
 }
 
 .winner-item {
     font-size: 13px;
     padding: 8px 0;
-    border-bottom: 1px solid rgba(45, 49, 42, 0.5);
+    border-bottom: 1px solid #4a4f44;
 }
     </style>
 </head>
