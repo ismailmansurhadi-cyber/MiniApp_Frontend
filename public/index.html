@@ -136,7 +136,7 @@
                             <span id="invitation-link"></span>
                             <button id="copy-link-button" class="copy-button">نسخ</button>
                         </div>
-                        <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين.</p>
+                        <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين. لديك 0 صندوق جاهز للفتح.</p>
                         <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
                         <br>
                         <button id="open-box-button" disabled>افتح الصندوق</button>
@@ -228,12 +228,25 @@
         const copyLinkButton = document.getElementById('copy-link-button');
 
         let user_id;
+        let invitationsCount = 0;
+        let boxesCount = 0;
+        const INVITE_GOAL = 3;
+        
+        const prizes = [
+            { name: "50 UC", imageUrl: "https://i.ibb.co/Lp2V59S/uc50.png" },
+            { name: "100 UC", imageUrl: "https://i.ibb.co/C10T5y9/uc100.png" },
+            { name: "500 UC", imageUrl: "https://i.ibb.co/3s4zK8y/uc500.png" },
+            { name: "ملابس نادرة", imageUrl: "https://i.ibb.co/F8q03yD/rare-skin.png" },
+            { name: "ايموت أسطوري", imageUrl: "https://i.ibb.co/hK2j2n4/legendary-emote.png" }
+        ];
 
+        let lastLooters = [];
+        
         function getUserId() {
             if (window.Telegram.WebApp.initDataUnsafe.user) {
                 return window.Telegram.WebApp.initDataUnsafe.user.id;
             }
-            return null;
+            return 'guest_user';
         }
         
         function getUserName() {
@@ -244,68 +257,121 @@
             return 'مستخدم';
         }
 
+        function updateCounters() {
+            document.getElementById('invitation-counter').textContent = `لقد دعوت ${invitationsCount} من ${INVITE_GOAL} مستخدمين. لديك ${boxesCount} صندوق جاهز للفتح.`;
+            openBoxButton.disabled = boxesCount < 1;
+        }
+
+        function saveData() {
+            if (user_id && user_id !== 'guest_user') {
+                localStorage.setItem(`invitations_${user_id}`, invitationsCount);
+                localStorage.setItem(`boxes_${user_id}`, boxesCount);
+                localStorage.setItem('lastLooters', JSON.stringify(lastLooters));
+            }
+        }
+
+        function loadData() {
+            if (user_id && user_id !== 'guest_user') {
+                const savedInvitations = localStorage.getItem(`invitations_${user_id}`);
+                const savedBoxes = localStorage.getItem(`boxes_${user_id}`);
+                const savedLooters = localStorage.getItem('lastLooters');
+
+                if (savedInvitations !== null) {
+                    invitationsCount = parseInt(savedInvitations, 10);
+                }
+                if (savedBoxes !== null) {
+                    boxesCount = parseInt(savedBoxes, 10);
+                }
+                if (savedLooters) {
+                    lastLooters = JSON.parse(savedLooters);
+                }
+            }
+        }
+
+        function checkInvitation() {
+            if (window.Telegram.WebApp.initDataUnsafe.start_param) {
+                const param = window.Telegram.WebApp.initDataUnsafe.start_param;
+                if (param.startsWith('inviter_')) {
+                    const inviterId = param.split('_')[1];
+                    if (inviterId == user_id) {
+                        return;
+                    }
+                    const inviterInvitations = parseInt(localStorage.getItem(`invitations_${inviterId}`) || '0', 10);
+                    const inviterBoxes = parseInt(localStorage.getItem(`boxes_${inviterId}`) || '0', 10);
+
+                    if (inviterInvitations < INVITE_GOAL) {
+                        localStorage.setItem(`invitations_${inviterId}`, inviterInvitations + 1);
+                        if (inviterInvitations + 1 >= INVITE_GOAL) {
+                            localStorage.setItem(`boxes_${inviterId}`, inviterBoxes + 1);
+                            localStorage.setItem(`invitations_${inviterId}`, 0);
+                        }
+                    }
+                }
+            }
+        }
+
         window.Telegram.WebApp.ready();
         user_id = getUserId();
-        
+        loadData();
+        checkInvitation();
+        updateCounters();
+        fetchLastLooters();
+
         saveIdButton.onclick = function() {
             const pubgId = playerIdInput.value.trim();
             if (pubgId) {
-                console.log("Player ID saved:", pubgId);
                 document.getElementById('description-text').textContent = 'ادعُ 3 مستخدمين لفتح الصندوق والحصول على جوائز.';
                 playerIdInput.style.display = 'none';
                 saveIdButton.style.display = 'none';
                 invitationArea.style.display = 'block';
-                const inviteLink = `https://t.me/your_bot_username?start=${user_id}`;
+                const inviteLink = `https://t.me/your_bot_username?start=inviter_${user_id}`;
                 invitationLink.textContent = inviteLink;
+                updateCounters();
             } else {
                 alert('الرجاء إدخال ID حسابك.');
             }
         };
 
         openBoxButton.onclick = async function() {
-            if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
-                openBoxButton.disabled = true;
-                resultArea.textContent = 'يتم فتح الصندوق...';
-                lootboxImage.src = 'https://i.ibb.co/6803h7Z/lootbox-closed.png';
-                
-                const userName = getUserName();
-                
-                try {
-                    const response = await fetch(`/api/lootbox?user_name=${encodeURIComponent(userName)}`);
-                    const result = await response.json();
+            if (boxesCount > 0) {
+                if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
+                    openBoxButton.disabled = true;
+                    resultArea.textContent = 'يتم فتح الصندوق...';
+                    lootboxImage.src = 'https://i.ibb.co/6803h7Z/lootbox-closed.png';
                     
-                    resultArea.textContent = `لقد ربحت: ${result.name}`;
-                    lootboxImage.src = result.imageUrl;
+                    const userName = getUserName();
+                    const prize = prizes[Math.floor(Math.random() * prizes.length)];
                     
+                    resultArea.textContent = `لقد ربحت: ${prize.name}`;
+                    lootboxImage.src = prize.imageUrl;
+                    
+                    boxesCount--;
+                    saveData();
+                    updateCounters();
+
+                    lastLooters.unshift({ name: userName, prize: prize.name });
+                    if (lastLooters.length > 5) {
+                        lastLooters.pop();
+                    }
+                    saveData();
                     fetchLastLooters();
-                } catch (error) {
-                    console.error('Failed to open lootbox:', error);
-                    resultArea.textContent = 'حدث خطأ. حاول مرة أخرى.';
-                } finally {
-                    openBoxButton.disabled = false;
                 }
+            } else {
+                alert('ليس لديك صناديق كافية للفتح.');
             }
         };
 
-        async function fetchLastLooters() {
-            try {
-                const response = await fetch('/api/lastlooters');
-                const winners = await response.json();
-                
-                winnersListContainer.innerHTML = '';
-                
-                if (winners.length > 0) {
-                    winners.forEach(winner => {
-                        const li = document.createElement('li');
-                        li.className = 'winner-item';
-                        li.innerHTML = `<span>${winner.name}</span><span>ربح ${winner.prize}</span>`;
-                        winnersListContainer.appendChild(li);
-                    });
-                } else {
-                    winnersListContainer.innerHTML = '<li>لا يوجد فائزون حتى الآن.</li>';
-                }
-            } catch (error) {
-                console.error('Failed to fetch last looters:', error);
+        function fetchLastLooters() {
+            winnersListContainer.innerHTML = '';
+            if (lastLooters.length > 0) {
+                lastLooters.forEach(winner => {
+                    const li = document.createElement('li');
+                    li.className = 'winner-item';
+                    li.innerHTML = `<span>${winner.name}</span><span>ربح ${winner.prize}</span>`;
+                    winnersListContainer.appendChild(li);
+                });
+            } else {
+                winnersListContainer.innerHTML = '<li>لا يوجد فائزون حتى الآن.</li>';
             }
         }
         
