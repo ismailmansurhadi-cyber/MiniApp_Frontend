@@ -135,6 +135,7 @@
             <h2>رابط دعوتك 🔗</h2>
             <div id="invitation-link-container">
                 <span id="invitation-link"></span>
+                <button id="copy-link-button" class="copy-button">نسخ</button>
             </div>
             <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين.</p>
             
@@ -179,6 +180,17 @@
         const lootboxImage = document.getElementById('lootbox-image');
         const resultArea = document.getElementById('result-area');
 
+const copyLinkButton = document.getElementById('copy-link-button');
+
+copyLinkButton.onclick = function() {
+    const invitationLinkText = invitationLink.textContent;
+    navigator.clipboard.writeText(invitationLinkText).then(() => {
+        alert('تم نسخ الرابط بنجاح!');
+    }).catch(err => {
+        console.error('فشل في نسخ الرابط: ', err);
+    });
+};
+
         let user_id;
 
         function getUserId() {
@@ -221,7 +233,7 @@
                 saveIdButton.style.display = 'none';
                 invitationArea.style.display = 'block';
 
-                const inviteLink = `https://t.me/your_bot_username?start=${user_id}`;
+                const inviteLink = `https://t.me/AQWKBOT?start=${user_id}`;
                 invitationLink.textContent = inviteLink;
             } else {
                 alert('الرجاء إدخال ID حسابك.');
