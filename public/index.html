@@ -330,8 +330,9 @@
         const beginnerChoiceButton = document.getElementById('beginner-choice');
         const openLootboxButton = document.getElementById('open-lootbox-button');
         const openAdminBtn = document.getElementById('open-admin-btn');
+        const goBackBtns = document.querySelectorAll('.go-back-btn');
         const hideLootboxButton = document.getElementById('hide-lootbox-button');
-        const goBackBtns = document.querySelectorAll('.go-back-btn, #go-back-btn');
+        const mainGoBackBtn = document.getElementById('go-back-btn');
 
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
@@ -348,8 +349,10 @@
         beginnerChoiceButton.onclick = () => showView(beginnerSensitivitiesView);
         openLootboxButton.onclick = () => showView(lootboxView);
         openAdminBtn.onclick = () => showView(adminPanel);
-
+        
         hideLootboxButton.onclick = () => showView(initialChoiceView);
+        mainGoBackBtn.onclick = () => showView(initialChoiceView);
+        
         goBackBtns.forEach(button => {
             button.onclick = () => showView(initialChoiceView);
         });
