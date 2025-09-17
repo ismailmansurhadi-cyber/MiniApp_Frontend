@@ -34,25 +34,25 @@ main#app-container {
     max-width: 450px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* توسيط المحتوى داخل الحاوية */
+    align-items: center;
 }
 
-/* صندوق العنوان الرئيسي */
+/* صندوق العنوان الرئيسي - بنفس لون الأزرار */
 .title-box {
-    background-color: #7289da;
+    background: rgba(0, 150, 150, 0.2); /* لون أزرق مائل للأخضر شبه شفاف */
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-    border: 1px solid #5b6e9a;
+    box-shadow: 0 0 15px rgba(0, 200, 200, 0.5), 0 8px 16px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 200, 200, 0.7);
     margin-bottom: 20px;
     width: 100%;
     max-width: 400px;
-    box-sizing: border-box; /* لضمان أن العرض يشمل الحشوة */
+    box-sizing: border-box;
 }
 
 .title-box h1 {
     font-size: 26px;
-    color: #ffffff;
+    color: #00e6e6; /* لون متناسق مع الإضاءة */
     margin-bottom: 5px;
 }
 
@@ -80,14 +80,14 @@ button {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    background-color: #7289da;
+    background: rgba(0, 150, 150, 0.4);
     color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 200, 200, 0.4), 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
-    background-color: #5b6e9a;
+    background-color: rgba(0, 150, 150, 0.6);
     transform: translateY(-2px);
 }
 
@@ -98,30 +98,30 @@ button:disabled {
 }
 
 /* -------------------------------------- */
-/* أنماط صفحة الدعوة (صندوق الغنائم) */
+/* أنماط صفحة الدعوة (صندوق الغنائم) - بنفس لون الأزرار */
 /* -------------------------------------- */
 
-.container {
+#lootbox-view .container {
     max-width: 320px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #7289da;
+    background: rgba(0, 150, 150, 0.2);
     border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    border: 1px solid #5b6e9a;
+    box-shadow: 0 0 15px rgba(0, 200, 200, 0.5), 0 10px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 200, 200, 0.7);
     box-sizing: border-box;
 }
 
 #lootbox-area {
     display: flex;
     flex-direction: column;
-    align-items: center; /* توسيط المحتوى */
+    align-items: center;
 }
 
 #lootbox-area h1 {
     font-size: 24px;
     margin-bottom: 10px;
-    color: #ffffff;
+    color: #00e6e6;
 }
 
 #lootbox-area p, #lootbox-area h2 {
@@ -146,15 +146,16 @@ button:disabled {
     padding: 12px;
     font-size: 15px;
     border-radius: 8px;
-    background-color: #5b6e9a;
+    background: rgba(0, 150, 150, 0.4);
+    box-shadow: 0 0 10px rgba(0, 200, 200, 0.4);
     color: #fff;
 }
 
 #invitation-link-container {
-    background-color: #5b6e9a;
+    background: rgba(0, 150, 150, 0.2);
     padding: 10px;
     border-radius: 8px;
-    border: 1px solid #4a4f44;
+    border: 1px solid rgba(0, 200, 200, 0.7);
     margin-top: 15px;
     width: 90%;
 }
@@ -170,11 +171,11 @@ button:disabled {
 }
 
 .winner-list {
-    background-color: #5b6e9a;
+    background: rgba(0, 150, 150, 0.2);
     padding: 10px;
     border-radius: 8px;
     margin-top: 20px;
-    border: 1px solid #4a4f44;
+    border: 1px solid rgba(0, 200, 200, 0.7);
     width: 90%;
 }
 
@@ -187,7 +188,7 @@ button:disabled {
 .winner-item {
     font-size: 13px;
     padding: 8px 0;
-    border-bottom: 1px solid #4a4f44;
+    border-bottom: 1px solid rgba(0, 150, 150, 0.5);
 }
     </style>
 </head>
