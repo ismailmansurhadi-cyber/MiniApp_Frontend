@@ -35,21 +35,26 @@
             direction: rtl; /* دعم اللغة العربية */
         }
         
-        /* هذا هو التعديل الأهم: توسيط الحاوية الرئيسية */
         #app-container {
-            width: 100%;
-            max-width: 450px; /* تحديد عرض أقصى للحاوية */
+            width: 90%; /* تعديل العرض ليتلاءم مع الشاشات الصغيرة */
+            max-width: 450px;
             padding: 20px;
-            z-index: 1; /* للتأكد من ظهور المحتوى فوق الخلفية */
-            box-sizing: border-box; /* لضمان أن الحشوة لا تزيد من العرض */
+            z-index: 1;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
+            width: 100%;
             background-color: #1e1e1e;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             border: 2px solid #28a745;
+            box-sizing: border-box;
         }
         
         h1 {
@@ -58,23 +63,30 @@
             letter-spacing: 2px;
             font-size: 2.5em;
             margin-bottom: 10px;
+            /* تعديل حجم الخط ليكون مرناً */
+            font-size: 6vw;
         }
+        
         h2 {
             color: #7289da;
         }
+        
         p {
             font-size: 1.1em;
             color: #cccccc;
+            /* تعديل حجم الخط ليكون مرناً */
+            font-size: 3vw;
         }
         
         input, button {
-            width: 100%; /* جعل العناصر تمتد لتعبئة المساحة */
+            width: 100%;
             padding: 12px;
             margin: 15px 0;
             border-radius: 8px;
             border: none;
             font-size: 1em;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
         
         input {
@@ -82,25 +94,27 @@
             color: #ffffff;
             border: 1px solid #444;
             text-align: center;
-            box-sizing: border-box;
         }
+        
         input:focus {
             border-color: #28a745;
             box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
             outline: none;
         }
+        
         button {
             cursor: pointer;
             background-color: #28a745;
             color: white;
             font-weight: bold;
             letter-spacing: 1px;
-            box-sizing: border-box;
         }
+        
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
         }
+        
         button:disabled {
             background-color: #5b6e9a;
             cursor: not-allowed;
@@ -108,20 +122,31 @@
             box-shadow: none;
         }
         
-        /* توسيط المحتوى وتعديل حجم الأزرار في الواجهة الرئيسية */
-        #initial-choice-view .title-box,
-        #initial-choice-view .main-choice-container {
+        .title-box {
             width: 100%;
             max-width: 450px;
-            margin: auto;
+            margin-bottom: 20px;
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 2px solid #28a745;
+            box-sizing: border-box;
         }
 
+        .main-choice-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
         .main-choice-container button {
-            width: 80%; /* حجم الأزرار لتكون أصغر قليلاً من الحاوية */
+            width: 80%;
             max-width: 300px;
             margin: 10px auto;
         }
-        
+
         #lootbox-image {
             width: 200px;
             height: auto;
@@ -182,8 +207,6 @@
         .hidden {
             display: none;
         }
-
-        /* Animations */
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -196,7 +219,6 @@
         #lootbox-area {
             animation: fadeIn 1s ease-in-out;
         }
-        
     </style>
 </head>
 <body>
@@ -356,13 +378,11 @@
             return 'مستخدم';
         }
 
-        // دالة لتحديث عداد الدعوات وعدد الصناديق
         function updateCounters() {
             invitationCounterElement.textContent = `لقد دعوت ${invitationsCount} من ${INVITE_GOAL} مستخدمين. لديك ${boxesCount} صندوق جاهز للفتح.`;
             openBoxButton.disabled = boxesCount < 1;
         }
 
-        // دالة لحفظ عدد الدعوات والصناديق في Local Storage
         function saveData() {
             if (user_id) {
                 localStorage.setItem(`invitations_${user_id}`, invitationsCount);
@@ -370,7 +390,6 @@
             }
         }
         
-        // دالة لتحميل عدد الدعوات والصناديق من Local Storage
         function loadData() {
             if (user_id) {
                 const savedInvitations = localStorage.getItem(`invitations_${user_id}`);
@@ -387,7 +406,6 @@
         window.Telegram.WebApp.ready();
         user_id = getUserId();
         
-        // عند تحميل الصفحة، نتحقق من وجود دعوة
         function checkInvitation() {
             if (window.Telegram.WebApp.initDataUnsafe.start_param) {
                 const param = window.Telegram.WebApp.initDataUnsafe.start_param;
@@ -495,9 +513,6 @@
                 console.error('فشل في نسخ الرابط: ', err);
             });
         };
-        // -------------------------------------------------------------
-        // أكواد الخلفية المتحركة (Particles.js)
-        // -------------------------------------------------------------
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
