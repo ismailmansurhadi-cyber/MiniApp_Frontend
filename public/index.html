@@ -85,12 +85,14 @@
         .winner-item:last-child {
             border-bottom: none;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
     <main id="app-container">
-        
         <section id="initial-choice-view">
             <div class="title-box">
                 <h1>إحتراف ببجي يبدأ من هنا</h1>
@@ -106,14 +108,12 @@
 
         <section id="pro-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المحترفين</h2>
-            <div id="pro-buttons-container" class="button-container">
-            </div>
+            <div id="pro-buttons-container" class="button-container"></div>
         </section>
 
         <section id="beginner-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المبتدئين</h2>
-            <div id="beginner-buttons-container" class="button-container">
-            </div>
+            <div id="beginner-buttons-container" class="button-container"></div>
         </section>
 
         <section id="display-container" class="sensitivity-display hidden">
@@ -123,53 +123,98 @@
         </section>
 
         <section id="lootbox-view" class="sensitivities-view hidden">
-<div class="container">
-    <div id="lootbox-area">
-        <h1>صندوق الغنائم 🎁</h1>
-        <p id="description-text">قم بإدخال ID حسابك في ببجي للمتابعة.</p>
-        <input type="text" id="player-id-input" placeholder="أدخل ID حسابك في ببجي">
-        <button id="save-id-button">حفظ ID</button>
-
-        <div id="invitation-area" style="display: none;">
-            <p>الآن، قم بدعوة 3 مستخدمين لفتح الصندوق والحصول على جوائز.</p>
-            <h2>رابط دعوتك 🔗</h2>
-            <div id="invitation-link-container">
-                <span id="invitation-link"></span>
-                <button id="copy-link-button" class="copy-button">نسخ</button>
+            <div class="container">
+                <div id="lootbox-area">
+                    <h1>صندوق الغنائم 🎁</h1>
+                    <p id="description-text">قم بإدخال ID حسابك في ببجي للمتابعة.</p>
+                    <input type="text" id="player-id-input" placeholder="أدخل ID حسابك في ببجي">
+                    <button id="save-id-button">حفظ ID</button>
+                    <div id="invitation-area" style="display: none;">
+                        <p>الآن، قم بدعوة 3 مستخدمين لفتح الصندوق والحصول على جوائز.</p>
+                        <h2>رابط دعوتك 🔗</h2>
+                        <div id="invitation-link-container">
+                            <span id="invitation-link"></span>
+                            <button id="copy-link-button" class="copy-button">نسخ</button>
+                        </div>
+                        <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين.</p>
+                        <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
+                        <br>
+                        <button id="open-box-button" disabled>افتح الصندوق</button>
+                        <div id="result-area"></div>
+                    </div>
+                    <div class="winner-list">
+                        <h3>آخر الفائزين 🏆</h3>
+                        <ul id="winners-list-container"></ul>
+                    </div>
+                </div>
             </div>
-            <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين.</p>
-            
-            <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
-            <br>
-            <button id="open-box-button" disabled>افتح الصندوق</button>
-            <div id="result-area"></div>
-        </div>
-
-        <div class="winner-list">
-            <h3>آخر الفائزين 🏆</h3>
-            <ul id="winners-list-container"></ul>
-        </div>
-        
-    </div>
-</div>
-<div style="text-align: center; margin-top: 20px;">
-    <button id="hide-lootbox-button">العودة إلى الواجهة الرئيسية</button>
-</div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="hide-lootbox-button">العودة إلى الواجهة الرئيسية</button>
+            </div>
         </section>
-
+        
+        <section id="admin-panel" class="admin-panel hidden">
+            <h2>لوحة تحكم المالك</h2>
+            <form id="add-sensitivity-form">
+                <input type="text" id="admin-name-input" placeholder="اسم الحساسية" required>
+                <textarea id="admin-code-input" placeholder="كود الحساسية" required></textarea>
+                <input type="text" id="admin-image-input" placeholder="رابط الصورة" required>
+                <select id="admin-type-select">
+                    <option value="pro">محترف</option>
+                    <option value="beginner">مبتدئ</option>
+                </select>
+                <button type="submit" id="form-submit-btn">إضافة</button>
+            </form>
+            <div id="admin-list" class="admin-list"></div>
+            <button id="go-back-btn">العودة للواجهة الرئيسية</button>
+        </section>
     </main>
+
     <div id="particles-js"></div>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="scripts.js"></script>
-    <script>
-        const showLootboxButton = document.getElementById('open-lootbox-button');
-        const hideLootboxButton = document.getElementById('hide-lootbox-button');
-        const initialChoiceView = document.getElementById('initial-choice-view');
-        const lootboxView = document.getElementById('lootbox-view');
 
-        const initialArea = document.getElementById('initial-area');
+    <script>
+        // أكواد التحكم في إظهار وإخفاء الواجهات الرئيسية
+        const initialChoiceView = document.getElementById('initial-choice-view');
+        const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
+        const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
+        const displayContainer = document.getElementById('display-container');
+        const lootboxView = document.getElementById('lootbox-view');
+        const adminPanel = document.getElementById('admin-panel');
+
+        const proChoiceButton = document.getElementById('pro-choice');
+        const beginnerChoiceButton = document.getElementById('beginner-choice');
+        const openLootboxButton = document.getElementById('open-lootbox-button');
+        const openAdminBtn = document.getElementById('open-admin-btn');
+        const hideLootboxButton = document.getElementById('hide-lootbox-button');
+        const goBackBtn = document.getElementById('go-back-btn');
+
+        function showView(viewToShow) {
+            initialChoiceView.classList.add('hidden');
+            proSensitivitiesView.classList.add('hidden');
+            beginnerSensitivitiesView.classList.add('hidden');
+            displayContainer.classList.add('hidden');
+            lootboxView.classList.add('hidden');
+            adminPanel.classList.add('hidden');
+
+            viewToShow.classList.remove('hidden');
+        }
+
+        proChoiceButton.onclick = () => showView(proSensitivitiesView);
+        beginnerChoiceButton.onclick = () => showView(beginnerSensitivitiesView);
+        openLootboxButton.onclick = () => showView(lootboxView);
+        openAdminBtn.onclick = () => showView(adminPanel);
+        
+        hideLootboxButton.onclick = () => showView(initialChoiceView);
+        goBackBtn.onclick = () => showView(initialChoiceView);
+        
+        // -------------------------------------------------------------
+        // أكواد صندوق الغنائم
+        // -------------------------------------------------------------
+        
         const lootboxArea = document.getElementById('lootbox-area');
         const saveIdButton = document.getElementById('save-id-button');
         const playerIdInput = document.getElementById('player-id-input');
@@ -179,17 +224,8 @@
         const winnersListContainer = document.getElementById('winners-list-container');
         const lootboxImage = document.getElementById('lootbox-image');
         const resultArea = document.getElementById('result-area');
-
-const copyLinkButton = document.getElementById('copy-link-button');
-
-copyLinkButton.onclick = function() {
-    const invitationLinkText = invitationLink.textContent;
-    navigator.clipboard.writeText(invitationLinkText).then(() => {
-        alert('تم نسخ الرابط بنجاح!');
-    }).catch(err => {
-        console.error('فشل في نسخ الرابط: ', err);
-    });
-};
+        
+        const copyLinkButton = document.getElementById('copy-link-button');
 
         let user_id;
 
@@ -211,19 +247,6 @@ copyLinkButton.onclick = function() {
         window.Telegram.WebApp.ready();
         user_id = getUserId();
         
-        showLootboxButton.onclick = function() {
-            initialChoiceView.classList.add('hidden');
-            lootboxView.classList.remove('hidden');
-            initialArea.style.display = 'block';
-            lootboxArea.style.display = 'none';
-            fetchLastLooters();
-        };
-
-        hideLootboxButton.onclick = function() {
-            lootboxView.classList.add('hidden');
-            initialChoiceView.classList.remove('hidden');
-        };
-
         saveIdButton.onclick = function() {
             const pubgId = playerIdInput.value.trim();
             if (pubgId) {
@@ -232,14 +255,13 @@ copyLinkButton.onclick = function() {
                 playerIdInput.style.display = 'none';
                 saveIdButton.style.display = 'none';
                 invitationArea.style.display = 'block';
-
-                const inviteLink = `https://t.me/AQWKBOT?start=${user_id}`;
+                const inviteLink = `https://t.me/your_bot_username?start=${user_id}`;
                 invitationLink.textContent = inviteLink;
             } else {
                 alert('الرجاء إدخال ID حسابك.');
             }
         };
-        
+
         openBoxButton.onclick = async function() {
             if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
                 openBoxButton.disabled = true;
@@ -256,7 +278,6 @@ copyLinkButton.onclick = function() {
                     lootboxImage.src = result.imageUrl;
                     
                     fetchLastLooters();
-                    
                 } catch (error) {
                     console.error('Failed to open lootbox:', error);
                     resultArea.textContent = 'حدث خطأ. حاول مرة أخرى.';
@@ -287,111 +308,32 @@ copyLinkButton.onclick = function() {
                 console.error('Failed to fetch last looters:', error);
             }
         }
-    </script>
-    <script>
+        
+        copyLinkButton.onclick = function() {
+            const invitationLinkText = invitationLink.textContent;
+            navigator.clipboard.writeText(invitationLinkText).then(() => {
+                alert('تم نسخ الرابط بنجاح!');
+            }).catch(err => {
+                console.error('فشل في نسخ الرابط: ', err);
+            });
+        };
+        // -------------------------------------------------------------
+        // أكواد الخلفية المتحركة (Particles.js)
+        // -------------------------------------------------------------
         particlesJS('particles-js', {
             "particles": {
-                "number": {
-                    "value": 80,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#00ffff"
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    },
-                    "polygon": {
-                        "nb_sides": 5
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": false,
-                    "anim": {
-                        "enable": false,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 3,
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                        "speed": 40,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#00ffff",
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 6,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
-                }
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#00ffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5 },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#00ffff", "opacity": 0.4, "width": 1 },
+                "move": { "enable": true, "speed": 6, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
             },
             "interactivity": {
                 "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "grab"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                    }
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 140,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } }
             },
             "retina_detect": true
         });
