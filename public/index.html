@@ -7,12 +7,18 @@
     <link rel="stylesheet" href="styles.css">
     <style>
 /* الأنماط العامة للصفحة */
+/* الأنماط العامة لصفحة التطبيق */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #2c2f33;
     color: #ffffff;
     text-align: center;
     padding: 20px;
+    display: flex; /* استخدام Flexbox لمحاذاة المحتوى */
+    justify-content: center; /* توسيط المحتوى أفقياً */
+    align-items: center; /* توسيط المحتوى عمودياً */
+    min-height: 100vh; /* جعل الصفحة على الأقل بارتفاع الشاشة */
+    flex-direction: column; /* ترتيب العناصر عمودياً */
 }
 
 .hidden {
@@ -20,72 +26,88 @@ body {
 }
 
 /* -------------------------------------- */
-/* الأنماط العامة للعناصر */
+/* الأنماط المحدثة لجميع الأزرار والعناصر */
 /* -------------------------------------- */
 
-input, button, select, textarea {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
+/* حاوية رئيسية للمحتوى لضمان توسيطها */
+main#app-container {
+    width: 100%;
+    max-width: 450px;
+}
+
+/* صندوق العنوان الرئيسي */
+.title-box {
+    background: linear-gradient(135deg, #3a3f36, #2d312a);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    border: 1px solid #4a4f44;
+    margin-bottom: 20px;
+}
+
+.title-box h1 {
+    font-size: 26px;
+    color: #00e6e6;
+    margin-bottom: 5px;
+}
+
+.title-box p {
+    font-size: 14px;
+    color: #c0c0c0;
+}
+
+/* حاوية الأزرار الرئيسية */
+.main-choice-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* المسافة بين الأزرار */
+}
+
+/* نمط الأزرار - موحد ومرتب */
+button {
+    width: 100%;
+    padding: 15px;
+    margin: 0; /* إزالة الهامش المائل */
+    border-radius: 8px;
     border: none;
     font-size: 16px;
-    box-sizing: border-box;
-}
-
-input, textarea, select {
-    background-color: #40444b;
-    color: #ffffff;
-}
-
-button {
+    font-weight: bold;
     cursor: pointer;
     background-color: #7289da;
     color: white;
-    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #5b6e9a;
+    transform: translateY(-2px);
 }
 
 button:disabled {
     background-color: #5b6e9a;
     cursor: not-allowed;
-}
-
-.button-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-}
-
-.button-container button {
-    width: auto;
-    padding: 10px 20px;
-}
-/* -------------------------------------- */
-
-h1 {
-    color: #7289da;
+    transform: none;
 }
 
 /* -------------------------------------- */
-/* الأنماط المحدثة لصفحة الدعوة (صندوق الغنائم) */
+/* أنماط صفحة الدعوة (صندوق الغنائم) */
 /* -------------------------------------- */
 
-#lootbox-view .container {
-    max-width: 350px; /* زيادة العرض قليلاً */
-    margin: 20px auto; /* مسافة أعلى وأسفل */
+.container {
+    max-width: 320px;
+    margin: 20px auto;
     padding: 20px;
-    background: linear-gradient(135deg, #3a3f36, #2d312a); /* خلفية متدرجة */
+    background: linear-gradient(135deg, #2a2d32, #1f2125);
     border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     border: 1px solid #4a4f44;
 }
 
 #lootbox-area h1 {
-    font-size: 26px;
+    font-size: 24px;
     margin-bottom: 10px;
-    color: #ffffff;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    color: #00e6e6;
 }
 
 #lootbox-area p, #lootbox-area h2 {
@@ -95,72 +117,56 @@ h1 {
 }
 
 #lootbox-area input {
-    margin: 15px 0;
+    width: calc(100% - 20px);
+    margin: 10px 0;
     padding: 12px;
     border: 1px solid #555;
     background-color: #33363b;
-    color: #fff;
     font-size: 14px;
+    border-radius: 8px;
 }
 
 #lootbox-area button {
+    width: calc(100% - 20px);
     margin: 10px 0;
     padding: 12px;
     font-size: 15px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s;
+    background-color: #00e6e6;
+    color: #000;
 }
 
-#lootbox-area button:hover {
-    transform: translateY(-2px);
-}
-
-#lootbox-area #invitation-link-container {
-    background-color: #2a2d32;
+#invitation-link-container {
+    background-color: #1a1d20;
     padding: 10px;
     border-radius: 8px;
-    border: 1px solid #4a4f44;
+    border: 1px solid #3d4044;
     margin-top: 15px;
-    word-wrap: break-word;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 #invitation-link-container span {
     font-size: 12px;
-    color: #888;
-    margin-bottom: 5px;
-}
-
-#copy-link-button {
-    width: 60%;
-    margin-top: 10px;
+    color: #aaa;
 }
 
 .winner-list {
-    background-color: #23272a;
-    padding: 12px;
-    border-radius: 10px;
-    margin-top: 25px;
-    border: 1px solid #4a4f44;
+    background-color: #1a1d20;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 1px solid #3d4044;
 }
 
 .winner-list h3 {
     margin-top: 0;
     color: #43b581;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .winner-item {
-    font-size: 14px;
-    padding: 10px 0;
-    border-bottom: 1px solid #40444b;
-}
-
-.winner-item:last-child {
-    border-bottom: none;
+    font-size: 13px;
+    padding: 8px 0;
+    border-bottom: 1px solid #2d312a;
 }
     </style>
 </head>
