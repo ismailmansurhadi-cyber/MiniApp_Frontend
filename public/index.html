@@ -3,228 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صانع حساسية ببجي</title>
+    <title>حساسيات ببجي الأسطورية</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        /* التنسيقات العامة */
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
+            background-color: #2c2f33;
             color: #ffffff;
             text-align: center;
-            direction: rtl;
-        }
-
-        #particles-js {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        #app-container {
-            width: 90%;
-            max-width: 450px;
             padding: 20px;
-            z-index: 1;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            overflow: auto;
         }
-        
-        /* تنسيق المربعات الزجاجية */
-        .glass-box {
-            width: 100%;
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background-color: #3a3f36;
             padding: 20px;
-            border-radius: 15px;
-            background-color: rgba(30, 30, 30, 0.6);
-            backdrop-filter: blur(8px);
-            border: 2px solid #00aaff;
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.7);
-            box-sizing: border-box;
-            margin-bottom: 20px;
-        }
-
-        /* تنسيق الأزرار الزجاجية */
-        button, .button {
-            width: 100%;
-            padding: 15px 12px;
-            margin: 15px 0;
             border-radius: 10px;
-            border: none;
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #ffffff;
-            background-color: rgba(0, 170, 255, 0.2);
-            border: 2px solid #00aaff;
-            box-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
-            backdrop-filter: blur(5px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
-
-        button:hover, .button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 170, 255, 0.6);
+        h1 {
+            color: #7289da;
         }
-
-        button:disabled {
-            background-color: #555;
-            border-color: #444;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* تنسيق مربعات الإدخال */
-        input, textarea, select {
-            width: 100%;
-            padding: 12px;
+        input, button {
+            width: 90%;
+            padding: 10px;
             margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #444;
-            background-color: #2c2c2c;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+        }
+        input {
+            background-color: #40444b;
             color: #ffffff;
-            font-size: 1em;
-            text-align: center;
-            box-sizing: border-box;
         }
-
-        input:focus, textarea:focus, select:focus {
-            border-color: #00aaff;
-            box-shadow: 0 0 8px rgba(0, 170, 255, 0.5);
-            outline: none;
+        button {
+            cursor: pointer;
+            background-color: #7289da;
+            color: white;
+            font-weight: bold;
         }
-
-        /* تنسيق شاشة صندوق الغنائم */
-        #lootbox-view {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            justify-content: center;
-            align-items: center;
+        button:disabled {
+            background-color: #5b6e9a;
+            cursor: not-allowed;
         }
-
-        #lootbox-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-            min-height: 50vh;
-            justify-content: center;
-        }
-
         #lootbox-image {
             width: 150px;
             height: auto;
             margin: 20px 0;
-            animation: pulse 2s infinite ease-in-out;
         }
-
+        #result-area {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #43b581;
+        }
         #invitation-link-container {
             word-wrap: break-word;
-            padding: 12px;
-            background-color: #2c2c2c;
-            border-radius: 8px;
-            margin-top: 15px;
+            padding: 10px;
+            background-color: #40444b;
+            border-radius: 5px;
+            margin-top: 10px;
             text-align: left;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 1em;
         }
-
-        .copy-button {
-            background-color: #43b581;
-            margin-right: 10px;
-            width: auto;
-            padding: 8px 15px;
-            white-space: nowrap;
-        }
-
-        /* تنسيق لوحة التحكم */
-        .admin-panel {
-            width: 100%;
-            max-width: 450px;
-            padding: 20px;
-            background-color: rgba(30, 30, 30, 0.6);
-            border-radius: 15px;
-            backdrop-filter: blur(8px);
-            border: 2px solid #00aaff;
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.7);
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        
-        .admin-panel form {
-            width: 100%;
-        }
-
-        /* تنسيق العناصر الأخرى */
-        .main-choice-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .main-choice-container button {
-            width: 80%;
-            max-width: 300px;
-            margin: 10px auto;
-        }
-
         .winner-list {
-            background-color: rgba(30, 30, 30, 0.6);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-            border: 1px solid #444;
+            background-color: #23272a;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
         }
-
+        .winner-list h3 {
+            margin-top: 0;
+            color: #43b581;
+        }
+        .winner-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #40444b;
+            padding: 8px 0;
+        }
+        .winner-item:last-child {
+            border-bottom: none;
+        }
         .hidden {
             display: none;
-        }
-
-        /* الرسوم المتحركة */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
     </style>
 </head>
@@ -232,7 +94,7 @@
 
     <main id="app-container">
         <section id="initial-choice-view">
-            <div class="glass-box">
+            <div class="title-box">
                 <h1>إحتراف ببجي يبدأ من هنا</h1>
                 <p>اختر مستواك لتجد أفضل الحساسيات</p>
             </div>
@@ -247,24 +109,21 @@
         <section id="pro-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المحترفين</h2>
             <div id="pro-buttons-container" class="button-container"></div>
-            <button class="go-back-btn">العودة للواجهة الرئيسية</button>
         </section>
 
         <section id="beginner-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المبتدئين</h2>
             <div id="beginner-buttons-container" class="button-container"></div>
-            <button class="go-back-btn">العودة للواجهة الرئيسية</button>
         </section>
 
         <section id="display-container" class="sensitivity-display hidden">
             <img id="display-image" src="" alt="صورة الحساسية">
             <p id="code-output">اضغط على زر لعرض الكود</p>
             <button id="copy-code-btn" style="margin-top: 10px;">نسخ الكود</button>
-            <button class="go-back-btn">العودة للواجهة الرئيسية</button>
         </section>
 
         <section id="lootbox-view" class="sensitivities-view hidden">
-            <div class="glass-box">
+            <div class="container">
                 <div id="lootbox-area">
                     <h1>صندوق الغنائم 🎁</h1>
                     <p id="description-text">قم بإدخال ID حسابك في ببجي للمتابعة.</p>
@@ -277,7 +136,7 @@
                             <span id="invitation-link"></span>
                             <button id="copy-link-button" class="copy-button">نسخ</button>
                         </div>
-                        <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين. لديك 0 صندوق جاهز للفتح.</p>
+                        <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين.</p>
                         <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
                         <br>
                         <button id="open-box-button" disabled>افتح الصندوق</button>
@@ -293,7 +152,7 @@
                 <button id="hide-lootbox-button">العودة إلى الواجهة الرئيسية</button>
             </div>
         </section>
-
+        
         <section id="admin-panel" class="admin-panel hidden">
             <h2>لوحة تحكم المالك</h2>
             <form id="add-sensitivity-form">
@@ -312,7 +171,7 @@
     </main>
 
     <div id="particles-js"></div>
-
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="scripts.js"></script>
@@ -330,9 +189,8 @@
         const beginnerChoiceButton = document.getElementById('beginner-choice');
         const openLootboxButton = document.getElementById('open-lootbox-button');
         const openAdminBtn = document.getElementById('open-admin-btn');
-        const goBackBtns = document.querySelectorAll('.go-back-btn');
         const hideLootboxButton = document.getElementById('hide-lootbox-button');
-        const mainGoBackBtn = document.getElementById('go-back-btn');
+        const goBackBtn = document.getElementById('go-back-btn');
 
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
@@ -351,16 +209,12 @@
         openAdminBtn.onclick = () => showView(adminPanel);
         
         hideLootboxButton.onclick = () => showView(initialChoiceView);
-        mainGoBackBtn.onclick = () => showView(initialChoiceView);
+        goBackBtn.onclick = () => showView(initialChoiceView);
         
-        goBackBtns.forEach(button => {
-            button.onclick = () => showView(initialChoiceView);
-        });
-
         // -------------------------------------------------------------
         // أكواد صندوق الغنائم
         // -------------------------------------------------------------
-
+        
         const lootboxArea = document.getElementById('lootbox-area');
         const saveIdButton = document.getElementById('save-id-button');
         const playerIdInput = document.getElementById('player-id-input');
@@ -370,13 +224,10 @@
         const winnersListContainer = document.getElementById('winners-list-container');
         const lootboxImage = document.getElementById('lootbox-image');
         const resultArea = document.getElementById('result-area');
+        
         const copyLinkButton = document.getElementById('copy-link-button');
-        const invitationCounterElement = document.getElementById('invitation-counter');
 
         let user_id;
-        let invitationsCount = 0;
-        let boxesCount = 0;
-        const INVITE_GOAL = 3;
 
         function getUserId() {
             if (window.Telegram.WebApp.initDataUnsafe.user) {
@@ -384,7 +235,7 @@
             }
             return null;
         }
-
+        
         function getUserName() {
             const user = window.Telegram.WebApp.initDataUnsafe.user;
             if (user) {
@@ -393,64 +244,9 @@
             return 'مستخدم';
         }
 
-        function updateCounters() {
-            invitationCounterElement.textContent = `لقد دعوت ${invitationsCount} من ${INVITE_GOAL} مستخدمين. لديك ${boxesCount} صندوق جاهز للفتح.`;
-            openBoxButton.disabled = boxesCount < 1;
-        }
-
-        function saveData() {
-            if (user_id) {
-                localStorage.setItem(`invitations_${user_id}`, invitationsCount);
-                localStorage.setItem(`boxes_${user_id}`, boxesCount);
-            }
-        }
-
-        function loadData() {
-            if (user_id) {
-                const savedInvitations = localStorage.getItem(`invitations_${user_id}`);
-                const savedBoxes = localStorage.getItem(`boxes_${user_id}`);
-                if (savedInvitations !== null) {
-                    invitationsCount = parseInt(savedInvitations, 10);
-                }
-                if (savedBoxes !== null) {
-                    boxesCount = parseInt(savedBoxes, 10);
-                }
-            }
-        }
-
         window.Telegram.WebApp.ready();
         user_id = getUserId();
-
-        function checkInvitation() {
-            if (window.Telegram.WebApp.initDataUnsafe.start_param) {
-                const param = window.Telegram.WebApp.initDataUnsafe.start_param;
-                if (param.startsWith('invited_by_')) {
-                    const inviterId = param.split('_')[2];
-                    if (inviterId == user_id) {
-                        return;
-                    }
-
-                    const savedInvitations = localStorage.getItem(`invitations_${inviterId}`);
-                    let inviterInvitations = savedInvitations !== null ? parseInt(savedInvitations, 10) : 0;
-
-                    inviterInvitations++;
-                    localStorage.setItem(`invitations_${inviterId}`, inviterInvitations);
-
-                    if (inviterInvitations >= INVITE_GOAL) {
-                        const savedBoxes = localStorage.getItem(`boxes_${inviterId}`);
-                        let inviterBoxes = savedBoxes !== null ? parseInt(savedBoxes, 10) : 0;
-                        inviterBoxes++;
-                        localStorage.setItem(`boxes_${inviterId}`, inviterBoxes);
-                        localStorage.setItem(`invitations_${inviterId}`, 0);
-                    }
-                }
-            }
-        }
-
-        loadData();
-        checkInvitation();
-        updateCounters();
-
+        
         saveIdButton.onclick = function() {
             const pubgId = playerIdInput.value.trim();
             if (pubgId) {
@@ -459,8 +255,7 @@
                 playerIdInput.style.display = 'none';
                 saveIdButton.style.display = 'none';
                 invitationArea.style.display = 'block';
-
-                const inviteLink = `https://t.me/your_bot_username?start=invited_by_${user_id}`;
+                const inviteLink = `https://t.me/your_bot_username?start=${user_id}`;
                 invitationLink.textContent = inviteLink;
             } else {
                 alert('الرجاء إدخال ID حسابك.');
@@ -468,32 +263,26 @@
         };
 
         openBoxButton.onclick = async function() {
-            if (boxesCount > 0) {
-                if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
-                    openBoxButton.disabled = true;
-                    resultArea.textContent = 'يتم فتح الصندوق...';
-                    lootboxImage.src = 'https://i.ibb.co/6803h7Z/lootbox-closed.png';
-
-                    const userName = getUserName();
-
-                    try {
-                        const response = await fetch(`/api/lootbox?user_name=${encodeURIComponent(userName)}`);
-                        const result = await response.json();
-
-                        resultArea.textContent = `لقد ربحت: ${result.name}`;
-                        lootboxImage.src = result.imageUrl;
-
-                        boxesCount--;
-                        saveData();
-                        updateCounters();
-
-                        fetchLastLooters();
-                    } catch (error) {
-                        console.error('Failed to open lootbox:', error);
-                        resultArea.textContent = 'حدث خطأ. حاول مرة أخرى.';
-                    } finally {
-                        openBoxButton.disabled = false;
-                    }
+            if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
+                openBoxButton.disabled = true;
+                resultArea.textContent = 'يتم فتح الصندوق...';
+                lootboxImage.src = 'https://i.ibb.co/6803h7Z/lootbox-closed.png';
+                
+                const userName = getUserName();
+                
+                try {
+                    const response = await fetch(`/api/lootbox?user_name=${encodeURIComponent(userName)}`);
+                    const result = await response.json();
+                    
+                    resultArea.textContent = `لقد ربحت: ${result.name}`;
+                    lootboxImage.src = result.imageUrl;
+                    
+                    fetchLastLooters();
+                } catch (error) {
+                    console.error('Failed to open lootbox:', error);
+                    resultArea.textContent = 'حدث خطأ. حاول مرة أخرى.';
+                } finally {
+                    openBoxButton.disabled = false;
                 }
             }
         };
@@ -502,9 +291,9 @@
             try {
                 const response = await fetch('/api/lastlooters');
                 const winners = await response.json();
-
+                
                 winnersListContainer.innerHTML = '';
-
+                
                 if (winners.length > 0) {
                     winners.forEach(winner => {
                         const li = document.createElement('li');
@@ -519,7 +308,7 @@
                 console.error('Failed to fetch last looters:', error);
             }
         }
-
+        
         copyLinkButton.onclick = function() {
             const invitationLinkText = invitationLink.textContent;
             navigator.clipboard.writeText(invitationLinkText).then(() => {
@@ -528,6 +317,9 @@
                 console.error('فشل في نسخ الرابط: ', err);
             });
         };
+        // -------------------------------------------------------------
+        // أكواد الخلفية المتحركة (Particles.js)
+        // -------------------------------------------------------------
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
