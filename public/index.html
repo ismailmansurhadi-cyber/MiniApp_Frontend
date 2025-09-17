@@ -113,7 +113,6 @@
             outline: none;
         }
         
-        /* هذا هو التعديل الأساسي: تنسيق الأزرار */
         .main-choice-container button,
         #open-box-button,
         #hide-lootbox-button,
@@ -149,7 +148,6 @@
             margin: 10px auto;
         }
         
-        /* تأثيرات التحويم على الأزرار */
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
@@ -162,6 +160,15 @@
             border: 2px solid #5b6e9a;
         }
         
+        #lootbox-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
         #lootbox-image {
             width: 200px;
             height: auto;
@@ -229,6 +236,32 @@
         
         .hidden {
             display: none;
+        }
+
+        /* تعديلات لوحة التحكم */
+        .admin-panel {
+            width: 90%;
+            max-width: 450px;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 2px solid #28a745;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* تبدأ المحتويات من الأعلى */
+            max-height: 80vh; /* ارتفاع أقصى مرن */
+            overflow-y: auto; /* إضافة شريط التمرير عند الحاجة */
+        }
+        
+        .admin-list {
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         @keyframes pulse {
