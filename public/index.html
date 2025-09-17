@@ -3,16 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حساسيات ببجي الأسطورية</title>
+    <title>صانع حساسية ببجي</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            direction: rtl; /* دعم اللغة العربية */
+            position: relative;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #121212;
             color: #ffffff;
             text-align: center;
             padding: 20px;
-            direction: rtl; /* دعم اللغة العربية */
         }
         .container {
             max-width: 450px;
@@ -22,7 +43,7 @@
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             position: relative;
-            border: 2px solid #28a745; /* إطار جذاب */
+            border: 2px solid #28a745;
         }
         h1 {
             color: #28a745;
@@ -79,13 +100,13 @@
             width: 200px;
             height: auto;
             margin: 30px 0;
-            animation: pulse 2s infinite ease-in-out; /* تأثير نبض للصورة */
+            animation: pulse 2s infinite ease-in-out;
         }
         #result-area {
             margin-top: 20px;
             font-size: 1.5em;
             font-weight: bold;
-            color: #ffd700; /* لون ذهبي للجائزة */
+            color: #ffd700;
             text-shadow: 1px 1px 2px #000;
         }
         #invitation-link-container {
@@ -149,6 +170,30 @@
         #lootbox-area {
             animation: fadeIn 1s ease-in-out;
         }
+        
+        /* تعديلات جديدة لتوسيط المحتوى */
+        #app-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .main-choice-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .main-choice-container button {
+            width: 80%;
+            max-width: 300px;
+            margin: 10px auto;
+        }
     </style>
 </head>
 <body>
@@ -188,10 +233,8 @@
                 <div id="lootbox-area">
                     <h1>صندوق الغنائم 🎁</h1>
                     <p id="description-text">قم بإدخال ID حسابك في ببجي للمتابعة.</p>
-                    
                     <input type="text" id="player-id-input" placeholder="أدخل ID حسابك في ببجي">
                     <button id="save-id-button">حفظ ID</button>
-        
                     <div id="invitation-area" style="display: none;">
                         <p>الآن، قم بدعوة 3 مستخدمين لفتح الصندوق والحصول على جوائز.</p>
                         <h2>رابط دعوتك 🔗</h2>
@@ -200,13 +243,11 @@
                             <button id="copy-link-button" class="copy-button">نسخ</button>
                         </div>
                         <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين. لديك 0 صندوق جاهز للفتح.</p>
-                        
                         <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
                         <br>
                         <button id="open-box-button" disabled>افتح الصندوق</button>
                         <div id="result-area"></div>
                     </div>
-        
                     <div class="winner-list">
                         <h3>آخر الفائزين 🏆</h3>
                         <ul id="winners-list-container"></ul>
