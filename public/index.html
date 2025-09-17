@@ -23,9 +23,9 @@
             background-color: #121212;
             color: #ffffff;
             text-align: center;
-            direction: rtl; /* دعم اللغة العربية */
+            direction: rtl;
         }
-        
+
         #particles-js {
             position: fixed;
             top: 0;
@@ -34,7 +34,7 @@
             height: 100%;
             z-index: -1;
         }
-        
+
         #app-container {
             width: 90%;
             max-width: 450px;
@@ -47,19 +47,19 @@
             align-items: center;
         }
 
-        /* تنسيق المربعات والحاويات */
+        /* تنسيق المربعات الزجاجية */
         .glass-box {
             width: 100%;
             padding: 20px;
             border-radius: 15px;
             background-color: rgba(30, 30, 30, 0.6);
             backdrop-filter: blur(8px);
-            border: 2px solid #28a745;
-            box-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
+            border: 2px solid #00aaff; /* لون الحدود الأزرق */
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.7); /* تأثير التوهج الأزرق */
             box-sizing: border-box;
         }
-        
-        /* تنسيق الأزرار */
+
+        /* تنسيق الأزرار الزجاجية */
         button, .button {
             width: 100%;
             padding: 15px 12px;
@@ -69,9 +69,9 @@
             font-size: 1.1em;
             font-weight: bold;
             color: #ffffff;
-            background-color: rgba(40, 167, 69, 0.8);
-            border: 2px solid #28a745;
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+            background-color: rgba(0, 170, 255, 0.2); /* لون خلفية أزرق شفاف */
+            border: 2px solid #00aaff; /* حدود زرقاء */
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.5); /* توهج أزرق */
             backdrop-filter: blur(5px);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
@@ -83,7 +83,7 @@
 
         button:hover, .button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.6);
+            box-shadow: 0 6px 15px rgba(0, 170, 255, 0.6);
         }
 
         button:disabled {
@@ -93,7 +93,7 @@
             transform: none;
             box-shadow: none;
         }
-        
+
         /* تنسيق مربعات الإدخال */
         input, textarea, select {
             width: 100%;
@@ -107,13 +107,13 @@
             text-align: center;
             box-sizing: border-box;
         }
-        
+
         input:focus, textarea:focus, select:focus {
-            border-color: #28a745;
-            box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+            border-color: #00aaff;
+            box-shadow: 0 0 8px rgba(0, 170, 255, 0.5);
             outline: none;
         }
-        
+
         /* تنسيق شاشة صندوق الغنائم */
         #lootbox-view {
             display: flex;
@@ -131,8 +131,8 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
-            min-height: 50vh; 
-            justify-content: center; 
+            min-height: 50vh;
+            justify-content: center;
         }
 
         #lootbox-image {
@@ -141,7 +141,7 @@
             margin: 20px 0;
             animation: pulse 2s infinite ease-in-out;
         }
-        
+
         #invitation-link-container {
             word-wrap: break-word;
             padding: 12px;
@@ -171,17 +171,17 @@
             background-color: rgba(30, 30, 30, 0.6);
             border-radius: 15px;
             backdrop-filter: blur(8px);
-            border: 2px solid #28a745;
-            box-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
+            border: 2px solid #00aaff;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.7);
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            max-height: 80vh; /* ارتفاع أقصى مرن */
-            overflow-y: auto; /* إضافة شريط التمرير */
+            max-height: 80vh;
+            overflow-y: auto;
         }
-        
+
         /* تنسيق العناصر الأخرى */
         .main-choice-container {
             display: flex;
@@ -189,7 +189,7 @@
             align-items: center;
             width: 100%;
         }
-        
+
         .main-choice-container button {
             width: 80%;
             max-width: 300px;
@@ -203,7 +203,7 @@
             margin-top: 30px;
             border: 1px solid #444;
         }
-        
+
         .hidden {
             display: none;
         }
@@ -214,7 +214,7 @@
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-        
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -286,7 +286,7 @@
                 <button id="hide-lootbox-button">العودة إلى الواجهة الرئيسية</button>
             </div>
         </section>
-        
+
         <section id="admin-panel" class="admin-panel hidden">
             <h2>لوحة تحكم المالك</h2>
             <form id="add-sensitivity-form">
@@ -305,7 +305,7 @@
     </main>
 
     <div id="particles-js"></div>
-    
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="scripts.js"></script>
@@ -341,7 +341,7 @@
         beginnerChoiceButton.onclick = () => showView(beginnerSensitivitiesView);
         openLootboxButton.onclick = () => showView(lootboxView);
         openAdminBtn.onclick = () => showView(adminPanel);
-        
+
         hideLootboxButton.onclick = () => showView(initialChoiceView);
         goBackBtns.forEach(button => {
             button.onclick = () => showView(initialChoiceView);
@@ -350,7 +350,7 @@
         // -------------------------------------------------------------
         // أكواد صندوق الغنائم
         // -------------------------------------------------------------
-        
+
         const lootboxArea = document.getElementById('lootbox-area');
         const saveIdButton = document.getElementById('save-id-button');
         const playerIdInput = document.getElementById('player-id-input');
@@ -374,7 +374,7 @@
             }
             return null;
         }
-        
+
         function getUserName() {
             const user = window.Telegram.WebApp.initDataUnsafe.user;
             if (user) {
@@ -394,7 +394,7 @@
                 localStorage.setItem(`boxes_${user_id}`, boxesCount);
             }
         }
-        
+
         function loadData() {
             if (user_id) {
                 const savedInvitations = localStorage.getItem(`invitations_${user_id}`);
@@ -410,7 +410,7 @@
 
         window.Telegram.WebApp.ready();
         user_id = getUserId();
-        
+
         function checkInvitation() {
             if (window.Telegram.WebApp.initDataUnsafe.start_param) {
                 const param = window.Telegram.WebApp.initDataUnsafe.start_param;
@@ -419,10 +419,10 @@
                     if (inviterId == user_id) {
                         return;
                     }
-                    
+
                     const savedInvitations = localStorage.getItem(`invitations_${inviterId}`);
                     let inviterInvitations = savedInvitations !== null ? parseInt(savedInvitations, 10) : 0;
-                    
+
                     inviterInvitations++;
                     localStorage.setItem(`invitations_${inviterId}`, inviterInvitations);
 
@@ -436,7 +436,7 @@
                 }
             }
         }
-        
+
         loadData();
         checkInvitation();
         updateCounters();
@@ -463,20 +463,20 @@
                     openBoxButton.disabled = true;
                     resultArea.textContent = 'يتم فتح الصندوق...';
                     lootboxImage.src = 'https://i.ibb.co/6803h7Z/lootbox-closed.png';
-                    
+
                     const userName = getUserName();
-                    
+
                     try {
                         const response = await fetch(`/api/lootbox?user_name=${encodeURIComponent(userName)}`);
                         const result = await response.json();
-                        
+
                         resultArea.textContent = `لقد ربحت: ${result.name}`;
                         lootboxImage.src = result.imageUrl;
-                        
+
                         boxesCount--;
                         saveData();
                         updateCounters();
-                        
+
                         fetchLastLooters();
                     } catch (error) {
                         console.error('Failed to open lootbox:', error);
@@ -492,9 +492,9 @@
             try {
                 const response = await fetch('/api/lastlooters');
                 const winners = await response.json();
-                
+
                 winnersListContainer.innerHTML = '';
-                
+
                 if (winners.length > 0) {
                     winners.forEach(winner => {
                         const li = document.createElement('li');
@@ -509,7 +509,7 @@
                 console.error('Failed to fetch last looters:', error);
             }
         }
-        
+
         copyLinkButton.onclick = function() {
             const invitationLinkText = invitationLink.textContent;
             navigator.clipboard.writeText(invitationLinkText).then(() => {
