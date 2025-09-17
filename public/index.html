@@ -54,8 +54,8 @@
             border-radius: 15px;
             background-color: rgba(30, 30, 30, 0.6);
             backdrop-filter: blur(8px);
-            border: 2px solid #00ffff; /* لون أزرق */
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); /* لون أزرق */
+            border: 2px solid #28a745;
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
             box-sizing: border-box;
         }
         
@@ -69,9 +69,9 @@
             font-size: 1.1em;
             font-weight: bold;
             color: #ffffff;
-            background-color: rgba(0, 255, 255, 0.15); /* أزرق شفاف */
-            border: 2px solid #00ffff; /* أزرق */
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* أزرق */
+            background-color: rgba(40, 167, 69, 0.8);
+            border: 2px solid #28a745;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
             backdrop-filter: blur(5px);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
@@ -83,7 +83,7 @@
 
         button:hover, .button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 255, 255, 0.6); /* أزرق */
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.6);
         }
 
         button:disabled {
@@ -109,8 +109,8 @@
         }
         
         input:focus, textarea:focus, select:focus {
-            border-color: #00ffff; /* أزرق */
-            box-shadow: 0 0 8px rgba(0, 255, 255, 0.5); /* أزرق */
+            border-color: #28a745;
+            box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
             outline: none;
         }
         
@@ -171,8 +171,8 @@
             background-color: rgba(30, 30, 30, 0.6);
             border-radius: 15px;
             backdrop-filter: blur(8px);
-            border: 2px solid #00ffff; /* لون أزرق */
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); /* لون أزرق */
+            border: 2px solid #28a745;
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -240,17 +240,20 @@
         <section id="pro-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المحترفين</h2>
             <div id="pro-buttons-container" class="button-container"></div>
+            <button class="go-back-btn">العودة للواجهة الرئيسية</button>
         </section>
 
         <section id="beginner-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المبتدئين</h2>
             <div id="beginner-buttons-container" class="button-container"></div>
+            <button class="go-back-btn">العودة للواجهة الرئيسية</button>
         </section>
 
         <section id="display-container" class="sensitivity-display hidden">
             <img id="display-image" src="" alt="صورة الحساسية">
             <p id="code-output">اضغط على زر لعرض الكود</p>
             <button id="copy-code-btn" style="margin-top: 10px;">نسخ الكود</button>
+            <button class="go-back-btn">العودة للواجهة الرئيسية</button>
         </section>
 
         <section id="lootbox-view" class="sensitivities-view hidden">
@@ -321,7 +324,7 @@
         const openLootboxButton = document.getElementById('open-lootbox-button');
         const openAdminBtn = document.getElementById('open-admin-btn');
         const hideLootboxButton = document.getElementById('hide-lootbox-button');
-        const goBackBtn = document.getElementById('go-back-btn');
+        const goBackBtns = document.querySelectorAll('.go-back-btn, #go-back-btn');
 
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
@@ -340,8 +343,10 @@
         openAdminBtn.onclick = () => showView(adminPanel);
         
         hideLootboxButton.onclick = () => showView(initialChoiceView);
-        goBackBtn.onclick = () => showView(initialChoiceView);
-        
+        goBackBtns.forEach(button => {
+            button.onclick = () => showView(initialChoiceView);
+        });
+
         // -------------------------------------------------------------
         // أكواد صندوق الغنائم
         // -------------------------------------------------------------
