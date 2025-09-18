@@ -4,192 +4,190 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حساسيات ببجي الأسطورية</title>
-    <link rel="stylesheet" href="styles.css">
+    
     <style>
-/* الأنماط العامة للصفحة */
-/* الأنماط العامة لصفحة التطبيق */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #2c2f33;
-    color: #ffffff;
-    text-align: center;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    flex-direction: column;
-}
+        /* الأنماط العامة لصفحة التطبيق */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2c2f33;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
 
-.hidden {
-    display: none;
-}
+        .hidden {
+            display: none;
+        }
 
-/* -------------------------------------- */
-/* الأنماط المحدثة لجميع الأزرار والعناصر */
-/* -------------------------------------- */
+        /* -------------------------------------- */
+        /* الأنماط المحدثة لجميع الأزرار والعناصر */
+        /* -------------------------------------- */
 
-main#app-container {
-    width: 100%;
-    max-width: 450px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        main#app-container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-/* صندوق العنوان الرئيسي - بنفس لون الأزرار */
-.title-box {
-    background: rgba(0, 150, 150, 0.2); /* لون أزرق مائل للأخضر شبه شفاف */
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 200, 200, 0.5), 0 8px 16px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(0, 200, 200, 0.7);
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 400px;
-    box-sizing: border-box;
-}
+        /* صندوق العنوان الرئيسي - بنفس لون الأزرار */
+        .title-box {
+            background: rgba(0, 150, 150, 0.2); /* لون أزرق مائل للأخضر شبه شفاف */
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 200, 200, 0.5), 0 8px 16px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 200, 200, 0.7);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
 
-.title-box h1 {
-    font-size: 26px;
-    color: #00e6e6; /* لون متناسق مع الإضاءة */
-    margin-bottom: 5px;
-}
+        .title-box h1 {
+            font-size: 26px;
+            color: #00e6e6; /* لون متناسق مع الإضاءة */
+            margin-bottom: 5px;
+        }
 
-.title-box p {
-    font-size: 14px;
-    color: #e0e0e0;
-}
+        .title-box p {
+            font-size: 14px;
+            color: #e0e0e0;
+        }
 
-/* حاوية الأزرار الرئيسية */
-.main-choice-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-    max-width: 400px;
-}
+        /* حاوية الأزرار الرئيسية */
+        .main-choice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
 
-/* نمط الأزرار - موحد ومرتب */
-button {
-    width: 100%;
-    padding: 15px;
-    margin: 0;
-    border-radius: 8px;
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    background: rgba(0, 150, 150, 0.4);
-    color: white;
-    box-shadow: 0 0 10px rgba(0, 200, 200, 0.4), 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
+        /* نمط الأزرار - موحد ومرتب */
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background: rgba(0, 150, 150, 0.4);
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 200, 200, 0.4), 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-button:hover {
-    background-color: rgba(0, 150, 150, 0.6);
-    transform: translateY(-2px);
-}
+        button:hover {
+            background-color: rgba(0, 150, 150, 0.6);
+            transform: translateY(-2px);
+        }
 
-button:disabled {
-    background-color: #5b6e9a;
-    cursor: not-allowed;
-    transform: none;
-}
+        button:disabled {
+            background-color: #5b6e9a;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-/* -------------------------------------- */
-/* أنماط صفحة الدعوة (صندوق الغنائم) - بنفس لون الأزرار */
-/* -------------------------------------- */
-
-#lootbox-view .container {
-    max-width: 320px;
-    margin: 20px auto;
-    padding: 20px;
-    background: rgba(0, 150, 150, 0.2);
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 200, 200, 0.5), 0 10px 20px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(0, 200, 200, 0.7);
-    box-sizing: border-box;
-}
-
-#lootbox-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#lootbox-area h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #00e6e6;
-}
-
-#lootbox-area p, #lootbox-area h2 {
-    font-size: 14px;
-    color: #e0e0e0;
-    margin-top: 5px;
-}
-
-#lootbox-area input {
-    width: 90%;
-    margin: 10px 0;
-    padding: 12px;
-    border: 1px solid #555;
-    background-color: #33363b;
-    font-size: 14px;
-    border-radius: 8px;
-}
-
-#lootbox-area button {
-    width: 90%;
-    margin: 10px 0;
-    padding: 12px;
-    font-size: 15px;
-    border-radius: 8px;
-    background: rgba(0, 150, 150, 0.4);
-    box-shadow: 0 0 10px rgba(0, 200, 200, 0.4);
-    color: #fff;
-}
-
-#invitation-link-container {
-    background: rgba(0, 150, 150, 0.2);
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 200, 200, 0.7);
-    margin-top: 15px;
-    width: 90%;
-}
-
-#invitation-link-container span {
-    font-size: 12px;
-    color: #e0e0e0;
-}
-
-#copy-link-button {
-    width: 70%;
-    margin-top: 10px;
-}
-
-.winner-list {
-    background: rgba(0, 150, 150, 0.2);
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 20px;
-    border: 1px solid rgba(0, 200, 200, 0.7);
-    width: 90%;
-}
-
-.winner-list h3 {
-    margin-top: 0;
-    color: #e0e0e0;
-    font-size: 16px;
-}
-
-.winner-item {
-    font-size: 13px;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(0, 150, 150, 0.5);
-}
+        /* -------------------------------------- */
+        /* أنماط صفحة الدعوة (صندوق الغنائم) - بنفس لون الأزرار */
+        /* -------------------------------------- */
+        #lootbox-view .container {
+            max-width: 320px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 150, 150, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 200, 200, 0.5), 0 10px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 200, 200, 0.7);
+            box-sizing: border-box;
+        }
+        
+        #lootbox-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        #lootbox-area h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #00e6e6;
+        }
+        
+        #lootbox-area p, #lootbox-area h2 {
+            font-size: 14px;
+            color: #e0e0e0;
+            margin-top: 5px;
+        }
+        
+        #lootbox-area input {
+            width: 90%;
+            margin: 10px 0;
+            padding: 12px;
+            border: 1px solid #555;
+            background-color: #33363b;
+            font-size: 14px;
+            border-radius: 8px;
+        }
+        
+        #lootbox-area button {
+            width: 90%;
+            margin: 10px 0;
+            padding: 12px;
+            font-size: 15px;
+            border-radius: 8px;
+            background: rgba(0, 150, 150, 0.4);
+            box-shadow: 0 0 10px rgba(0, 200, 200, 0.4);
+            color: #fff;
+        }
+        
+        #invitation-link-container {
+            background: rgba(0, 150, 150, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 200, 200, 0.7);
+            margin-top: 15px;
+            width: 90%;
+        }
+        
+        #invitation-link-container span {
+            font-size: 12px;
+            color: #e0e0e0;
+        }
+        
+        #copy-link-button {
+            width: 70%;
+            margin-top: 10px;
+        }
+        
+        .winner-list {
+            background: rgba(0, 150, 150, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid rgba(0, 200, 200, 0.7);
+            width: 90%;
+        }
+        
+        .winner-list h3 {
+            margin-top: 0;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+        
+        .winner-item {
+            font-size: 13px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 150, 150, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -228,17 +226,17 @@ button:disabled {
             <div class="container">
                 <div id="lootbox-area">
                     <h1>صندوق الغنائم 🎁</h1>
-                    <p id="description-text">قم بإدخال ID حسابك في ببجي للمتابعة.</p>
-                    <input type="text" id="player-id-input" placeholder="أدخل ID حسابك في ببجي">
+                    <p id="description-text">ادخل ID للمتابعة.</p>
+                    <input type="text" id="player-id-input" placeholder="أدخل ID حسابك">
                     <button id="save-id-button">حفظ ID</button>
                     <div id="invitation-area" style="display: none;">
-                        <p>الآن، قم بدعوة 3 مستخدمين لفتح الصندوق والحصول على جوائز.</p>
+                        <p>ادعُ 3 مستخدمين لفتح الصندوق.</p>
                         <h2>رابط دعوتك 🔗</h2>
                         <div id="invitation-link-container">
                             <span id="invitation-link"></span>
                             <button id="copy-link-button" class="copy-button">نسخ</button>
                         </div>
-                        <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين. لديك 0 صندوق جاهز للفتح.</p>
+                        <p id="invitation-counter">لديك <span id="invited-count">0</span> من 3 دعوات. لديك <span id="lootbox-count">0</span> صندوق.</p>
                         <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
                         <br>
                         <button id="open-box-button" disabled>افتح الصندوق</button>
@@ -254,7 +252,7 @@ button:disabled {
                 <button id="hide-lootbox-button">العودة إلى الواجهة الرئيسية</button>
             </div>
         </section>
-        
+
         <section id="admin-panel" class="admin-panel hidden">
             <h2>لوحة تحكم المالك</h2>
             <form id="add-sensitivity-form">
@@ -360,7 +358,7 @@ button:disabled {
         }
 
         function updateCounters() {
-            document.getElementById('invitation-counter').textContent = `لقد دعوت ${invitationsCount} من ${INVITE_GOAL} مستخدمين. لديك ${boxesCount} صندوق جاهز للفتح.`;
+            document.getElementById('invitation-counter').textContent = `لديك ${invitationsCount} من ${INVITE_GOAL} دعوات. لديك ${boxesCount} صندوق.`;
             openBoxButton.disabled = boxesCount < 1;
         }
 
@@ -422,7 +420,7 @@ button:disabled {
         saveIdButton.onclick = function() {
             const pubgId = playerIdInput.value.trim();
             if (pubgId) {
-                document.getElementById('description-text').textContent = 'ادعُ 3 مستخدمين لفتح الصندوق والحصول على جوائز.';
+                document.getElementById('description-text').textContent = 'ادعُ 3 مستخدمين لفتح الصندوق.';
                 playerIdInput.style.display = 'none';
                 saveIdButton.style.display = 'none';
                 invitationArea.style.display = 'block';
