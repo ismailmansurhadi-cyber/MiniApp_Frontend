@@ -77,25 +77,31 @@ button {
     padding: 15px;
     margin: 0;
     border-radius: 8px;
-    border: none;
+    /* لون الخلفية الأزرق الجديد */
+    background-color: #1a73e8; /* درجة زرقاء مشابهة للصورة */
+    /* حدود خضراء */
+    border: 2px solid #00ff00; /* حدود خضراء */
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    background: rgba(0, 150, 150, 0.4);
     color: white;
-    box-shadow: 0 0 10px rgba(0, 200, 200, 0.4), 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    /* ظلال تعكس المظهر في الصورة */
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 button:hover {
-    background-color: rgba(0, 150, 150, 0.6);
+    background-color: #1565c0; /* لون أزرق أغمق عند التمرير */
     transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.9), 0 6px 8px rgba(0, 0, 0, 0.4);
 }
 
 button:disabled {
     background-color: #5b6e9a;
+    border-color: #5b6e9a;
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
 }
 
 /* -------------------------------------- */
@@ -151,10 +157,18 @@ button:disabled {
     padding: 12px;
     font-size: 15px;
     border-radius: 8px;
-    background: rgba(0, 150, 150, 0.4);
-    box-shadow: 0 0 10px rgba(0, 200, 200, 0.4);
+    background-color: #1a73e8; /* لون الخلفية الأزرق الجديد */
+    border: 2px solid #00ff00; /* حدود خضراء */
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 4px 6px rgba(0, 0, 0, 0.3);
     color: #fff;
     font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+#lootbox-area button:hover {
+    background-color: #1565c0; /* لون أزرق أغمق عند التمرير */
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.9), 0 6px 8px rgba(0, 0, 0, 0.4);
 }
 
 #invitation-link-container {
@@ -336,7 +350,6 @@ button:disabled {
                     <button id="save-id-button">حفظ ID</button>
                     
                     <div id="invitation-area" style="display: none;">
-                        <p>ادعُ 3 مستخدمين لفتح الصندوق.</p>
                         <p id="invitation-counter">لديك <span id="invited-count">0</span> من 3 دعوات. لديك <span id="lootbox-count">0</span> صندوق.</p>
                         
                         <img id="gun-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png" alt="بندقية"> 
@@ -537,7 +550,7 @@ button:disabled {
         saveIdButton.onclick = function() {
             const pubgId = playerIdInput.value.trim();
             if (pubgId) {
-                document.getElementById('description-text').textContent = 'ادعُ 3 مستخدمين لفتح الصندوق.';
+                document.getElementById('description-text').textContent = 'قم بدعوة 3 مستخدمين لفتح الصندوق.';
                 playerIdInput.style.display = 'none';
                 saveIdButton.style.display = 'none';
                 invitationArea.style.display = 'block';
