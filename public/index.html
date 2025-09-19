@@ -39,7 +39,7 @@ main#app-container {
 
 /* صندوق العنوان الرئيسي - بنفس لون الأزرار */
 .title-box {
-    background: rgba(0, 150, 150, 0.2); /* لون أزرق مائل للأخضر شبه شفاف */
+    background: rgba(0, 150, 150, 0.2);
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(0, 200, 200, 0.5), 0 8px 16px rgba(0, 0, 0, 0.4);
@@ -52,7 +52,7 @@ main#app-container {
 
 .title-box h1 {
     font-size: 26px;
-    color: #00e6e6; /* لون متناسق مع الإضاءة */
+    color: #00e6e6;
     margin-bottom: 5px;
 }
 
@@ -100,7 +100,6 @@ button:disabled {
 /* -------------------------------------- */
 /* أنماط صفحة الدعوة (صندوق الغنائم) - بنفس لون الأزرار */
 /* -------------------------------------- */
-
 #lootbox-view .container {
     max-width: 320px;
     margin: 20px auto;
@@ -228,22 +227,24 @@ button:disabled {
             <div class="container">
                 <div id="lootbox-area">
                     <h1>صندوق الغنائم 🎁</h1>
-                    <p id="description-text">قم بإدخال ID حسابك في ببجي للمتابعة.</p>
-                    <input type="text" id="player-id-input" placeholder="أدخل ID حسابك في ببجي">
+                    <p id="description-text">ادخل ID للمتابعة.</p>
+                    <input type="text" id="player-id-input" placeholder="أدخل ID حسابك">
                     <button id="save-id-button">حفظ ID</button>
+                    
                     <div id="invitation-area" style="display: none;">
-                        <p>الآن، قم بدعوة 3 مستخدمين لفتح الصندوق والحصول على جوائز.</p>
+                        <p>ادعُ 3 مستخدمين لفتح الصندوق.</p>
                         <h2>رابط دعوتك 🔗</h2>
                         <div id="invitation-link-container">
                             <span id="invitation-link"></span>
                             <button id="copy-link-button" class="copy-button">نسخ</button>
                         </div>
-                        <p id="invitation-counter">لقد دعوت 0 من 3 مستخدمين. لديك 0 صندوق جاهز للفتح.</p>
+                        <p id="invitation-counter">لديك <span id="invited-count">0</span> من 3 دعوات. لديك <span id="lootbox-count">0</span> صندوق.</p>
                         <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
                         <br>
                         <button id="open-box-button" disabled>افتح الصندوق</button>
                         <div id="result-area"></div>
                     </div>
+                    
                     <div class="winner-list">
                         <h3>آخر الفائزين 🏆</h3>
                         <ul id="winners-list-container"></ul>
@@ -254,7 +255,7 @@ button:disabled {
                 <button id="hide-lootbox-button">العودة إلى الواجهة الرئيسية</button>
             </div>
         </section>
-        
+
         <section id="admin-panel" class="admin-panel hidden">
             <h2>لوحة تحكم المالك</h2>
             <form id="add-sensitivity-form">
@@ -360,7 +361,7 @@ button:disabled {
         }
 
         function updateCounters() {
-            document.getElementById('invitation-counter').textContent = `لقد دعوت ${invitationsCount} من ${INVITE_GOAL} مستخدمين. لديك ${boxesCount} صندوق جاهز للفتح.`;
+            document.getElementById('invitation-counter').textContent = `لديك ${invitationsCount} من ${INVITE_GOAL} دعوات. لديك ${boxesCount} صندوق.`;
             openBoxButton.disabled = boxesCount < 1;
         }
 
@@ -422,7 +423,7 @@ button:disabled {
         saveIdButton.onclick = function() {
             const pubgId = playerIdInput.value.trim();
             if (pubgId) {
-                document.getElementById('description-text').textContent = 'ادعُ 3 مستخدمين لفتح الصندوق والحصول على جوائز.';
+                document.getElementById('description-text').textContent = 'ادعُ 3 مستخدمين لفتح الصندوق.';
                 playerIdInput.style.display = 'none';
                 saveIdButton.style.display = 'none';
                 invitationArea.style.display = 'block';
