@@ -331,8 +331,8 @@ button:disabled {
             <div class="container">
                 <div id="lootbox-area">
                     <h1>صندوق الغنائم 🎁</h1>
-                    <p id="description-text">ادخل ID للمتابعة.</p>
-                    <input type="text" id="player-id-input" placeholder="أدخل ID حسابك">
+                    <p id="description-text">للمتابعة ID ادخل.</p>
+                    <input type="text" id="player-id-input" placeholder="حسابك ID ادخل">
                     <button id="save-id-button">حفظ ID</button>
                     
                     <div id="invitation-area" style="display: none;">
@@ -347,7 +347,6 @@ button:disabled {
                         
                         <div style="position: relative; width: fit-content; margin: 20px auto;">
                             <img id="lootbox-image" src="https://up6.cc/2025/08/175831095492441.png" alt="صندوق الغنائم">
-                            <span id="yourbotname-text">YourBotName</span>
                         </div>
                         <br>
 
@@ -542,7 +541,7 @@ button:disabled {
                 playerIdInput.style.display = 'none';
                 saveIdButton.style.display = 'none';
                 invitationArea.style.display = 'block';
-                const inviteLink = `https://t.me/your_bot_username?start=inviter_${user_id}`;
+                const inviteLink = `https://t.me/AQWKBOT?start=inviter_${user_id}`;
                 invitationLink.textContent = inviteLink;
                 updateCounters();
                 lootboxImage.classList.add('shake');
