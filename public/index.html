@@ -98,16 +98,15 @@ button:disabled {
 }
 
 /* -------------------------------------- */
-/* أنماط صفحة الدعوة (صندوق الغنائم) - بنفس لون الأزرار */
+/* أنماط صفحة الدعوة (صندوق الغنائم) - بدون خلفية */
 /* -------------------------------------- */
 #lootbox-view .container {
+    background: none; /* تم إزالة الخلفية هنا */
+    padding: 0; /* وإزالة المسافة الداخلية */
+    box-shadow: none; /* وإزالة الظل */
+    border: none; /* وإزالة الحدود */
     max-width: 320px;
     margin: 20px auto;
-    padding: 20px;
-    background: rgba(0, 150, 150, 0.2);
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 200, 200, 0.5), 0 10px 20px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(0, 200, 200, 0.7);
     box-sizing: border-box;
 }
 
@@ -508,4 +507,4 @@ button:disabled {
         });
     </script>
 </body>
-</html>
+</html>>
