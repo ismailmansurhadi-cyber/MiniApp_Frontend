@@ -101,10 +101,10 @@ button:disabled {
 /* أنماط صفحة الدعوة (صندوق الغنائم) - بدون خلفية */
 /* -------------------------------------- */
 #lootbox-view .container {
-    background: none; /* تم إزالة الخلفية هنا */
-    padding: 0; /* وإزالة المسافة الداخلية */
-    box-shadow: none; /* وإزالة الظل */
-    border: none; /* وإزالة الحدود */
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    border: none;
     max-width: 320px;
     margin: 20px auto;
     box-sizing: border-box;
@@ -188,6 +188,25 @@ button:disabled {
     padding: 8px 0;
     border-bottom: 1px solid rgba(0, 150, 150, 0.5);
 }
+
+/* أنماط حركة صورة الصندوق */
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+#lootbox-image.shake {
+    animation: shake 0.5s infinite;
+}
     </style>
 </head>
 <body>
@@ -232,16 +251,19 @@ button:disabled {
                     
                     <div id="invitation-area" style="display: none;">
                         <p>ادعُ 3 مستخدمين لفتح الصندوق.</p>
+                        <p id="invitation-counter">لديك <span id="invited-count">0</span> من 3 دعوات. لديك <span id="lootbox-count">0</span> صندوق.</p>
+                        
+                        <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
+                        <br>
+
                         <h2>رابط دعوتك 🔗</h2>
                         <div id="invitation-link-container">
                             <span id="invitation-link"></span>
                             <button id="copy-link-button" class="copy-button">نسخ</button>
                         </div>
-                        <p id="invitation-counter">لديك <span id="invited-count">0</span> من 3 دعوات. لديك <span id="lootbox-count">0</span> صندوق.</p>
-                        <img id="lootbox-image" src="https://i.ibb.co/6803h7Z/lootbox-closed.png" alt="صندوق الغنائم مغلق">
-                        <br>
-                        <button id="open-box-button" disabled>افتح الصندوق</button>
+
                         <div id="result-area"></div>
+                        <button id="open-box-button" disabled>افتح الصندوق</button>
                     </div>
                     
                     <div class="winner-list">
@@ -429,6 +451,7 @@ button:disabled {
                 const inviteLink = `https://t.me/your_bot_username?start=inviter_${user_id}`;
                 invitationLink.textContent = inviteLink;
                 updateCounters();
+                lootboxImage.classList.add('shake'); // إضافة الحركة بعد إدخال ID
             } else {
                 alert('الرجاء إدخال ID حسابك.');
             }
@@ -440,6 +463,7 @@ button:disabled {
                     openBoxButton.disabled = true;
                     resultArea.textContent = 'يتم فتح الصندوق...';
                     lootboxImage.src = 'https://i.ibb.co/6803h7Z/lootbox-closed.png';
+                    lootboxImage.classList.remove('shake'); // إيقاف الحركة عند الفتح
                     
                     const userName = getUserName();
                     const prize = prizes[Math.floor(Math.random() * prizes.length)];
