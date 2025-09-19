@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles.css">
     <style>
 /* الأنماط العامة للصفحة */
-/* الأنماط العامة لصفحة التطبيق */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #2c2f33;
@@ -98,7 +97,7 @@ button:disabled {
 }
 
 /* -------------------------------------- */
-/* أنماط صفحة الدعوة (صندوق الغنائم) - بدون خلفية */
+/* أنماط صفحة الدعوة (صندوق الغنائم) */
 /* -------------------------------------- */
 #lootbox-view .container {
     background: none;
@@ -113,9 +112,8 @@ button:disabled {
 #lootbox-area {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    /* إضافة المحاذاة في المنتصف */
-    text-align: center;
+    align-items: center; /* لتوسيط المحتوى بالكامل */
+    text-align: center; /* لمحاذاة النصوص في المنتصف */
 }
 
 #lootbox-area h1 {
@@ -138,6 +136,7 @@ button:disabled {
     background-color: #33363b;
     font-size: 14px;
     border-radius: 8px;
+    text-align: center;
 }
 
 #lootbox-area button {
@@ -189,6 +188,8 @@ button:disabled {
     font-size: 13px;
     padding: 8px 0;
     border-bottom: 1px solid rgba(0, 150, 150, 0.5);
+    display: flex;
+    justify-content: space-between;
 }
 
 /* أنماط حركة صورة الصندوق */
@@ -453,7 +454,7 @@ button:disabled {
                 const inviteLink = `https://t.me/your_bot_username?start=inviter_${user_id}`;
                 invitationLink.textContent = inviteLink;
                 updateCounters();
-                lootboxImage.classList.add('shake'); // إضافة الحركة بعد إدخال ID
+                lootboxImage.classList.add('shake');
             } else {
                 alert('الرجاء إدخال ID حسابك.');
             }
@@ -465,7 +466,7 @@ button:disabled {
                     openBoxButton.disabled = true;
                     resultArea.textContent = 'يتم فتح الصندوق...';
                     lootboxImage.src = 'https://i.ibb.co/6803h7Z/lootbox-closed.png';
-                    lootboxImage.classList.remove('shake'); // إيقاف الحركة عند الفتح
+                    lootboxImage.classList.remove('shake');
                     
                     const userName = getUserName();
                     const prize = prizes[Math.floor(Math.random() * prizes.length)];
