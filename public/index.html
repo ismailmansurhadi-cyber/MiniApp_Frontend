@@ -137,6 +137,8 @@ button:disabled {
     font-size: 14px;
     border-radius: 8px;
     text-align: center;
+    border-color: #00e6e6; /* لون الإطار ليتناسب مع الثيم */
+    color: #fff;
 }
 
 #lootbox-area button {
@@ -148,6 +150,7 @@ button:disabled {
     background: rgba(0, 150, 150, 0.4);
     box-shadow: 0 0 10px rgba(0, 200, 200, 0.4);
     color: #fff;
+    font-weight: bold;
 }
 
 #invitation-link-container {
@@ -157,31 +160,40 @@ button:disabled {
     border: 1px solid rgba(0, 200, 200, 0.7);
     margin-top: 15px;
     width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 #invitation-link-container span {
     font-size: 12px;
     color: #e0e0e0;
+    word-break: break-all;
 }
 
 #copy-link-button {
     width: 70%;
-    margin-top: 10px;
+    margin-top: 0;
+    padding: 10px;
 }
 
 .winner-list {
     background: rgba(0, 150, 150, 0.2);
-    padding: 10px;
+    padding: 15px;
     border-radius: 8px;
     margin-top: 20px;
     border: 1px solid rgba(0, 200, 200, 0.7);
     width: 90%;
+    box-shadow: 0 0 10px rgba(0, 200, 200, 0.4);
 }
 
 .winner-list h3 {
     margin-top: 0;
     color: #e0e0e0;
     font-size: 16px;
+    border-bottom: 2px solid #00e6e6;
+    padding-bottom: 5px;
 }
 
 .winner-item {
@@ -190,6 +202,10 @@ button:disabled {
     border-bottom: 1px solid rgba(0, 150, 150, 0.5);
     display: flex;
     justify-content: space-between;
+}
+
+.winner-item:last-child {
+    border-bottom: none;
 }
 
 /* أنماط حركة صورة الصندوق */
@@ -209,6 +225,12 @@ button:disabled {
 
 #lootbox-image.shake {
     animation: shake 0.5s infinite;
+}
+
+#lootbox-image {
+    width: 150px;
+    height: auto;
+    margin: 20px 0;
 }
     </style>
 </head>
