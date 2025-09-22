@@ -468,12 +468,15 @@ button:disabled {
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="https://adsgram.ai/adsgram.js"></script>
-    <script>
+<script src="https://adsgram.ai/adsgram.js"></script>
+<script>
     if (window.AdsGram) {
         window.AdsGram.init({
             debug: true // يمكنك إزالة هذا السطر في مرحلة الإنتاج
         });
+        // المكان الصحيح هنا!
+        const YOUR_AD_BLOCK_ID = 15189; 
+        window.AdsGram.preloadRewarded(YOUR_AD_BLOCK_ID);
     }
 </script>
 
@@ -589,35 +592,43 @@ button:disabled {
         };
 
         // 5. وظيفة لزر حساسية VIP
-        const YOUR_AD_BLOCK_ID = 15189; // تأكد من استخدام ID الخاص بكتلة الإعلانات الخاصة بك
+// 5. وظيفة لزر حساسية VIP
+const YOUR_AD_BLOCK_ID = 15189; // تأكد من استخدام ID الخاص بكتلة الإعلانات الخاصة بك
 
-        openVipSensitivityButton.onclick = function() {
-            showView(vipSensitivityView);
-            const vipData = allSensitivitiesData.find(item => item.type === 'vip');
+openVipSensitivityButton.onclick = function() {
+    showView(vipSensitivityView);
+    const vipData = allSensitivitiesData.find(item => item.type === 'vip');
 
-            if (!vipData) {
-                vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
-                return;
-            }
+    if (!vipData) {
+        vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
+        return;
+    }
 
-            if (window.AdsGram) {
-                window.AdsGram.showRewarded({
-                    blockId: YOUR_AD_BLOCK_ID,
-                    onClose: (result) => {
-                        if (result.success && vipData) {
-                            vipCodeOutput.textContent = vipData.code;
-                            Telegram.WebApp.showAlert('تم عرض الكود بنجاح!');
-                        } else {
-                            vipCodeOutput.textContent = 'يجب مشاهدة الإعلان بالكامل للحصول على الكود.';
-                            Telegram.WebApp.showAlert('لم يتم إنهاء الإعلان بنجاح. حاول مرة أخرى.');
-                        }
+    if (window.AdsGram) {
+        // المكان الصحيح هنا! هذا الكود يحل مشكلة عدم ظهور الإعلان.
+        if (window.AdsGram.isRewardedReady(YOUR_AD_BLOCK_ID)) {
+            window.AdsGram.showRewarded({
+                blockId: YOUR_AD_BLOCK_ID,
+                onClose: (result) => {
+                    if (result.success && vipData) {
+                        vipCodeOutput.textContent = vipData.code;
+                        Telegram.WebApp.showAlert('تم عرض الكود بنجاح!');
+                        window.AdsGram.preloadRewarded(YOUR_AD_BLOCK_ID);
+                    } else {
+                        vipCodeOutput.textContent = 'يجب مشاهدة الإعلان بالكامل للحصول على الكود.';
+                        Telegram.WebApp.showAlert('لم يتم إنهاء الإعلان بنجاح. حاول مرة أخرى.');
                     }
-                });
-            } else {
-                vipCodeOutput.textContent = 'منصة الإعلانات غير متوفرة حالياً. يرجى المحاولة مرة أخرى.';
-            }
-        };
-
+                }
+            });
+        } else {
+            vipCodeOutput.textContent = 'الإعلان غير جاهز. يرجى المحاولة بعد بضع ثوانٍ.';
+            Telegram.WebApp.showAlert('الإعلان غير جاهز، جارٍ التحميل... يرجى الضغط مرة أخرى بعد قليل.');
+            window.AdsGram.preloadRewarded(YOUR_AD_BLOCK_ID);
+        }
+    } else {
+        vipCodeOutput.textContent = 'منصة الإعلانات غير متوفرة حالياً. يرجى المحاولة مرة أخرى.';
+    }
+};
         // 6. وظيفة زر نسخ كود VIP
         copyVipCodeBtn.onclick = function() {
             const code = vipCodeOutput.textContent;
