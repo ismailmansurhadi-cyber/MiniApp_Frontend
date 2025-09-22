@@ -212,6 +212,14 @@ button:disabled {
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.9), 0 6px 8px rgba(0, 0, 0, 0.4);
 }
 
+#lootbox-area button:disabled {
+    background-color: #5b6e9a;
+    border-color: #5b6e9a;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 #invitation-link-container {
     background: rgba(0, 150, 150, 0.2);
     padding: 10px;
@@ -389,8 +397,7 @@ button:disabled {
                     يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة
                 </p>
                 <div id="display-container-vip" class="sensitivity-display">
-                    <p id="code-output-vip">
-                        </p>
+                    <p id="code-output-vip"></p>
                     <button id="copy-code-btn-vip" style="margin-top: 10px;">نسخ الكود</button>
                 </div>
             </div>
@@ -582,67 +589,36 @@ button:disabled {
         };
 
         // 5. وظيفة لزر حساسية VIP
-// 5. وظيفة لزر حساسية VIP
-openVipSensitivityButton.onclick = function() {
-    showView(vipSensitivityView);
-    const vipData = allSensitivitiesData.find(item => item.type === 'vip');
+        const YOUR_AD_BLOCK_ID = 15189; // تأكد من استخدام ID الخاص بكتلة الإعلانات الخاصة بك
 
-    if (!vipData) {
-        vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
-        return;
-    }
+        openVipSensitivityButton.onclick = function() {
+            showView(vipSensitivityView);
+            const vipData = allSensitivitiesData.find(item => item.type === 'vip');
 
-    // تحقق من جاهزية AdsGram قبل عرض الإعلان
-    if (window.AdsGram) {
-        showRewardedAd(vipData);
-    } else {
-        // قم بمحاولة إعادة تهيئة المكتبة
-        if (window.AdsGram) {
-            window.AdsGram.init({});
-        }
-        vipCodeOutput.textContent = 'منصة الإعلانات غير متوفرة حالياً. يرجى المحاولة مرة أخرى.';
-    }
-};
-
-// وظيفة عرض الإعلان
-const YOUR_AD_BLOCK_ID = 15189;
-
-function showRewardedAd(vipData) {
-    window.AdsGram.showRewarded({
-        blockId: YOUR_AD_BLOCK_ID,
-        onClose: (result) => {
-            if (result.success && vipData) {
-                vipCodeOutput.textContent = vipData.code;
-                Telegram.WebApp.showAlert('تم عرض الكود بنجاح!');
-            } else {
-                vipCodeOutput.textContent = 'يجب مشاهدة الإعلان بالكامل للحصول على الكود.';
-                Telegram.WebApp.showAlert('لم يتم إنهاء الإعلان بنجاح. حاول مرة أخرى.');
+            if (!vipData) {
+                vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
+                return;
             }
-        }
-    });
-}
 
-// 6. وظيفة محاكاة مشاهدة الإعلان
-// (هذا الكود قديم، يمكنك حذفه الآن)
-function showAdAndGetCode(vipData) {
-    vipCodeOutput.textContent = 'جاري تحميل الإعلان...';
+            if (window.AdsGram) {
+                window.AdsGram.showRewarded({
+                    blockId: YOUR_AD_BLOCK_ID,
+                    onClose: (result) => {
+                        if (result.success && vipData) {
+                            vipCodeOutput.textContent = vipData.code;
+                            Telegram.WebApp.showAlert('تم عرض الكود بنجاح!');
+                        } else {
+                            vipCodeOutput.textContent = 'يجب مشاهدة الإعلان بالكامل للحصول على الكود.';
+                            Telegram.WebApp.showAlert('لم يتم إنهاء الإعلان بنجاح. حاول مرة أخرى.');
+                        }
+                    }
+                });
+            } else {
+                vipCodeOutput.textContent = 'منصة الإعلانات غير متوفرة حالياً. يرجى المحاولة مرة أخرى.';
+            }
+        };
 
-    setTimeout(() => {
-        vipCodeOutput.textContent = vipData.code;
-        Telegram.WebApp.showAlert('تم عرض الكود بنجاح!');
-    }, 2000); // 2 ثانية لمحاكاة الإعلان
-}
-        // 6. وظيفة محاكاة مشاهدة الإعلان
-        function showAdAndGetCode(vipData) {
-            vipCodeOutput.textContent = 'جاري تحميل الإعلان...';
-            
-            setTimeout(() => {
-                vipCodeOutput.textContent = vipData.code;
-                Telegram.WebApp.showAlert('تم عرض الكود بنجاح!');
-            }, 2000); // 2 ثانية لمحاكاة الإعلان
-        }
-        
-        // 7. وظيفة زر نسخ كود VIP
+        // 6. وظيفة زر نسخ كود VIP
         copyVipCodeBtn.onclick = function() {
             const code = vipCodeOutput.textContent;
             if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جاري تحميل الإعلان...') {
@@ -654,7 +630,7 @@ function showAdAndGetCode(vipData) {
             }
         };
 
-        // 8. إدارة لوحة التحكم
+        // 7. إدارة لوحة التحكم
         const renderAdminList = (data) => {
             adminList.innerHTML = '';
             data.forEach(item => {
@@ -677,6 +653,10 @@ function showAdAndGetCode(vipData) {
             editingId = null;
         };
         
+        proChoiceButton.addEventListener('click', () => { showView(proSensitivitiesView); });
+        beginnerChoiceButton.addEventListener('click', () => { showView(beginnerSensitivitiesView); });
+        openLootboxButton.addEventListener('click', () => { showView(lootboxView); });
+        hideLootboxButton.addEventListener('click', () => { showView(initialChoiceView); });
         openAdminBtn.addEventListener('click', () => { showView(adminPanel); });
         goBackBtn.addEventListener('click', () => { showView(initialChoiceView); });
         
@@ -738,7 +718,7 @@ function showAdAndGetCode(vipData) {
             }
         }
         
-        // 9. أكواد صندوق الغنائم
+        // 8. أكواد صندوق الغنائم
         const lootboxArea = document.getElementById('lootbox-area');
         const saveIdButton = document.getElementById('save-id-button');
         const playerIdInput = document.getElementById('player-id-input');
@@ -900,48 +880,16 @@ function showAdAndGetCode(vipData) {
         
         copyLinkButton.onclick = function() {
             const invitationLinkText = invitationLink.textContent;
-            navigator.clipboard.writeText(invitationLinkText).then(() => {
-                alert('تم نسخ الرابط بنجاح!');
-            }).catch(err => {
-                console.error('فشل في نسخ الرابط: ', err);
-            });
+            if (invitationLinkText) {
+                navigator.clipboard.writeText(invitationLinkText).then(() => {
+                    Telegram.WebApp.showAlert('تم نسخ الرابط بنجاح!');
+                }).catch(err => {
+                    console.error('فشل في نسخ الرابط:', err);
+                });
+            }
         };
-        
-        // 10. تشغيل وظيفة جلب البيانات عند تحميل الصفحة
+
         fetchSensitivities();
-        
-        // 11. ربط الأحداث بأزرار الواجهة الرئيسية
-        proChoiceButton.addEventListener('click', () => {
-            showView(proSensitivitiesView);
-        });
-
-        beginnerChoiceButton.addEventListener('click', () => {
-            showView(beginnerSensitivitiesView);
-        });
-
-        hideLootboxButton.onclick = () => showView(initialChoiceView);
-        goBackBtn.onclick = () => showView(initialChoiceView);
-
-        openLootboxButton.onclick = () => showView(lootboxView);
-
-        // 12. أكواد الخلفية المتحركة (Particles.js)
-        particlesJS('particles-js', {
-            "particles": {
-                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#00ffff" },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5 },
-                "size": { "value": 3, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#00ffff", "opacity": 0.4, "width": 1 },
-                "move": { "enable": true, "speed": 6, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } }
-            },
-            "retina_detect": true
-        });
     </script>
 </body>
 </html>
