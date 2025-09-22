@@ -1,0 +1,377 @@
+/* استيراد خطوط احترافية من Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+/* تعريف متغيرات CSS (CSS Variables) لسهولة التعديل */
+:root {
+  --primary-bg-color: #0d0e14;
+  --text-color: #c0c0c0;
+  --main-heading-color: #fff;
+  --accent-color: #00ff88;
+  --button-bg-color: rgba(255, 255, 255, 0.08);
+  --button-hover-bg-color: rgba(255, 255, 255, 0.15);
+  --border-color: rgba(255, 255, 255, 0.2);
+  --blur-amount: 8px;
+  --font-family-main: 'Montserrat', sans-serif;
+  --font-family-code: 'Orbitron', monospace;
+}
+
+/* التنسيقات العامة */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #000; /* خلفية سوداء صلبة */
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* حاوية التطبيق الرئيسية */
+#app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* تنسيق العنوان الرئيسي في الـ <header> */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.2em;
+  font-weight: 700;
+  color: var(--main-heading-color);
+  text-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  letter-spacing: 1.5px;
+}
+
+/* تنسيقات شاشة الاختيار الأولي */
+#initial-choice-view {
+    text-align: center;
+}
+
+#initial-choice-view h2 {
+    font-size: 1.8em;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.main-choice-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 90%;
+  max-width: 300px;
+  margin: 20px auto;
+}
+
+/* تنسيقات حاوية الحساسيات */
+.sensitivities-view {
+    text-align: center;
+}
+
+.sensitivities-view h2 {
+    font-size: 1.8em;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+/* تنسيق صندوق عرض الحساسية */
+.sensitivity-display {
+  margin-top: 40px;
+  padding: 25px;
+  background: var(--button-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  text-align: center;
+  width: 90%;
+  max-width: 350px;
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  margin: 40px auto 0;
+}
+
+#code-output {
+  font-family: var(--font-family-code);
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--accent-color);
+  word-wrap: break-word;
+  letter-spacing: 1px;
+}
+
+#display-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* لإخفاء العناصر */
+.hidden {
+  display: none !important;
+}
+
+/* تنسيقات متجاوبة (للموبايل) */
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.8em;
+  }
+}
+
+/* تنسيقات لوحة التحكم الإدارية */
+.admin-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 400px;
+    margin-top: 50px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 10px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-panel h2 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.admin-panel form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.admin-panel input,
+.admin-panel textarea,
+.admin-panel select,
+.admin-panel button {
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 1em;
+}
+
+.admin-panel input::placeholder,
+.admin-panel textarea::placeholder {
+    color: #aaa;
+}
+
+.admin-panel button {
+    background-color: #00aaff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.admin-panel button:hover {
+    background-color: #0088cc;
+}
+
+#go-back-btn {
+    margin-top: 20px;
+    background-color: transparent;
+    border: 1px solid #c0c0c0;
+    color: #c0c0c0;
+}
+
+#go-back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* تنسيقات قائمة لوحة التحكم */
+.admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.admin-list-item span {
+    color: #fff;
+    font-weight: 500;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.admin-actions button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.admin-actions .edit-btn {
+    background-color: #00aaff;
+    color: #fff;
+}
+
+.admin-actions .delete-btn {
+    background-color: #ff3333;
+    color: #fff;
+}
+/* هذا الجزء مهم جداً للجسيمات */
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1; /* لجعل الجسيمات تظهر خلف المحتوى */
+    background-color: #000; /* الخلفية السوداء */
+}
+
+/* هذه القواعد مهمة لجعل المحتوى يظهر فوق الجسيمات */
+.title-box, .container {
+    position: relative;
+    z-index: 1; /* لجعل المحتوى يظهر فوق الجسيمات */
+}
+.title-box {
+    background-color: rgba(0, 50, 60, 0.4);
+    padding: 15px 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    transform: perspective(1000px) rotateX(3deg);
+    transition: transform 0.3s ease-in-out;
+    max-width: 90%;
+    width: 350px;
+    backdrop-filter: blur(5px);
+}
+
+.title-box:hover {
+    transform: perspective(1000px) rotateX(0deg) scale(1.02);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+}
+
+.title-box h1 {
+    font-size: 1.8em;
+    margin-bottom: 5px;
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.9);
+}
+
+.title-box p {
+    font-size: 1em;
+    color: #e0f7fa;
+    margin-top: 0;
+    text-shadow: 0 0 3px rgba(0, 255, 255, 0.5);
+}
+
+/* تنسيقات الأزرار الجديدة */
+.main-choice-container button {
+    padding: 12px 20px; /* تصغير حجم الزر */
+    font-size: 1.1em; /* تصغير حجم الخط */
+    font-weight: 500; /* تقليل سمك الخط */
+    border: 1px solid rgba(0, 255, 255, 0.4); /* حدود متوهجة شفافة */
+    border-radius: 8px; /* حواف مستديرة أكثر نعومة */
+    background-color: rgba(0, 188, 212, 0.15); /* خلفية زرقاء سماوية شفافة جداً */
+    color: #e0f7fa; /* لون النص أبيض مائل للزرقة */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 255, 255, 0.2); /* ظل متوهج ناعم */
+    backdrop-filter: blur(4px); /* تأثير ضبابي خفيف */
+    -webkit-backdrop-filter: blur(4px); /* دعم متصفحات الويب كيت */
+}
+
+.main-choice-container button:hover {
+    background-color: rgba(0, 188, 212, 0.3); /* لون أغمق وأقل شفافية عند التمرير */
+    transform: translateY(-3px) scale(1.02); /* رفع وتكبير الزر قليلاً */
+    box-shadow: 0 6px 15px rgba(0, 255, 255, 0.5); /* ظل أكثر وضوحًا */
+    border-color: rgba(0, 255, 255, 0.7); /* حدود أكثر وضوحًا عند التمرير */
+}
+
+/* تأكد من أن هذا الكود موجود ومحدث ليتناسب مع الأزرار */
+.container {
+    background-color: rgba(0, 50, 60, 0.4); /* خلفية شفافة بلون أزرق داكن */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* ظل متوهج ناعم */
+    border: 1px solid rgba(0, 255, 255, 0.3); /* حدود متوهجة */
+    max-width: 90%;
+    width: 350px;
+    backdrop-filter: blur(5px); /* تأثير الضبابية الزجاجي */
+    position: relative;
+    z-index: 1;
+}
+
+/* تنسيقات الأزرار الداخلية (أزرار الحساسيات) */
+.sensitivities-view button {
+    background-color: rgba(0, 188, 212, 0.15); /* خلفية زرقاء سماوية شفافة */
+    border: 1px solid rgba(0, 255, 255, 0.4); /* حدود متوهجة */
+    color: #e0f7fa; /* لون النص أبيض مائل للزرقة */
+    padding: 12px 20px;
+    font-size: 1.1em;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: block; /* لجعل الزر يأخذ عرضاً كاملاً */
+    margin: 10px auto; /* إضافة مسافة بين الأزرار */
+    max-width: 250px;
+}
+
+.sensitivities-view button:hover {
+    background-color: rgba(0, 188, 212, 0.3);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 255, 255, 0.5);
+    border-color: rgba(0, 255, 255, 0.7);
+}
+#copy-code-btn {
+    background-color: #f43303; /* لون الخلفية: أزرق حديث */
+    color: white; /* لون النص: أبيض */
+    border: none; /* إزالة الحدود */
+    padding: 10px 20px; /* مسافة داخلية للزر */
+    font-size: 16px; /* حجم الخط */
+    border-radius: 8px; /* زوايا دائرية */
+    cursor: pointer; /* تغيير شكل المؤشر عند الوقوف عليه */
+    transition: background-color 0.3s ease; /* إضافة تأثير انتقالي سلس */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل خفيف */
+}
+
+#copy-code-btn:hover {
+    background-color: #fded07f0; /* لون أغمق عند مرور الماوس */
+}
+
+#copy-code-btn:active {
+    background-color: #004494; /* لون أغمق عند النقر */
+}
