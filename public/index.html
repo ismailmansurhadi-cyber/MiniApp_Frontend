@@ -104,8 +104,8 @@ button:disabled {
     border: 2px solid #ff9800;
     box-shadow: 0 0 10px rgba(255, 193, 7, 0.7);
     display: flex;
-justify-content: center;
-align-items: center;
+    justify-content: center;
+    align-items: center;
 }
 
 #open-vip-sensitivity-button:hover {
@@ -463,16 +463,13 @@ align-items: center;
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://adsgram.ai/adsgram.js"></script>
     <script>
-    if (window.AdsGram) {
-        window.AdsGram.init({
-            debug: true // يمكنك إزالة هذا السطر في مرحلة الإنتاج
-        });
-        // 1. هنا تقوم بتحميل الإعلان مسبقاً عند تشغيل التطبيق
-        const YOUR_AD_BLOCK_ID = 15189; 
-        window.AdsGram.preloadRewarded(YOUR_AD_BLOCK_ID);
-    }
-</script>
-
+        if (window.AdsGram) {
+            window.AdsGram.init({
+                debug: true // يمكنك إزالة هذا السطر في مرحلة الإنتاج
+            });
+        }
+    </script>
+    
     <script>
         // 1. تعريف العناصر الرئيسية في الواجهة
         const initialChoiceView = document.getElementById('initial-choice-view');
@@ -584,65 +581,75 @@ align-items: center;
             }
         };
 
-        // 5. وظيفة لزر حساسية VIP
- 
-        // 5. وظيفة لزر حساسية VIP
-const YOUR_AD_BLOCK_ID = 15189; // تأكد من استخدام ID الخاص بكتلة الإعلانات الخاصة بك
+        // 5. الكود الصحيح لزر حساسية VIP
+        const YOUR_AD_BLOCK_ID = 15189;
 
-openVipSensitivityButton.onclick = function() {
-    // تعطيل الزر ومنع النقرات المتكررة
-    openVipSensitivityButton.disabled = true;
-    openVipSensitivityButton.textContent = 'جاري تحميل الإعلان...';
-
-    showView(vipSensitivityView);
-    const vipData = allSensitivitiesData.find(item => item.type === 'vip');
-
-    if (!vipData) {
-        vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
-        openVipSensitivityButton.disabled = false;
-        openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
-        return;
-    }
-    
-    // محاولة عرض الإعلان
-    if (window.AdsGram) {
-        window.AdsGram.showRewarded({
-            blockId: YOUR_AD_BLOCK_ID,
-            onClose: (result) => {
-                // إعادة الزر لوضعه الطبيعي بعد إغلاق الإعلان
-                openVipSensitivityButton.disabled = false;
-                openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
-
-                if (result.success && vipData) {
-                    vipCodeOutput.textContent = vipData.code;
-                    Telegram.WebApp.showAlert('تم عرض الكود بنجاح!');
-                } else {
-                    vipCodeOutput.textContent = 'يجب مشاهدة الإعلان بالكامل للحصول على الكود.';
-                    Telegram.WebApp.showAlert('لم يتم إنهاء الإعلان بنجاح. حاول مرة أخرى.');
-                }
-                // تحميل إعلان جديد
+        const preloadAd = () => {
+            if (window.AdsGram) {
                 window.AdsGram.preloadRewarded(YOUR_AD_BLOCK_ID);
             }
-        });
-    } else {
-        vipCodeOutput.textContent = 'منصة الإعلانات غير متوفرة حالياً. يرجى المحاولة مرة أخرى.';
-        // إعادة الزر لوضعه الطبيعي
-        openVipSensitivityButton.disabled = false;
-        openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
-    }
-};
+        };
+        
+        // تحميل الإعلان عند بداية التطبيق
+        preloadAd();
 
-// 6. وظيفة زر نسخ كود VIP
-copyVipCodeBtn.onclick = function() {
-    const code = vipCodeOutput.textContent;
-    if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جاري تحميل الإعلان...') {
-        navigator.clipboard.writeText(code).then(() => {
-            Telegram.WebApp.showAlert('تم نسخ الكود بنجاح!');
-        }).catch(err => {
-            console.error('فشل في نسخ الكود:', err);
-        });
-    }
-};
+        openVipSensitivityButton.onclick = function() {
+            // تعطيل الزر ومنع النقرات المتكررة
+            openVipSensitivityButton.disabled = true;
+            openVipSensitivityButton.textContent = 'جاري تحميل الإعلان...';
+
+            const vipData = allSensitivitiesData.find(item => item.type === 'vip');
+
+            if (!vipData) {
+                vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
+                openVipSensitivityButton.disabled = false;
+                openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+                return;
+            }
+
+            if (window.AdsGram && window.AdsGram.showRewarded) {
+                window.AdsGram.showRewarded({
+                    blockId: YOUR_AD_BLOCK_ID,
+                    onClose: (result) => {
+                        openVipSensitivityButton.disabled = false;
+                        openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+
+                        if (result.success) {
+                            showView(vipSensitivityView);
+                            vipCodeOutput.textContent = vipData.code;
+                            Telegram.WebApp.showAlert('تم عرض الكود بنجاح!');
+                        } else {
+                            vipCodeOutput.textContent = 'يجب مشاهدة الإعلان بالكامل للحصول على الكود.';
+                            Telegram.WebApp.showAlert('لم يتم إنهاء الإعلان بنجاح. حاول مرة أخرى.');
+                        }
+                        preloadAd();
+                    },
+                    onError: (error) => {
+                        console.error('AdsGram error:', error);
+                        openVipSensitivityButton.disabled = false;
+                        openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+                        Telegram.WebApp.showAlert('حدث خطأ في عرض الإعلان. يرجى المحاولة مرة أخرى.');
+                        preloadAd();
+                    }
+                });
+            } else {
+                openVipSensitivityButton.disabled = false;
+                openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+                Telegram.WebApp.showAlert('منصة الإعلانات غير متوفرة حالياً. يرجى المحاولة مرة أخرى.');
+            }
+        };
+
+        // 6. وظيفة زر نسخ كود VIP
+        copyVipCodeBtn.onclick = function() {
+            const code = vipCodeOutput.textContent;
+            if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جاري تحميل الإعلان...') {
+                navigator.clipboard.writeText(code).then(() => {
+                    Telegram.WebApp.showAlert('تم نسخ الكود بنجاح!');
+                }).catch(err => {
+                    console.error('فشل في نسخ الكود:', err);
+                });
+            }
+        };
         // 7. إدارة لوحة التحكم
         const renderAdminList = (data) => {
             adminList.innerHTML = '';
@@ -886,78 +893,132 @@ copyVipCodeBtn.onclick = function() {
                     li.innerHTML = `<span>${winner.name}</span><span>ربح ${winner.prize}</span>`;
                     winnersListContainer.appendChild(li);
                 });
-            } else {
-                winnersListContainer.innerHTML = '<li>لا يوجد فائزون حتى الآن.</li>';
             }
         }
         
         copyLinkButton.onclick = function() {
-            const invitationLinkText = invitationLink.textContent;
-            if (invitationLinkText) {
-                navigator.clipboard.writeText(invitationLinkText).then(() => {
-                    Telegram.WebApp.showAlert('تم نسخ الرابط بنجاح!');
-                }).catch(err => {
-                    console.error('فشل في نسخ الرابط:', err);
+            const link = invitationLink.textContent;
+            if (link) {
+                navigator.clipboard.writeText(link).then(() => {
+                    Telegram.WebApp.showAlert('تم نسخ رابط الدعوة بنجاح!');
                 });
             }
         };
+
         fetchSensitivities();
 
-        particlesJS("particles-js", {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: "#ffffff" },
-                shape: {
-                    type: "circle",
-                    stroke: { width: 0, color: "#000000" },
-                    polygon: { nb_sides: 5 },
-                    image: { src: "img/github.svg", width: 100, height: 100 }
+        // تهيئة Particles.js
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
                 },
-                opacity: {
-                    value: 0.5,
-                    random: false,
-                    anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false }
+                "color": {
+                    "value": "#ffffff"
                 },
-                size: {
-                    value: 5,
-                    random: true,
-                    anim: { enable: false, speed: 40, size_min: 0.1, sync: false }
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    },
+                    "image": {
+                        "src": "img/github.svg",
+                        "width": 100,
+                        "height": 100
+                    }
                 },
-                line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: "#ffffff",
-                    opacity: 0.4,
-                    width: 1
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
                 },
-                move: {
-                    enable: true,
-                    speed: 6,
-                    direction: "none",
-                    random: false,
-                    straight: false,
-                    out_mode: "out",
-                    bounce: false,
-                    attract: { enable: false, rotateX: 600, rotateY: 1200 }
+                "size": {
+                    "value": 5,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
                 }
             },
-            interactivity: {
-                detect_on: "canvas",
-                events: {
-                    onhover: { enable: true, mode: "repulse" },
-                    onclick: { enable: true, mode: "push" },
-                    resize: true
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
                 },
-                modes: {
-                    grab: { distance: 400, line_linked: { opacity: 1 } },
-                    bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
-                    repulse: { distance: 200, duration: 0.4 },
-                    push: { particles_nb: 4 },
-                    remove: { particles_nb: 2 }
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
                 }
             },
-            retina_detect: true
+            "retina_detect": true
         });
     </script>
+
 </body>
 </html>
