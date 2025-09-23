@@ -407,14 +407,14 @@ button:disabled {
                     <div id="invitation-area" style="display: none;">
                         <p id="invitation-counter">لديك <span id="invited-count">0</span> من 3 دعوات. لديك <span id="lootbox-count">0</span> صندوق.</p>
                         
-                        <img id="gun-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png" alt="بندقية"> 
-                        <img id="uc-coin-top-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC"> 
-                        <img id="uc-coin-middle-right" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC"> 
-                        <img id="uc-coin-bottom-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC"> 
-                        <img id="parachute-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png" alt="مظلة"> 
+                        <img id="gun-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png  " alt="بندقية"> 
+                        <img id="uc-coin-top-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png  " alt="عملة UC"> 
+                        <img id="uc-coin-middle-right" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png  " alt="عملة UC"> 
+                        <img id="uc-coin-bottom-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png  " alt="عملة UC"> 
+                        <img id="parachute-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png  " alt="مظلة"> 
                         
                         <div style="position: relative; width: fit-content; margin: 20px auto;">
-                            <img id="lootbox-image" src="https://up6.cc/2025/08/175831095492441.png" alt="صندوق الغنائم">
+                            <img id="lootbox-image" src="https://up6.cc/2025/08/175831095492441.png  " alt="صندوق الغنائم">
                         </div>
                         <br>
 
@@ -581,7 +581,7 @@ button:disabled {
             }
         };
 
-        // 5. الكود الصحيح لزر حساسية VIP
+        // 5. الكود الصحيح لزر حساسية VIP — معدّل بالكامل ليتوافق مع AdsGram Block 15189
         const YOUR_AD_BLOCK_ID = 15189;
 
         const preloadAd = () => {
@@ -622,7 +622,7 @@ button:disabled {
                             vipCodeOutput.textContent = 'يجب مشاهدة الإعلان بالكامل للحصول على الكود.';
                             Telegram.WebApp.showAlert('لم يتم إنهاء الإعلان بنجاح. حاول مرة أخرى.');
                         }
-                        preloadAd();
+                        preloadAd(); // إعادة تحميل الإعلان للاستخدام التالي
                     },
                     onError: (error) => {
                         console.error('AdsGram error:', error);
@@ -650,6 +650,7 @@ button:disabled {
                 });
             }
         };
+
         // 7. إدارة لوحة التحكم
         const renderAdminList = (data) => {
             adminList.innerHTML = '';
@@ -731,7 +732,7 @@ button:disabled {
             }
         });
         
-        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+        if (window.Telegram && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
             const currentUser = window.Telegram.WebApp.initDataUnsafe.user;
             if (openAdminBtn && currentUser.id != ADMIN_USER_ID) {
                 openAdminBtn.style.display = 'none';
@@ -756,11 +757,11 @@ button:disabled {
         const INVITE_GOAL = 3;
 
         const prizes = [
-            { name: "50 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png" },
-            { name: "100 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png" },
-            { name: "500 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png" },
-            { name: "ملابس نادرة", imageUrl: "https://up6.cc/2025/08/17583186663551.png" },
-            { name: "ايموت أسطوري", imageUrl: "https://up6.cc/2025/08/17583186663551.png" }
+            { name: "50 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png  " },
+            { name: "100 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png  " },
+            { name: "500 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png  " },
+            { name: "ملابس نادرة", imageUrl: "https://up6.cc/2025/08/17583186663551.png  " },
+            { name: "ايموت أسطوري", imageUrl: "https://up6.cc/2025/08/17583186663551.png  " }
         ];
 
         let lastLooters = [];
