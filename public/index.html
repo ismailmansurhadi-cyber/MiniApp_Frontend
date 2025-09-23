@@ -582,55 +582,64 @@ button:disabled {
         };
 
         // 5. وظيفة لزر حساسية VIP
- // 5. وظيفة لزر حساسية VIP
+ 
+        // 5. وظيفة لزر حساسية VIP
 const YOUR_AD_BLOCK_ID = 15189; // تأكد من استخدام ID الخاص بكتلة الإعلانات الخاصة بك
 
 openVipSensitivityButton.onclick = function() {
+    // تعطيل الزر ومنع النقرات المتكررة
+    openVipSensitivityButton.disabled = true;
+    openVipSensitivityButton.textContent = 'جاري تحميل الإعلان...';
+
     showView(vipSensitivityView);
-    vipCodeOutput.textContent = 'جاري تحميل الإعلان...';
+    const vipData = allSensitivitiesData.find(item => item.type === 'vip');
+
+    if (!vipData) {
+        vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
+        openVipSensitivityButton.disabled = false;
+        openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+        return;
+    }
     
-    const showAd = () => {
-        if (window.AdsGram) {
-            if (window.AdsGram.isRewardedReady(YOUR_AD_BLOCK_ID)) {
-                window.AdsGram.showRewarded({
-                    blockId: YOUR_AD_BLOCK_ID,
-                    onClose: (result) => {
-                        const vipData = allSensitivitiesData.find(item => item.type === 'vip');
-                        if (result.success && vipData) {
-                            vipCodeOutput.textContent = vipData.code;
-                            Telegram.WebApp.showAlert('تم عرض الكود بنجاح!');
-                        } else {
-                            vipCodeOutput.textContent = 'يجب مشاهدة الإعلان بالكامل للحصول على الكود.';
-                            Telegram.WebApp.showAlert('لم يتم إنهاء الإعلان بنجاح. حاول مرة أخرى.');
-                        }
-                        window.AdsGram.preloadRewarded(YOUR_AD_BLOCK_ID);
-                    }
-                });
-            } else {
-                vipCodeOutput.textContent = 'الإعلان غير جاهز. يرجى المحاولة بعد بضع ثوانٍ.';
-                Telegram.WebApp.showAlert('الإعلان غير جاهز، جارٍ التحميل... يرجى الضغط مرة أخرى بعد قليل.');
+    // محاولة عرض الإعلان
+    if (window.AdsGram) {
+        window.AdsGram.showRewarded({
+            blockId: YOUR_AD_BLOCK_ID,
+            onClose: (result) => {
+                // إعادة الزر لوضعه الطبيعي بعد إغلاق الإعلان
+                openVipSensitivityButton.disabled = false;
+                openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+
+                if (result.success && vipData) {
+                    vipCodeOutput.textContent = vipData.code;
+                    Telegram.WebApp.showAlert('تم عرض الكود بنجاح!');
+                } else {
+                    vipCodeOutput.textContent = 'يجب مشاهدة الإعلان بالكامل للحصول على الكود.';
+                    Telegram.WebApp.showAlert('لم يتم إنهاء الإعلان بنجاح. حاول مرة أخرى.');
+                }
+                // تحميل إعلان جديد
                 window.AdsGram.preloadRewarded(YOUR_AD_BLOCK_ID);
             }
-        } else {
-            vipCodeOutput.textContent = 'منصة الإعلانات غير متوفرة حالياً. يرجى المحاولة مرة أخرى.';
-        }
-    };
-    
-    // محاولة عرض الإعلان فوراً
-    showAd();
+        });
+    } else {
+        vipCodeOutput.textContent = 'منصة الإعلانات غير متوفرة حالياً. يرجى المحاولة مرة أخرى.';
+        // إعادة الزر لوضعه الطبيعي
+        openVipSensitivityButton.disabled = false;
+        openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+    }
 };
-        // 6. وظيفة زر نسخ كود VIP
-        copyVipCodeBtn.onclick = function() {
-            const code = vipCodeOutput.textContent;
-            if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جاري تحميل الإعلان...') {
-                navigator.clipboard.writeText(code).then(() => {
-                    Telegram.WebApp.showAlert('تم نسخ الكود بنجاح!');
-                }).catch(err => {
-                    console.error('فشل في نسخ الكود:', err);
-                });
-            }
-        };
 
+// 6. وظيفة زر نسخ كود VIP
+copyVipCodeBtn.onclick = function() {
+    const code = vipCodeOutput.textContent;
+    if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جاري تحميل الإعلان...') {
+        navigator.clipboard.writeText(code).then(() => {
+            Telegram.WebApp.showAlert('تم نسخ الكود بنجاح!');
+        }).catch(err => {
+            console.error('فشل في نسخ الكود:', err);
+        });
+    }
+};
         // 7. إدارة لوحة التحكم
         const renderAdminList = (data) => {
             adminList.innerHTML = '';
