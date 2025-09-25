@@ -459,7 +459,7 @@ button:disabled {
 
     <div id="particles-js"></div>
     
-    <!-- ✅ روابط SDK بدون مسافات زائدة -->
+    <!-- ✅ روابط السكربتات بدون مسافات زائدة -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://adsgram.ai/adsgram.js"></script>
@@ -575,14 +575,23 @@ button:disabled {
             }
         };
 
-        // ✅ كود زر VIP (مصحح)
-        const YOUR_AD_BLOCK_ID = "15189";
+        // 5. الكود الأصلي لزر حساسية VIP — بدون أي تعديل
+        const preloadAd = () => {
+            if (window.AdsGram && adsgramReady) {
+                window.AdsGram.preloadRewarded(YOUR_AD_BLOCK_ID);
+                console.log("🔄 Ad preloaded");
+            } else {
+                console.warn("⚠️ Cannot preload ad: AdsGram not ready");
+            }
+        };
+        
+        setTimeout(preloadAd, 1000);
 
-        openVipSensitivityButton.onclick = async function() {
+        openVipSensitivityButton.onclick = function() {
             openVipSensitivityButton.disabled = true;
             openVipSensitivityButton.textContent = 'جاري تحميل الإعلان...';
 
-            const vipData = allSensitivitiesData?.find(item => item.type === 'vip');
+            const vipData = allSensitivitiesData.find(item => item.type === 'vip');
             if (!vipData) {
                 vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
                 openVipSensitivityButton.disabled = false;
@@ -590,32 +599,45 @@ button:disabled {
                 return;
             }
 
-            if (!window.AdsGram) {
-                Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات. أعد المحاولة.');
-                openVipSensitivityButton.disabled = false;
-                openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
-                return;
-            }
+            let attempts = 0;
+            const maxAttempts = 25;
+            const checkInterval = setInterval(() => {
+                if (window.AdsGram && typeof window.AdsGram.showRewarded === 'function' && adsgramReady) {
+                    clearInterval(checkInterval);
 
-            try {
-                const result = await window.AdsGram.show({
-                    zoneId: YOUR_AD_BLOCK_ID
-                });
+                    window.AdsGram.showRewarded({
+                        blockId: YOUR_AD_BLOCK_ID,
+                        onClose: (result) => {
+                            openVipSensitivityButton.disabled = false;
+                            openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+                            if (result.success) {
+                                showView(vipSensitivityView);
+                                vipCodeOutput.textContent = vipData.code;
+                                Telegram.WebApp.showAlert('🎉 تم عرض الكود بنجاح!');
+                            } else {
+                                vipCodeOutput.textContent = '❌ يجب مشاهدة الإعلان بالكامل للحصول على الكود.';
+                                Telegram.WebApp.showAlert('لم يتم إنهاء الإعلان بنجاح. حاول مرة أخرى.');
+                            }
+                            setTimeout(preloadAd, 1000);
+                        },
+                        onError: (error) => {
+                            console.error('AdsGram error:', error);
+                            openVipSensitivityButton.disabled = false;
+                            openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+                            Telegram.WebApp.showAlert('❌ حدث خطأ في عرض الإعلان. أعد المحاولة.');
+                            setTimeout(preloadAd, 1000);
+                        }
+                    });
 
-                if (result && result.isRewarded) {
-                    showView(vipSensitivityView);
-                    vipCodeOutput.textContent = vipData.code;
-                    Telegram.WebApp.showAlert('🎉 تم عرض الكود بنجاح!');
-                } else {
-                    Telegram.WebApp.showAlert('❌ يجب مشاهدة الإعلان بالكامل للحصول على الكود.');
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(checkInterval);
+                    console.error('❌ AdsGram failed to load after 5 seconds');
+                    openVipSensitivityButton.disabled = false;
+                    openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+                    Telegram.WebApp.showAlert('❌ فشل تحميل الإعلان. تأكد من الإنترنت وأعد المحاولة.');
                 }
-            } catch (error) {
-                console.error('AdsGram error:', error);
-                Telegram.WebApp.showAlert('❌ فشل في عرض الإعلان. حاول لاحقًا.');
-            } finally {
-                openVipSensitivityButton.disabled = false;
-                openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
-            }
+                attempts++;
+            }, 200);
         };
 
         // 6. وظيفة زر نسخ كود VIP
@@ -630,7 +652,7 @@ button:disabled {
             }
         };
 
-        // 7. إدارة لوحة التحكم (مع إضافة userId للحماية)
+        // 7. إدارة لوحة التحكم
         const renderAdminList = (data) => {
             adminList.innerHTML = '';
             data.forEach(item => {
@@ -667,8 +689,7 @@ button:disabled {
                 name: adminNameInput.value,
                 code: adminCodeInput.value,
                 imageUrl: adminImageInput.value,
-                type: type,
-                userId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id // ← مضاف للحماية
+                type: type
             };
 
             if (editingId) {
@@ -705,11 +726,7 @@ button:disabled {
             } else if (target.classList.contains('delete-btn')) {
                 if (confirm('هل أنت متأكد من حذف هذه الحساسية؟')) {
                     await fetch(`${API_BASE_URL}/api/sensitivities/${id}`, {
-                        method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            userId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id // ← مضاف للحماية
-                        })
+                        method: 'DELETE'
                     });
                     fetchSensitivities();
                 }
