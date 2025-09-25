@@ -45,7 +45,6 @@ main#app-container {
     width: 100%;
     max-width: 400px;
     box-sizing: border-box;
-    text-align: center;
 }
 
 .title-box h1 {
@@ -350,23 +349,6 @@ button:disabled {
     z-index: 2;
     white-space: nowrap;
 }
-
-/* رسائل النظام */
-.system-message {
-    padding: 10px;
-    border-radius: 8px;
-    margin: 10px 0;
-    font-weight: bold;
-    text-align: center;
-}
-
-.success {
-    background-color: #21a521;
-}
-
-.error {
-    background-color: #d11a1a;
-}
     </style>
 </head>
 <body>
@@ -389,26 +371,17 @@ button:disabled {
         <section id="pro-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المحترفين</h2>
             <div id="pro-buttons-container" class="button-container"></div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button id="hide-pro-btn">العودة إلى الواجهة الرئيسية</button>
-            </div>
         </section>
 
         <section id="beginner-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المبتدئين</h2>
             <div id="beginner-buttons-container" class="button-container"></div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button id="hide-beginner-btn">العودة إلى الواجهة الرئيسية</button>
-            </div>
         </section>
 
         <section id="display-container" class="sensitivity-display hidden">
             <img id="display-image" src="" alt="صورة الحساسية">
             <p id="code-output">اضغط على زر لعرض الكود</p>
             <button id="copy-code-btn" style="margin-top: 10px;">نسخ الكود</button>
-            <div style="text-align: center; margin-top: 20px;">
-                <button id="hide-display-btn">العودة إلى الواجهة الرئيسية</button>
-            </div>
         </section>
         
         <section id="vip-sensitivity-view" class="sensitivities-view hidden">
@@ -421,9 +394,6 @@ button:disabled {
                     <button id="copy-code-btn-vip" style="margin-top: 10px;">نسخ الكود</button>
                 </div>
             </div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button id="hide-vip-btn">العودة إلى الواجهة الرئيسية</button>
-            </div>
         </section>
 
         <section id="lootbox-view" class="sensitivities-view hidden">
@@ -434,17 +404,17 @@ button:disabled {
                     <input type="text" id="player-id-input" placeholder="حسابك ID ادخل">
                     <button id="save-id-button">حفظ ID</button>
                     
-                    <div id="invitation-area" class="hidden">
+                    <div id="invitation-area" style="display: none;">
                         <p id="invitation-counter">لديك <span id="invited-count">0</span> من 3 دعوات. لديك <span id="lootbox-count">0</span> صندوق.</p>
                         
-                        <img id="gun-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png" alt="بندقية" loading="lazy"> 
-                        <img id="uc-coin-top-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC" loading="lazy"> 
-                        <img id="uc-coin-middle-right" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC" loading="lazy"> 
-                        <img id="uc-coin-bottom-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC" loading="lazy"> 
-                        <img id="parachute-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png" alt="مظلة" loading="lazy"> 
+                        <img id="gun-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png" alt="بندقية"> 
+                        <img id="uc-coin-top-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC"> 
+                        <img id="uc-coin-middle-right" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC"> 
+                        <img id="uc-coin-bottom-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC"> 
+                        <img id="parachute-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png" alt="مظلة"> 
                         
                         <div style="position: relative; width: fit-content; margin: 20px auto;">
-                            <img id="lootbox-image" src="https://up6.cc/2025/08/175831095492441.png" alt="صندوق الغنائم" loading="lazy">
+                            <img id="lootbox-image" src="https://up6.cc/2025/08/175831095492441.png" alt="صندوق الغنائم">
                         </div>
                         <br>
 
@@ -454,7 +424,7 @@ button:disabled {
                             <button id="copy-link-button" class="copy-button">نسخ</button>
                         </div>
 
-                        <div id="result-area" class="system-message hidden"></div>
+                        <div id="result-area"></div>
                         <button id="open-box-button" disabled>افتح الصندوق</button>
                     </div>
                     
@@ -494,70 +464,8 @@ button:disabled {
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://adsgram.ai/adsgram.js"></script>
 
-    <!-- Modal for custom alerts and confirmations -->
-    <div id="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: none; justify-content: center; align-items: center; z-index: 1000;">
-        <div id="custom-modal" style="background-color: #33363b; padding: 20px; border-radius: 12px; max-width: 300px; text-align: center; color: white;">
-            <p id="modal-message" style="margin-bottom: 20px;"></p>
-            <div id="modal-actions">
-                <button id="modal-ok-btn" style="width: 100px; padding: 10px; margin: 0 5px; border-radius: 6px;">موافق</button>
-                <button id="modal-cancel-btn" style="width: 100px; padding: 10px; margin: 0 5px; border-radius: 6px; background-color: #d11a1a;">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <script type="module">
-        // ✅ 1. استيراد مكتبات Firebase
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, where, orderBy, limit, serverTimestamp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        
-        // إعداد Firebase من المتغيرات العامة
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        let app, db, auth, userId;
-        const ADMIN_USER_ID = '658500340'; // ID المالك
-
-        const PRO_SENSITIVITIES_COLLECTION_PATH = `artifacts/${appId}/public/data/sensitivities-pro`;
-        const BEGINNER_SENSITIVITIES_COLLECTION_PATH = `artifacts/${appId}/public/data/sensitivities-beginner`;
-        const VIP_SENSITIVITIES_COLLECTION_PATH = `artifacts/${appId}/public/data/sensitivities-vip`;
-        const USERS_COLLECTION_PATH = `artifacts/${appId}/users`;
-        const WINNERS_COLLECTION_PATH = `artifacts/${appId}/public/data/winners`;
-        
-        // Modal elements
-        const modalOverlay = document.getElementById('modal-overlay');
-        const modalMessage = document.getElementById('modal-message');
-        const modalOkBtn = document.getElementById('modal-ok-btn');
-        const modalCancelBtn = document.getElementById('modal-cancel-btn');
-
-        function showMessage(message, isConfirm = false) {
-            return new Promise((resolve) => {
-                modalMessage.textContent = message;
-                modalOkBtn.textContent = isConfirm ? 'موافق' : 'إغلاق';
-                modalCancelBtn.style.display = isConfirm ? 'inline-block' : 'none';
-                modalOverlay.style.display = 'flex';
-
-                const handleOk = () => {
-                    modalOverlay.style.display = 'none';
-                    modalOkBtn.removeEventListener('click', handleOk);
-                    modalCancelBtn.removeEventListener('click', handleCancel);
-                    resolve(true);
-                };
-
-                const handleCancel = () => {
-                    modalOverlay.style.display = 'none';
-                    modalOkBtn.removeEventListener('click', handleOk);
-                    modalCancelBtn.removeEventListener('click', handleCancel);
-                    resolve(false);
-                };
-                
-                modalOkBtn.addEventListener('click', handleOk);
-                modalCancelBtn.addEventListener('click', handleCancel);
-            });
-        }
-        
-        // 2. تعريف العناصر الرئيسية في الواجهة
+    <script>
+        // 1. تعريف العناصر الرئيسية في الواجهة
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
@@ -573,10 +481,6 @@ button:disabled {
         const hideLootboxButton = document.getElementById('hide-lootbox-button');
         const goBackBtn = document.getElementById('go-back-btn');
         const openVipSensitivityButton = document.getElementById('open-vip-sensitivity-button');
-        const hideProBtn = document.getElementById('hide-pro-btn');
-        const hideBeginnerBtn = document.getElementById('hide-beginner-btn');
-        const hideDisplayBtn = document.getElementById('hide-display-btn');
-        const hideVipBtn = document.getElementById('hide-vip-btn');
 
         const vipCodeOutput = document.getElementById('code-output-vip');
         const copyVipCodeBtn = document.getElementById('copy-code-btn-vip');
@@ -584,7 +488,6 @@ button:disabled {
         const beginnerButtonsContainer = document.getElementById('beginner-buttons-container');
         const codeOutput = document.getElementById('code-output');
         const displayImage = document.getElementById('display-image');
-        const copyCodeBtn = document.getElementById('copy-code-btn');
         
         // متغيرات لوحة التحكم
         const addSensitivityForm = document.getElementById('add-sensitivity-form');
@@ -595,80 +498,49 @@ button:disabled {
         const formSubmitBtn = document.getElementById('form-submit-btn');
         const adminList = document.getElementById('admin-list');
 
-        // أكواد صندوق الغنائم
-        const lootboxArea = document.getElementById('lootbox-area');
-        const saveIdButton = document.getElementById('save-id-button');
-        const playerIdInput = document.getElementById('player-id-input');
-        const invitationArea = document.getElementById('invitation-area');
-        const invitationLink = document.getElementById('invitation-link');
-        const openBoxButton = document.getElementById('open-box-button');
-        const winnersListContainer = document.getElementById('winners-list-container');
-        const lootboxImage = document.getElementById('lootbox-image');
-        const resultArea = document.getElementById('result-area');
-        const copyLinkButton = document.getElementById('copy-link-button');
-        const invitationCounterSpan = document.getElementById('invitation-counter');
-        const invitedCountSpan = document.getElementById('invited-count');
-        const lootboxCountSpan = document.getElementById('lootbox-count');
-
-        const INVITE_GOAL = 3;
-        const prizes = [
-            { name: "50 UC" },
-            { name: "100 UC" },
-            { name: "500 UC" },
-            { name: "ملابس نادرة" },
-            { name: "ايموت أسطوري" }
-        ];
-
-        // 3. وظيفة إظهار وإخفاء الواجهات
-        function showView(viewToShow) {
-            [initialChoiceView, proSensitivitiesView, beginnerSensitivitiesView, displayContainer, lootboxView, adminPanel, vipSensitivityView].forEach(view => {
-                view.classList.add('hidden');
-            });
-            viewToShow.classList.remove('hidden');
-            // إخفاء حاوية عرض الكود عند الانتقال
-            displayContainer.classList.add('hidden');
-            vipSensitivityView.classList.add('hidden');
-        }
-
-        // 4. وظيفة جلب وعرض البيانات من Firestore
-        async function fetchAndRenderSensitivities() {
-            try {
-                // جلب الحساسيات الاحترافية
-                onSnapshot(collection(db, PRO_SENSITIVITIES_COLLECTION_PATH), (snapshot) => {
-                    const proSensitivities = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    createSensitivityButtons(proSensitivities, proButtonsContainer);
-                });
-
-                // جلب حساسيات المبتدئين
-                onSnapshot(collection(db, BEGINNER_SENSITIVITIES_COLLECTION_PATH), (snapshot) => {
-                    const beginnerSensitivities = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
-                });
-
-                // جلب حساسية VIP
-                onSnapshot(collection(db, VIP_SENSITIVITIES_COLLECTION_PATH), (snapshot) => {
-                    if (!snapshot.empty) {
-                        const vipData = snapshot.docs[0].data();
-                        window.vipData = { id: snapshot.docs[0].id, ...vipData };
-                    } else {
-                        window.vipData = null;
-                        vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
-                    }
-                });
-
-                // جلب قائمة الفائزين
-                onSnapshot(query(collection(db, WINNERS_COLLECTION_PATH), orderBy('timestamp', 'desc'), limit(5)), (snapshot) => {
-                    const winners = snapshot.docs.map(doc => doc.data());
-                    renderWinnersList(winners);
-                });
-
-            } catch (error) {
-                console.error('Failed to fetch data:', error);
-                Telegram.WebApp.showAlert('فشل في جلب البيانات.');
-            }
-        }
+        let allSensitivitiesData = null;
+        let editingId = null;
+        const ADMIN_USER_ID = '658500340';
+        const API_BASE_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app';
         
-        // 5. وظيفة إنشاء أزرار الحساسيات
+        // 2. وظيفة إظهار وإخفاء الواجهات
+        function showView(viewToShow) {
+            initialChoiceView.classList.add('hidden');
+            proSensitivitiesView.classList.add('hidden');
+            beginnerSensitivitiesView.classList.add('hidden');
+            displayContainer.classList.add('hidden');
+            lootboxView.classList.add('hidden');
+            adminPanel.classList.add('hidden');
+            vipSensitivityView.classList.add('hidden');
+
+            viewToShow.classList.remove('hidden');
+        }
+
+        // 3. وظيفة جلب البيانات من الخادم (تُنفذ مرة واحدة عند التحميل)
+        const fetchSensitivities = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                allSensitivitiesData = await response.json();
+                
+                const proSensitivities = allSensitivitiesData.filter(item => item.type === 'pro');
+                const beginnerSensitivities = allSensitivitiesData.filter(item => item.type === 'beginner');
+
+                createSensitivityButtons(proSensitivities, proButtonsContainer);
+                createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
+                
+                renderAdminList(allSensitivitiesData);
+                
+            } catch (error) {
+                console.error('Failed to fetch sensitivities:', error);
+                alert('فشل في جلب البيانات من الواجهة الخلفية.');
+            }
+        };
+
+        // 4. وظيفة إنشاء الأزرار
         const createSensitivityButtons = (data, container) => {
             container.innerHTML = '';
             data.forEach(item => {
@@ -685,28 +557,40 @@ button:disabled {
         };
 
         const handleSensitivityClick = (item) => {
-            showView(displayContainer);
+            displayContainer.classList.remove('hidden');
             codeOutput.textContent = item.code;
-            displayImage.src = item.imageUrl || `https://placehold.co/400x200/2c2f33/ffffff?text=${item.name}`;
+            displayImage.src = item.imageUrl;
             displayImage.style.display = 'block';
 
-            copyCodeBtn.onclick = async () => {
-                try {
-                    await navigator.clipboard.writeText(item.code);
-                    Telegram.WebApp.showAlert('تم نسخ الكود بنجاح!');
-                } catch (err) {
-                    Telegram.WebApp.showAlert('حدث خطأ أثناء نسخ الكود.');
-                }
-            };
+            const copyBtn = document.getElementById('copy-code-btn');
+            if (copyBtn) {
+                copyBtn.onclick = async () => {
+                    try {
+                        await navigator.clipboard.writeText(item.code);
+                        Telegram.WebApp.showAlert('تم نسخ الكود بنجاح!');
+                    } catch (err) {
+                        Telegram.WebApp.showAlert('حدث خطأ أثناء نسخ الكود.');
+                    }
+                };
+            }
         };
-        
-        // ✅ ✅ ✅ كود زر VIP مع AdsGram ✅ ✅ ✅
+
+        // ✅ ✅ ✅ الكود المصلح لزر VIP (الجزء الوحيد المعدّل) ✅ ✅ ✅
         const YOUR_AD_BLOCK_ID = "15189"; // تأكد أن هذا Block ID من نوع Rewarded في AdsGram
 
         openVipSensitivityButton.onclick = async function() {
             openVipSensitivityButton.disabled = true;
             openVipSensitivityButton.textContent = 'جاري تحميل الإعلان...';
 
+            const vipData = allSensitivitiesData?.find(item => item.type === 'vip');
+            if (!vipData) {
+                vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
+                openVipSensitivityButton.disabled = false;
+                openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+                return;
+            }
+
+            // التأكد من أن AdsGram جاهز
             if (!window.AdsGram) {
                 Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات. أعد المحاولة.');
                 openVipSensitivityButton.disabled = false;
@@ -715,17 +599,14 @@ button:disabled {
             }
 
             try {
-                const result = await window.AdsGram.show({ zoneId: YOUR_AD_BLOCK_ID });
+                const result = await window.AdsGram.show({
+                    zoneId: YOUR_AD_BLOCK_ID
+                });
 
                 if (result && result.isRewarded) {
-                    if (window.vipData) {
-                        showView(vipSensitivityView);
-                        vipCodeOutput.textContent = window.vipData.code;
-                        Telegram.WebApp.showAlert('🎉 تم عرض الكود بنجاح!');
-                    } else {
-                        Telegram.WebApp.showAlert('لا يوجد كود VIP حالياً.');
-                        showView(initialChoiceView);
-                    }
+                    showView(vipSensitivityView);
+                    vipCodeOutput.textContent = vipData.code;
+                    Telegram.WebApp.showAlert('🎉 تم عرض الكود بنجاح!');
                 } else {
                     Telegram.WebApp.showAlert('❌ يجب مشاهدة الإعلان بالكامل للحصول على الكود.');
                 }
@@ -738,7 +619,7 @@ button:disabled {
             }
         };
 
-        // وظيفة زر نسخ كود VIP
+        // 6. وظيفة زر نسخ كود VIP
         copyVipCodeBtn.onclick = function() {
             const code = vipCodeOutput.textContent;
             if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جاري تحميل الإعلان...') {
@@ -750,7 +631,7 @@ button:disabled {
             }
         };
 
-        // 6. إدارة لوحة التحكم
+        // 7. إدارة لوحة التحكم
         const renderAdminList = (data) => {
             adminList.innerHTML = '';
             data.forEach(item => {
@@ -759,8 +640,8 @@ button:disabled {
                 itemDiv.innerHTML = `
                     <span>${item.name} (${item.type})</span>
                     <div class="admin-actions">
-                        <button class="edit-btn" data-id="${item.id}" data-type="${item.type}">تعديل</button>
-                        <button class="delete-btn" data-id="${item.id}" data-type="${item.type}">حذف</button>
+                        <button class="edit-btn" data-id="${item.id}">تعديل</button>
+                        <button class="delete-btn" data-id="${item.id}">حذف</button>
                     </div>
                 `;
                 adminList.appendChild(itemDiv);
@@ -770,23 +651,16 @@ button:disabled {
         const resetForm = () => {
             addSensitivityForm.reset();
             formSubmitBtn.textContent = 'إضافة';
-            window.editingId = null;
-            window.editingType = null;
+            editingId = null;
         };
         
-        // 7. إدارة الأحداث والتنقل بين الصفحات
-        proChoiceButton.addEventListener('click', () => showView(proSensitivitiesView));
-        beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
-        openLootboxButton.addEventListener('click', () => showView(lootboxView));
-        openAdminBtn.addEventListener('click', () => showView(adminPanel));
-
-        hideProBtn.addEventListener('click', () => showView(initialChoiceView));
-        hideBeginnerBtn.addEventListener('click', () => showView(initialChoiceView));
-        hideDisplayBtn.addEventListener('click', () => showView(initialChoiceView));
-        hideVipBtn.addEventListener('click', () => showView(initialChoiceView));
-        hideLootboxButton.addEventListener('click', () => showView(initialChoiceView));
-        goBackBtn.addEventListener('click', () => showView(initialChoiceView));
-
+        proChoiceButton.addEventListener('click', () => { showView(proSensitivitiesView); });
+        beginnerChoiceButton.addEventListener('click', () => { showView(beginnerSensitivitiesView); });
+        openLootboxButton.addEventListener('click', () => { showView(lootboxView); });
+        hideLootboxButton.addEventListener('click', () => { showView(initialChoiceView); });
+        openAdminBtn.addEventListener('click', () => { showView(adminPanel); });
+        goBackBtn.addEventListener('click', () => { showView(initialChoiceView); });
+        
         addSensitivityForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const type = adminTypeSelect.value;
@@ -797,220 +671,222 @@ button:disabled {
                 type: type
             };
 
-            const docRef = window.editingId ? doc(db, `artifacts/${appId}/public/data/sensitivities-${window.editingType}`, window.editingId) : null;
-            
-            try {
-                if (window.editingId) {
-                    await setDoc(docRef, newOrUpdatedSensitivity);
-                    showMessage('تم تحديث الحساسية بنجاح!');
-                } else {
-                    await addDoc(collection(db, `artifacts/${appId}/public/data/sensitivities-${type}`), newOrUpdatedSensitivity);
-                    showMessage('تم إضافة الحساسية بنجاح!');
-                }
-            } catch (e) {
-                console.error("Error adding/updating document: ", e);
-                showMessage('حدث خطأ في عملية الحفظ.');
+            if (editingId) {
+                await fetch(`${API_BASE_URL}/api/sensitivities/${editingId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newOrUpdatedSensitivity)
+                });
+            } else {
+                await fetch(`${API_BASE_URL}/api/sensitivities`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newOrUpdatedSensitivity)
+                });
             }
+            fetchSensitivities();
             resetForm();
         });
         
         adminList.addEventListener('click', async (e) => {
             const target = e.target;
             const id = target.getAttribute('data-id');
-            const type = target.getAttribute('data-type');
-            
+
             if (target.classList.contains('edit-btn')) {
-                const itemToEdit = window.sensitivities.find(item => item.id === id && item.type === type);
+                const itemToEdit = allSensitivitiesData.find(item => item.id === id);
                 if (itemToEdit) {
                     adminNameInput.value = itemToEdit.name;
                     adminCodeInput.value = itemToEdit.code;
                     adminImageInput.value = itemToEdit.imageUrl;
                     adminTypeSelect.value = itemToEdit.type;
                     formSubmitBtn.textContent = 'تعديل';
-                    window.editingId = id;
-                    window.editingType = type;
+                    editingId = id;
                 }
             } else if (target.classList.contains('delete-btn')) {
-                const confirmDelete = await showMessage('هل أنت متأكد من حذف هذه الحساسية؟', true);
-                if (confirmDelete) {
-                    try {
-                        await deleteDoc(doc(db, `artifacts/${appId}/public/data/sensitivities-${type}`, id));
-                        showMessage('تم حذف الحساسية بنجاح!');
-                    } catch (e) {
-                        console.error("Error removing document: ", e);
-                        showMessage('حدث خطأ في عملية الحذف.');
-                    }
+                if (confirm('هل أنت متأكد من حذف هذه الحساسية؟')) {
+                    await fetch(`${API_BASE_URL}/api/sensitivities/${id}`, {
+                        method: 'DELETE'
+                    });
+                    fetchSensitivities();
                 }
             }
         });
+        
+        if (window.Telegram && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+            const currentUser = window.Telegram.WebApp.initDataUnsafe.user;
+            if (openAdminBtn && currentUser.id != ADMIN_USER_ID) {
+                openAdminBtn.style.display = 'none';
+            }
+        }
+        
+        // 8. أكواد صندوق الغنائم
+        const lootboxArea = document.getElementById('lootbox-area');
+        const saveIdButton = document.getElementById('save-id-button');
+        const playerIdInput = document.getElementById('player-id-input');
+        const invitationArea = document.getElementById('invitation-area');
+        const invitationLink = document.getElementById('invitation-link');
+        const openBoxButton = document.getElementById('open-box-button');
+        const winnersListContainer = document.getElementById('winners-list-container');
+        const lootboxImage = document.getElementById('lootbox-image');
+        const resultArea = document.getElementById('result-area');
+        const copyLinkButton = document.getElementById('copy-link-button');
 
-        // 8. أكواد صندوق الغنائم مع Firestore
-        const checkInvitation = async (inviterId) => {
-            if (!inviterId || inviterId === userId) return;
+        let user_id;
+        let invitationsCount = 0;
+        let boxesCount = 0;
+        const INVITE_GOAL = 3;
 
-            const userRef = doc(db, USERS_COLLECTION_PATH, inviterId);
-            const userDoc = await getDoc(userRef);
+        const prizes = [
+            { name: "50 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png" },
+            { name: "100 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png" },
+            { name: "500 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png" },
+            { name: "ملابس نادرة", imageUrl: "https://up6.cc/2025/08/17583186663551.png" },
+            { name: "ايموت أسطوري", imageUrl: "https://up6.cc/2025/08/17583186663551.png" }
+        ];
 
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-                const invitations = userData.invitations || 0;
-                const boxes = userData.boxes || 0;
-                
-                if (invitations + 1 < INVITE_GOAL) {
-                    await updateDoc(userRef, { invitations: invitations + 1 });
-                } else {
-                    await updateDoc(userRef, { invitations: 0, boxes: boxes + 1 });
-                    Telegram.WebApp.showAlert('مبروك! حصلت على صندوق غنائم جديد!');
+        let lastLooters = [];
+
+        function getUserId() {
+            if (window.Telegram.WebApp.initDataUnsafe.user) {
+                return window.Telegram.WebApp.initDataUnsafe.user.id;
+            }
+            return 'guest_user';
+        }
+
+        function getUserName() {
+            const user = window.Telegram.WebApp.initDataUnsafe.user;
+            if (user) {
+                return user.first_name || 'مستخدم';
+            }
+            return 'مستخدم';
+        }
+
+        function updateCounters() {
+            document.getElementById('invitation-counter').textContent = `لديك ${invitationsCount} من ${INVITE_GOAL} دعوات. لديك ${boxesCount} صندوق.`;
+            openBoxButton.disabled = boxesCount < 1;
+        }
+
+        function saveData() {
+            if (user_id && user_id !== 'guest_user') {
+                localStorage.setItem(`invitations_${user_id}`, invitationsCount);
+                localStorage.setItem(`boxes_${user_id}`, boxesCount);
+                localStorage.setItem('lastLooters', JSON.stringify(lastLooters));
+            }
+        }
+
+        function loadData() {
+            if (user_id && user_id !== 'guest_user') {
+                const savedInvitations = localStorage.getItem(`invitations_${user_id}`);
+                const savedBoxes = localStorage.getItem(`boxes_${user_id}`);
+                const savedLooters = localStorage.getItem('lastLooters');
+
+                if (savedInvitations !== null) {
+                    invitationsCount = parseInt(savedInvitations, 10);
+                }
+                if (savedBoxes !== null) {
+                    boxesCount = parseInt(savedBoxes, 10);
+                }
+                if (savedLooters) {
+                    lastLooters = JSON.parse(savedLooters);
                 }
             }
-        };
+        }
 
-        const updateLootboxUI = (userData) => {
-            if (userData.pubgId) {
-                document.getElementById('description-text').textContent = 'قم بدعوة 3 مستخدمين لفتح الصندوق.';
-                playerIdInput.classList.add('hidden');
-                saveIdButton.classList.add('hidden');
-                invitationArea.classList.remove('hidden');
-                const inviteLink = `https://t.me/AQWKBOT?start=inviter_${userId}`;
-                invitationLink.textContent = inviteLink;
-                lootboxImage.classList.add('shake');
-            } else {
-                playerIdInput.classList.remove('hidden');
-                saveIdButton.classList.remove('hidden');
-                invitationArea.classList.add('hidden');
-                lootboxImage.classList.remove('shake');
+        function checkInvitation() {
+            if (window.Telegram.WebApp.initDataUnsafe.start_param) {
+                const param = window.Telegram.WebApp.initDataUnsafe.start_param;
+                if (param.startsWith('inviter_')) {
+                    const inviterId = param.split('_')[1];
+                    if (inviterId == user_id) {
+                        return;
+                    }
+                    const inviterInvitations = parseInt(localStorage.getItem(`invitations_${inviterId}`) || '0', 10);
+                    const inviterBoxes = parseInt(localStorage.getItem(`boxes_${inviterId}`) || '0', 10);
+
+                    if (inviterInvitations + 1 < INVITE_GOAL) {
+                        localStorage.setItem(`invitations_${inviterId}`, inviterInvitations + 1);
+                    } else if (inviterInvitations + 1 === INVITE_GOAL) {
+                        localStorage.setItem(`boxes_${inviterId}`, inviterBoxes + 1);
+                        localStorage.setItem(`invitations_${inviterId}`, 0);
+                    }
+                }
             }
-            invitedCountSpan.textContent = userData.invitations || 0;
-            lootboxCountSpan.textContent = userData.boxes || 0;
-            openBoxButton.disabled = (userData.boxes || 0) < 1;
-        };
+        }
 
-        saveIdButton.onclick = async () => {
+        window.Telegram.WebApp.ready();
+        user_id = getUserId();
+        loadData();
+        checkInvitation();
+        updateCounters();
+        fetchLastLooters();
+
+        saveIdButton.onclick = function() {
             const pubgId = playerIdInput.value.trim();
             if (pubgId) {
-                try {
-                    const userRef = doc(db, USERS_COLLECTION_PATH, userId);
-                    await setDoc(userRef, { pubgId: pubgId, invitations: 0, boxes: 0 }, { merge: true });
-                } catch (e) {
-                    console.error("Error setting user data:", e);
-                    showMessage('فشل حفظ الـ ID.');
-                }
+                document.getElementById('description-text').textContent = 'قم بدعوة 3 مستخدمين لفتح الصندوق.';
+                playerIdInput.style.display = 'none';
+                saveIdButton.style.display = 'none';
+                invitationArea.style.display = 'block';
+                const inviteLink = `https://t.me/AQWKBOT?start=inviter_${user_id}`;
+                invitationLink.textContent = inviteLink;
+                updateCounters();
+                lootboxImage.classList.add('shake');
             } else {
-                showMessage('الرجاء إدخال ID حسابك.');
+                alert('الرجاء إدخال ID حسابك.');
             }
         };
 
-        openBoxButton.onclick = async () => {
-            const confirmOpen = await showMessage('هل أنت متأكد من فتح الصندوق؟', true);
-            if (confirmOpen) {
-                const userRef = doc(db, USERS_COLLECTION_PATH, userId);
-                const userDoc = await getDoc(userRef);
-                const userData = userDoc.data();
-
-                if (userData.boxes > 0) {
+        openBoxButton.onclick = async function() {
+            if (boxesCount > 0) {
+                if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
                     openBoxButton.disabled = true;
                     resultArea.textContent = 'يتم فتح الصندوق...';
-                    resultArea.classList.remove('hidden');
+                    
                     lootboxImage.classList.remove('shake');
                     
+                    const userName = getUserName();
                     const prize = prizes[Math.floor(Math.random() * prizes.length)];
                     
                     resultArea.textContent = `لقد ربحت: ${prize.name}`;
-                    resultArea.classList.remove('hidden');
-                    resultArea.classList.add('success');
                     
-                    await updateDoc(userRef, { boxes: userData.boxes - 1 });
+                    boxesCount--;
+                    saveData();
+                    updateCounters();
 
-                    const newWinner = { name: userData.pubgId, prize: prize.name, timestamp: serverTimestamp() };
-                    await addDoc(collection(db, WINNERS_COLLECTION_PATH), newWinner);
-                } else {
-                    showMessage('ليس لديك صناديق كافية للفتح.');
-                }
-            }
-        };
-
-        const renderWinnersList = (winners) => {
-            winnersListContainer.innerHTML = '';
-            winners.forEach(winner => {
-                const li = document.createElement('li');
-                li.className = 'winner-item';
-                li.innerHTML = `<span>${winner.name}</span><span>ربح ${winner.prize}</span>`;
-                winnersListContainer.appendChild(li);
-            });
-        };
-        
-        copyLinkButton.onclick = async function() {
-            const link = invitationLink.textContent;
-            if (link) {
-                await navigator.clipboard.writeText(link);
-                Telegram.WebApp.showAlert('تم نسخ رابط الدعوة!');
-            }
-        };
-
-        // 9. وظيفة تهيئة التطبيق
-        const initializeApp = async () => {
-            Telegram.WebApp.ready();
-            
-            app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-
-            if (initialAuthToken) {
-                try {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } catch (e) {
-                    console.error('Error signing in with custom token:', e);
-                    await signInAnonymously(auth);
+                    lastLooters.unshift({ name: userName, prize: prize.name });
+                    if (lastLooters.length > 5) {
+                        lastLooters.pop();
+                    }
+                    saveData();
+                    fetchLastLooters();
                 }
             } else {
-                await signInAnonymously(auth);
+                alert('ليس لديك صناديق كافية للفتح.');
             }
-
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    userId = user.uid;
-                    
-                    // تحديث واجهة لوحة التحكم للمالك فقط
-                    if (openAdminBtn) {
-                        if (userId !== ADMIN_USER_ID) {
-                            openAdminBtn.style.display = 'none';
-                        }
-                        
-                        onSnapshot(collection(db, PRO_SENSITIVITIES_COLLECTION_PATH), (proSnap) => {
-                            onSnapshot(collection(db, BEGINNER_SENSITIVITIES_COLLECTION_PATH), (beginnerSnap) => {
-                                onSnapshot(collection(db, VIP_SENSITIVITIES_COLLECTION_PATH), (vipSnap) => {
-                                    const allSensitivities = [
-                                        ...proSnap.docs.map(doc => ({ id: doc.id, ...doc.data(), type: 'pro' })),
-                                        ...beginnerSnap.docs.map(doc => ({ id: doc.id, ...doc.data(), type: 'beginner' })),
-                                        ...vipSnap.docs.map(doc => ({ id: doc.id, ...doc.data(), type: 'vip' }))
-                                    ];
-                                    window.sensitivities = allSensitivities;
-                                    renderAdminList(allSensitivities);
-                                });
-                            });
-                        });
-                    }
-
-                    // تحديث واجهة الصندوق للمستخدم
-                    onSnapshot(doc(db, USERS_COLLECTION_PATH, userId), (docSnapshot) => {
-                        const userData = docSnapshot.data() || { invitations: 0, boxes: 0, pubgId: '' };
-                        updateLootboxUI(userData);
-                    });
-
-                    // التحقق من دعوة قادمة من مستخدم آخر
-                    if (window.Telegram.WebApp.initDataUnsafe.start_param) {
-                        const param = window.Telegram.WebApp.initDataUnsafe.start_param;
-                        if (param.startsWith('inviter_')) {
-                            const inviterId = param.split('_')[1];
-                            await checkInvitation(inviterId);
-                        }
-                    }
-                    
-                }
-            });
-            
-            fetchAndRenderSensitivities();
         };
+
+        function fetchLastLooters() {
+            winnersListContainer.innerHTML = '';
+            if (lastLooters.length > 0) {
+                lastLooters.forEach(winner => {
+                    const li = document.createElement('li');
+                    li.className = 'winner-item';
+                    li.innerHTML = `<span>${winner.name}</span><span>ربح ${winner.prize}</span>`;
+                    winnersListContainer.appendChild(li);
+                });
+            }
+        }
+        
+        copyLinkButton.onclick = function() {
+            const link = invitationLink.textContent;
+            if (link) {
+                navigator.clipboard.writeText(link).then(() => {
+                    Telegram.WebApp.showAlert('تم نسخ رابط الدعوة بنجاح!');
+                });
+            }
+        };
+
+        fetchSensitivities();
 
         // تهيئة Particles.js
         particlesJS('particles-js', {
@@ -1023,29 +899,47 @@ button:disabled {
                     }
                 },
                 "color": {
-                    "value": "#00e6e6"
+                    "value": "#ffffff"
                 },
                 "shape": {
-                    "type": "circle"
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    },
+                    "image": {
+                        "src": "img/github.svg",
+                        "width": 100,
+                        "height": 100
+                    }
                 },
                 "opacity": {
                     "value": 0.5,
                     "random": false,
                     "anim": {
-                        "enable": false
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
                     }
                 },
                 "size": {
                     "value": 5,
                     "random": true,
                     "anim": {
-                        "enable": false
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
                     }
                 },
                 "line_linked": {
                     "enable": true,
                     "distance": 150,
-                    "color": "#00e6e6",
+                    "color": "#ffffff",
                     "opacity": 0.4,
                     "width": 1
                 },
@@ -1079,21 +973,33 @@ button:disabled {
                 },
                 "modes": {
                     "grab": {
-                        "distance": 400,
+                        "distance": 140,
                         "line_linked": {
                             "opacity": 1
                         }
                     },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
                     "push": {
                         "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
                     }
                 }
             },
             "retina_detect": true
         });
-
-        initializeApp();
-
     </script>
+
 </body>
 </html>
