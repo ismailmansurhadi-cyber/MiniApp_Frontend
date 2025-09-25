@@ -459,46 +459,13 @@ button:disabled {
 
     <div id="particles-js"></div>
     
-    <!-- ✅ تحميل SDKs بدون مسافات -->
+    <!-- ✅ الروابط الأساسية كما في كودك الأصلي (بدون مسافات) -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://adsgram.ai/adsgram.js"></script>
 
-    <!-- ✅ تحميل Telegram WebApp بطريقة ذكية (آمنة للمستقبل) -->
     <script>
-    (function() {
-        const script = document.createElement('script');
-        script.src = 'https://telegram.org/js/telegram-web-app.js';
-        script.onload = () => {
-            console.log('✅ Telegram WebApp الرسمي تم تحميله');
-            if (window.Telegram?.WebApp?.ready) {
-                window.Telegram.WebApp.ready();
-            }
-        };
-        script.onerror = () => {
-            console.warn('⚠️ فشل تحميل Telegram WebApp الرسمي. استخدام نسخة محلية للتطوير...');
-            window.Telegram = window.Telegram || {};
-            Telegram.WebApp = {
-                initDataUnsafe: {
-                    user: {
-                        id: Math.floor(Math.random() * 1000000000) + 100000000,
-                        first_name: "مستخدم",
-                        username: "user"
-                    }
-                },
-                ready: () => console.log('✅ Telegram WebApp (نسخة محلية)'),
-                showAlert: (msg) => alert(msg),
-                showConfirm: (msg) => confirm(msg),
-                expand: () => {},
-                close: () => {},
-                onEvent: () => {}
-            };
-        };
-        document.head.appendChild(script);
-    })();
-    </script>
-
-    <script>
-        // بقية الكود كما هو...
+        // 1. تعريف العناصر الرئيسية في الواجهة
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
@@ -522,6 +489,7 @@ button:disabled {
         const codeOutput = document.getElementById('code-output');
         const displayImage = document.getElementById('display-image');
         
+        // متغيرات لوحة التحكم
         const addSensitivityForm = document.getElementById('add-sensitivity-form');
         const adminNameInput = document.getElementById('admin-name-input');
         const adminCodeInput = document.getElementById('admin-code-input');
@@ -535,6 +503,7 @@ button:disabled {
         const ADMIN_USER_ID = '658500340';
         const API_BASE_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app';
         
+        // 2. وظيفة إظهار وإخفاء الواجهات
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
             proSensitivitiesView.classList.add('hidden');
@@ -547,6 +516,7 @@ button:disabled {
             viewToShow.classList.remove('hidden');
         }
 
+        // 3. وظيفة جلب البيانات من الخادم (تُنفذ مرة واحدة عند التحميل)
         const fetchSensitivities = async () => {
             try {
                 const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
@@ -570,6 +540,7 @@ button:disabled {
             }
         };
 
+        // 4. وظيفة إنشاء الأزرار
         const createSensitivityButtons = (data, container) => {
             container.innerHTML = '';
             data.forEach(item => {
@@ -604,8 +575,8 @@ button:disabled {
             }
         };
 
-        // ✅ كود الإعلان الصحيح
-        const YOUR_AD_BLOCK_ID = "15189";
+        // ✅ ✅ ✅ الكود المصلح لزر VIP (الجزء الوحيد المعدّل) ✅ ✅ ✅
+        const YOUR_AD_BLOCK_ID = "15189"; // تأكد أن هذا Block ID من نوع Rewarded في AdsGram
 
         openVipSensitivityButton.onclick = async function() {
             openVipSensitivityButton.disabled = true;
@@ -614,6 +585,14 @@ button:disabled {
             const vipData = allSensitivitiesData?.find(item => item.type === 'vip');
             if (!vipData) {
                 vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
+                openVipSensitivityButton.disabled = false;
+                openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+                return;
+            }
+
+            // التأكد من أن AdsGram جاهز
+            if (!window.AdsGram) {
+                Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات. أعد المحاولة.');
                 openVipSensitivityButton.disabled = false;
                 openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
                 return;
@@ -640,6 +619,7 @@ button:disabled {
             }
         };
 
+        // 6. وظيفة زر نسخ كود VIP
         copyVipCodeBtn.onclick = function() {
             const code = vipCodeOutput.textContent;
             if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جاري تحميل الإعلان...') {
@@ -651,6 +631,7 @@ button:disabled {
             }
         };
 
+        // 7. إدارة لوحة التحكم
         const renderAdminList = (data) => {
             adminList.innerHTML = '';
             data.forEach(item => {
@@ -738,6 +719,7 @@ button:disabled {
             }
         }
         
+        // 8. أكواد صندوق الغنائم
         const lootboxArea = document.getElementById('lootbox-area');
         const saveIdButton = document.getElementById('save-id-button');
         const playerIdInput = document.getElementById('player-id-input');
@@ -906,6 +888,7 @@ button:disabled {
 
         fetchSensitivities();
 
+        // تهيئة Particles.js
         particlesJS('particles-js', {
             "particles": {
                 "number": {
