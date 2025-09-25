@@ -459,7 +459,7 @@ button:disabled {
 
     <div id="particles-js"></div>
     
-    <!-- ✅ الروابط الأساسية كما في كودك الأصلي (بدون مسافات) -->
+    <!-- ✅ روابط SDK بدون مسافات زائدة -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://adsgram.ai/adsgram.js"></script>
@@ -575,8 +575,8 @@ button:disabled {
             }
         };
 
-        // ✅ ✅ ✅ الكود المصلح لزر VIP (الجزء الوحيد المعدّل) ✅ ✅ ✅
-        const YOUR_AD_BLOCK_ID = "15189"; // تأكد أن هذا Block ID من نوع Rewarded في AdsGram
+        // ✅ كود زر VIP (مصحح)
+        const YOUR_AD_BLOCK_ID = "15189";
 
         openVipSensitivityButton.onclick = async function() {
             openVipSensitivityButton.disabled = true;
@@ -590,7 +590,6 @@ button:disabled {
                 return;
             }
 
-            // التأكد من أن AdsGram جاهز
             if (!window.AdsGram) {
                 Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات. أعد المحاولة.');
                 openVipSensitivityButton.disabled = false;
@@ -631,7 +630,7 @@ button:disabled {
             }
         };
 
-        // 7. إدارة لوحة التحكم
+        // 7. إدارة لوحة التحكم (مع إضافة userId للحماية)
         const renderAdminList = (data) => {
             adminList.innerHTML = '';
             data.forEach(item => {
@@ -668,7 +667,8 @@ button:disabled {
                 name: adminNameInput.value,
                 code: adminCodeInput.value,
                 imageUrl: adminImageInput.value,
-                type: type
+                type: type,
+                userId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id // ← مضاف للحماية
             };
 
             if (editingId) {
@@ -705,7 +705,11 @@ button:disabled {
             } else if (target.classList.contains('delete-btn')) {
                 if (confirm('هل أنت متأكد من حذف هذه الحساسية؟')) {
                     await fetch(`${API_BASE_URL}/api/sensitivities/${id}`, {
-                        method: 'DELETE'
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id // ← مضاف للحماية
+                        })
                     });
                     fetchSensitivities();
                 }
