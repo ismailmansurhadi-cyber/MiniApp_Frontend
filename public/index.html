@@ -364,7 +364,8 @@ button:disabled {
                 <button id="beginner-choice">أنا مبتدئ</button>
                 <button id="open-lootbox-button">صندوق الغنائم العشوائي 🎁</button>
                 <button id="open-vip-sensitivity-button">حساسية VIP (شاهد إعلان)</button>
-                <button id="open-admin-btn">لوحة التحكم</button>
+                <!-- ✅ الزر مخفي افتراضيًا -->
+                <button id="open-admin-btn" style="display:none;">لوحة التحكم</button>
             </div>
         </section>
 
@@ -459,10 +460,9 @@ button:disabled {
 
     <div id="particles-js"></div>
     
-    <!-- ✅ الروابط الرسمية بدون مسافات -->
+    <!-- الروابط الرسمية -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <!-- ✅ رابط AdsGram الرسمي من الوثائق -->
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
     <script>
@@ -502,32 +502,31 @@ button:disabled {
         let editingId = null;
         const ADMIN_USER_ID = '658500340';
         const API_BASE_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app';
-        
-        // متغير عالمي لمتحكم الإعلانات
         let adController = null;
 
         // === تهيئة AdsGram ===
         function initAdsGram() {
             if (window.Adsgram && !adController) {
                 try {
-                    adController = window.Adsgram.init({
-                        blockId: "15189" // Block ID من لوحة التحكم
-                    });
-                    console.log("✅ AdsGram initialized");
+                    adController = window.Adsgram.init({ blockId: "15189" });
                 } catch (error) {
-                    console.error("❌ AdsGram init error:", error);
+                    console.error("AdsGram init error:", error);
                 }
             }
         }
 
-        // تهيئة بعد تحميل الصفحة
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", initAdsGram);
         } else {
             initAdsGram();
         }
 
-        // === وظائف العرض ===
+        // === إظهار زر لوحة التحكم لك فقط (بدون وميض) ===
+        if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
+            if (openAdminBtn) openAdminBtn.style.display = 'block';
+        }
+
+        // === باقي الكود كما هو (عرض، جلب البيانات، الإعلانات، الحماية...) ===
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
             proSensitivitiesView.classList.add('hidden');
@@ -539,7 +538,6 @@ button:disabled {
             viewToShow.classList.remove('hidden');
         }
 
-        // === جلب البيانات ===
         const fetchSensitivities = async () => {
             try {
                 const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
@@ -585,7 +583,7 @@ button:disabled {
             }
         };
 
-        // ✅ ✅ ✅ كود زر الإعلان وفق الوثائق الرسمية ✅ ✅ ✅
+        // ✅ زر الإعلان وفق الوثائق الرسمية
         openVipSensitivityButton.onclick = function() {
             openVipSensitivityButton.disabled = true;
             openVipSensitivityButton.textContent = 'جارٍ تحميل الإعلان...';
@@ -631,7 +629,7 @@ button:disabled {
             }
         };
 
-        // === لوحة التحكم مع الحماية ===
+        // === لوحة التحكم مع الحماية (userId) ===
         const renderAdminList = (data) => {
             adminList.innerHTML = '';
             data.forEach(item => {
@@ -658,7 +656,6 @@ button:disabled {
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
         hideLootboxButton.addEventListener('click', () => showView(initialChoiceView));
-        openAdminBtn.addEventListener('click', () => showView(adminPanel));
         goBackBtn.addEventListener('click', () => showView(initialChoiceView));
         
         addSensitivityForm.addEventListener('submit', async (e) => {
@@ -715,14 +712,7 @@ button:disabled {
                 }
             }
         });
-        
-        if (window.Telegram && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
-            const currentUser = window.Telegram.WebApp.initDataUnsafe.user;
-            if (openAdminBtn && currentUser.id != ADMIN_USER_ID) {
-                openAdminBtn.style.display = 'none';
-            }
-        }
-        
+
         // === صندوق الغنائم (بدون تغيير) ===
         const lootboxArea = document.getElementById('lootbox-area');
         const saveIdButton = document.getElementById('save-id-button');
@@ -873,7 +863,6 @@ button:disabled {
 
         fetchSensitivities();
 
-        // Particles.js
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
