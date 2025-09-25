@@ -478,7 +478,6 @@ button:disabled {
         const proChoiceButton = document.getElementById('pro-choice');
         const beginnerChoiceButton = document.getElementById('beginner-choice');
         const openLootboxButton = document.getElementById('open-lootbox-button');
-        const openAdminBtn = document.getElementById('open-admin-btn');
         const hideLootboxButton = document.getElementById('hide-lootbox-button');
         const goBackBtn = document.getElementById('go-back-btn');
         const openVipSensitivityButton = document.getElementById('open-vip-sensitivity-button');
@@ -521,12 +520,26 @@ button:disabled {
             initAdsGram();
         }
 
-        // === إظهار زر لوحة التحكم لك فقط (بدون وميض) ===
-        if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
-            if (openAdminBtn) openAdminBtn.style.display = 'block';
-        }
+        // === ✅ إصلاح زر لوحة التحكم: يعمل عند الضغط (لك فقط) ===
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
+                const adminBtn = document.getElementById('open-admin-btn');
+                if (adminBtn) {
+                    adminBtn.style.display = 'block';
+                    adminBtn.addEventListener('click', () => {
+                        initialChoiceView.classList.add('hidden');
+                        proSensitivitiesView.classList.add('hidden');
+                        beginnerSensitivitiesView.classList.add('hidden');
+                        displayContainer.classList.add('hidden');
+                        lootboxView.classList.add('hidden');
+                        vipSensitivityView.classList.add('hidden');
+                        adminPanel.classList.remove('hidden');
+                    });
+                }
+            }
+        });
 
-        // === باقي الكود كما هو (عرض، جلب البيانات، الإعلانات، الحماية...) ===
+        // === وظائف العرض ===
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
             proSensitivitiesView.classList.add('hidden');
@@ -538,6 +551,7 @@ button:disabled {
             viewToShow.classList.remove('hidden');
         }
 
+        // === جلب البيانات ===
         const fetchSensitivities = async () => {
             try {
                 const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
