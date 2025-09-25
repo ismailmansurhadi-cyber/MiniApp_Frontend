@@ -459,13 +459,14 @@ button:disabled {
 
     <div id="particles-js"></div>
     
-    <!-- ✅ روابط SDK بدون مسافات -->
+    <!-- ✅ الروابط الرسمية بدون مسافات -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="https://adsgram.ai/adsgram.js"></script>
+    <!-- ✅ رابط AdsGram الرسمي من الوثائق -->
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
     <script>
-        // تعريف العناصر
+        // === المتغيرات الأساسية ===
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
@@ -502,6 +503,31 @@ button:disabled {
         const ADMIN_USER_ID = '658500340';
         const API_BASE_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app';
         
+        // متغير عالمي لمتحكم الإعلانات
+        let adController = null;
+
+        // === تهيئة AdsGram ===
+        function initAdsGram() {
+            if (window.Adsgram && !adController) {
+                try {
+                    adController = window.Adsgram.init({
+                        blockId: "15189" // Block ID من لوحة التحكم
+                    });
+                    console.log("✅ AdsGram initialized");
+                } catch (error) {
+                    console.error("❌ AdsGram init error:", error);
+                }
+            }
+        }
+
+        // تهيئة بعد تحميل الصفحة
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initAdsGram);
+        } else {
+            initAdsGram();
+        }
+
+        // === وظائف العرض ===
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
             proSensitivitiesView.classList.add('hidden');
@@ -513,6 +539,7 @@ button:disabled {
             viewToShow.classList.remove('hidden');
         }
 
+        // === جلب البيانات ===
         const fetchSensitivities = async () => {
             try {
                 const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
@@ -558,45 +585,39 @@ button:disabled {
             }
         };
 
-        // ✅ ✅ ✅ كود زر الإعلان المصلح (بدون preload) ✅ ✅ ✅
-        openVipSensitivityButton.onclick = async function() {
+        // ✅ ✅ ✅ كود زر الإعلان وفق الوثائق الرسمية ✅ ✅ ✅
+        openVipSensitivityButton.onclick = function() {
             openVipSensitivityButton.disabled = true;
             openVipSensitivityButton.textContent = 'جارٍ تحميل الإعلان...';
 
-            if (!window.AdsGram) {
+            if (!adController) {
                 Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات.');
                 openVipSensitivityButton.disabled = false;
                 openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
                 return;
             }
 
-            const vipData = allSensitivitiesData?.find(item => item.type === 'vip');
-            if (!vipData) {
-                vipCodeOutput.textContent = 'لا يوجد كود VIP حالياً.';
-                openVipSensitivityButton.disabled = false;
-                openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
-                return;
-            }
-
-            try {
-                const result = await window.AdsGram.show({
-                    zoneId: "15189"
+            adController.show()
+                .then((result) => {
+                    if (result.done && !result.error) {
+                        const vipData = allSensitivitiesData?.find(item => item.type === 'vip');
+                        if (vipData) {
+                            showView(vipSensitivityView);
+                            vipCodeOutput.textContent = vipData.code;
+                            Telegram.WebApp.showAlert('🎉 تم عرض الكود بنجاح!');
+                        }
+                    } else {
+                        Telegram.WebApp.showAlert('❌ يجب مشاهدة الإعلان كاملاً.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('AdsGram error:', error);
+                    Telegram.WebApp.showAlert('❌ فشل في عرض الإعلان.');
+                })
+                .finally(() => {
+                    openVipSensitivityButton.disabled = false;
+                    openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
                 });
-
-                if (result?.isRewarded) {
-                    showView(vipSensitivityView);
-                    vipCodeOutput.textContent = vipData.code;
-                    Telegram.WebApp.showAlert('🎉 تم عرض الكود بنجاح!');
-                } else {
-                    Telegram.WebApp.showAlert('❌ يجب مشاهدة الإعلان كاملاً.');
-                }
-            } catch (error) {
-                console.error('AdsGram error:', error);
-                Telegram.WebApp.showAlert('❌ لا توجد إعلانات متاحة الآن.');
-            } finally {
-                openVipSensitivityButton.disabled = false;
-                openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
-            }
         };
 
         copyVipCodeBtn.onclick = function() {
@@ -610,7 +631,7 @@ button:disabled {
             }
         };
 
-        // لوحة التحكم مع userId للحماية
+        // === لوحة التحكم مع الحماية ===
         const renderAdminList = (data) => {
             adminList.innerHTML = '';
             data.forEach(item => {
@@ -702,7 +723,7 @@ button:disabled {
             }
         }
         
-        // صندوق الغنائم (بدون تغيير)
+        // === صندوق الغنائم (بدون تغيير) ===
         const lootboxArea = document.getElementById('lootbox-area');
         const saveIdButton = document.getElementById('save-id-button');
         const playerIdInput = document.getElementById('player-id-input');
@@ -852,26 +873,22 @@ button:disabled {
 
         fetchSensitivities();
 
+        // Particles.js
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
                 "color": { "value": "#ffffff" },
-                "shape": {
-                    "type": "circle",
-                    "stroke": { "width": 0, "color": "#000000" },
-                    "polygon": { "nb_sides": 5 }
-                },
-                "opacity": { "value": 0.5, "random": false },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5 },
                 "size": { "value": 5, "random": true },
                 "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
-                "move": { "enable": true, "speed": 6, "direction": "none", "random": false, "straight": false }
+                "move": { "enable": true, "speed": 6 }
             },
             "interactivity": {
                 "detect_on": "canvas",
                 "events": {
                     "onhover": { "enable": true, "mode": "grab" },
-                    "onclick": { "enable": true, "mode": "push" },
-                    "resize": true
+                    "onclick": { "enable": true, "mode": "push" }
                 }
             },
             "retina_detect": true
