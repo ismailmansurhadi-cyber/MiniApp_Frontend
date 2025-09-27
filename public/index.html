@@ -131,23 +131,6 @@ button:disabled {
     justify-content: center;
 }
 
-#vip-sensitivity-view .display-container {
-    background-color: #44474f;
-    padding: 15px;
-    border-radius: 8px;
-}
-
-/* ✅ التعديل الوحيد في CSS: جعل النص في المنتصف */
-#code-output-vip {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 16px;
-    color: #e0e0e0;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    text-align: center; /* ← تم تغييره من left إلى center */
-    direction: rtl;      /* ← لضبط اتجاه النص العربي */
-    margin: 10px 0;
-}
 /* أنماط صفحة الدعوة (صندوق الغنائم) */
 #lootbox-view .container {
     background: none;
@@ -392,14 +375,16 @@ button:disabled {
             <button id="copy-code-btn" style="margin-top: 10px;">نسخ الكود</button>
         </section>
         
-      <section id="vip-sensitivity-view" class="sensitivities-view hidden">
-    <div class="display-container" style="width: 100%; display: flex; justify-content: center;">
+     <section id="vip-sensitivity-view" class="sensitivities-view hidden">
+    <div class="display-container" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
         <p style="color: #ffd700; margin-bottom: 20px; font-weight: bold; text-align: center;">
             يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة
         </p>
-        <div id="display-container-vip" class="sensitivity-display" style="text-align: center;">
-            <p id="code-output-vip" style="text-align: center; direction: rtl;"></p>
-            <button id="copy-code-btn-vip" style="margin-top: 10px; display: block; margin: 10px auto;">نسخ الكود</button>
+        <div id="display-container-vip" class="sensitivity-display" style="width: 100%; max-width: 300px; background-color: #44474f; padding: 15px; border-radius: 8px; text-align: center; box-sizing: border-box;">
+            <div id="code-output-vip" dir="rtl" style="font-family: monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all;"></div>
+            <button id="copy-code-btn-vip" style="margin-top: 15px; padding: 10px; background: #4a7c8e; color: white; border: 2px solid #00ffff; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%;">
+                نسخ الكود
+            </button>
         </div>
     </div>
 </section>
