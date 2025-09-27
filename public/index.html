@@ -137,15 +137,13 @@ button:disabled {
     border-radius: 8px;
 }
 
-/* ✅ التعديل الوحيد في CSS: جعل النص في المنتصف */
 #code-output-vip {
     font-family: 'Courier New', Courier, monospace;
     font-size: 16px;
     color: #e0e0e0;
     word-wrap: break-word;
     white-space: pre-wrap;
-    text-align: center; /* ← تم تغييره من left إلى center */
-    direction: rtl;      /* ← لضبط اتجاه النص العربي */
+    text-align: left;
     margin: 10px 0;
 }
 /* أنماط صفحة الدعوة (صندوق الغنائم) */
@@ -392,14 +390,17 @@ button:disabled {
             <button id="copy-code-btn" style="margin-top: 10px;">نسخ الكود</button>
         </section>
         
+        <!-- ✅ تم تعديل هذا القسم فقط -->
         <section id="vip-sensitivity-view" class="sensitivities-view hidden">
             <div class="display-container">
-                <p style="color: #ffd700; margin-bottom: 20px; font-weight: bold;">
+                <p style="color: #ffd700; margin-bottom: 20px; font-weight: bold; text-align: center;">
                     يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة
                 </p>
-                <div id="display-container-vip" class="sensitivity-display">
-                    <p id="code-output-vip"></p>
-                    <button id="copy-code-btn-vip" style="margin-top: 10px;">نسخ الكود</button>
+                <div id="display-container-vip" class="sensitivity-display" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <pre id="code-output-vip" style="text-align: center; direction: rtl; font-family: 'Courier New', monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all; margin: 15px 0; padding: 10px; background-color: rgba(0,0,0,0.2); border-radius: 8px;"></pre>
+                    <button id="copy-code-btn-vip" style="background: #4a7c8e; color: white; border: 2px solid #00ffff; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 10px;">
+                        نسخ الكود
+                    </button>
                 </div>
             </div>
         </section>
@@ -507,8 +508,7 @@ button:disabled {
         let allSensitivitiesData = null;
         let editingId = null;
         const ADMIN_USER_ID = '658500340';
-        // ✅ تم إصلاح الرابط بإزالة المسافات الزائدة
-        const API_BASE_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app';
+        const API_BASE_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app  ';
         let adController = null;
 
         // === تهيئة AdsGram ===
