@@ -754,11 +754,11 @@ button:disabled {
         const INVITE_GOAL = 3;
 
         const prizes = [
-            { name: "50 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png  " },
-            { name: "100 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png  " },
-            { name: "500 UC", imageUrl: "https://up6.cc/2025/08/175831857474031.png  " },
-            { name: "ملابس نادرة", imageUrl: "https://up6.cc/2025/08/17583186663551.png  " },
-            { name: "ايموت أسطوري", imageUrl: "https://up6.cc/2025/08/17583186663551.png  " }
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
+            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" }
         ];
 
         let lastLooters = [];
@@ -843,27 +843,42 @@ button:disabled {
             }
         };
 
-        openBoxButton.onclick = async function() {
-            if (boxesCount > 0) {
-                if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
-                    openBoxButton.disabled = true;
-                    resultArea.textContent = 'يتم فتح الصندوق...';
-                    lootboxImage.classList.remove('shake');
-                    const userName = getUserName();
-                    const prize = prizes[Math.floor(Math.random() * prizes.length)];
-                    resultArea.textContent = `لقد ربحت: ${prize.name}`;
-                    boxesCount--;
-                    saveData();
-                    updateCounters();
-                    lastLooters.unshift({ name: userName, prize: prize.name });
-                    if (lastLooters.length > 5) lastLooters.pop();
-                    saveData();
-                    fetchLastLooters();
-                }
-            } else {
-                alert('ليس لديك صناديق كافية للفتح.');
-            }
-        };
+       openBoxButton.onclick = async function() {
+    if (boxesCount > 0) {
+        if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
+            openBoxButton.disabled = true;
+            resultArea.innerHTML = '<p style="color: #ffd700;">يتم فتح الصندوق...</p>';
+            lootboxImage.classList.remove('shake');
+
+            // مهلة قصيرة لتأثير "فتح الصندوق"
+            setTimeout(() => {
+                const userName = getUserName();
+                const prize = prizes[Math.floor(Math.random() * prizes.length)];
+                
+                // إنشاء عنصر الصورة + النص
+                const prizeElement = document.createElement('div');
+                prizeElement.style.textAlign = 'center';
+                prizeElement.style.marginTop = '15px';
+                prizeElement.innerHTML = `
+                    <img src="${prize.imageUrl}" alt="${prize.name}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
+                    <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;">لقد ربحت: ${prize.name}</p>
+                `;
+                resultArea.innerHTML = '';
+                resultArea.appendChild(prizeElement);
+
+                boxesCount--;
+                saveData();
+                updateCounters();
+                lastLooters.unshift({ name: userName, prize: prize.name });
+                if (lastLooters.length > 5) lastLooters.pop();
+                saveData();
+                fetchLastLooters();
+            }, 800); // مهلة 0.8 ثانية لمحاكاة الفتح
+        }
+    } else {
+        alert('ليس لديك صناديق كافية للفتح.');
+    }
+};
 
         function fetchLastLooters() {
             winnersListContainer.innerHTML = '';
