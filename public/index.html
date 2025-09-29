@@ -614,7 +614,7 @@ button:disabled {
             if (!adController) {
                 Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات.');
                 openVipSensitivityButton.disabled = false;
-                openVipSensitivityButton.textContent = 'حساسية VIP (شاهد إعلان)';
+                openVipSensitivityButton.textContent = '(شاهد إعلان) vip حساسية';
                 return;
             }
 
@@ -683,12 +683,14 @@ button:disabled {
         
         addSensitivityForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const initData = window.Telegram?.WebApp?.initData || '';
             const newOrUpdatedSensitivity = {
                 name: adminNameInput.value,
                 code: adminCodeInput.value,
                 imageUrl: adminImageInput.value,
                 type: adminTypeSelect.value,
-                userId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id
+                userId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
+                initData: initData
             };
 
             if (editingId) {
@@ -724,11 +726,13 @@ button:disabled {
                 }
             } else if (target.classList.contains('delete-btn')) {
                 if (confirm('هل أنت متأكد من حذف هذه الحساسية؟')) {
+                    const initData = window.Telegram?.WebApp?.initData || '';
                     await fetch(`${API_BASE_URL}/api/sensitivities/${id}`, {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            userId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id
+                            userId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
+                            initData: initData
                         })
                     });
                     fetchSensitivities();
@@ -835,8 +839,6 @@ button:disabled {
                 const inviteLink = `https://t.me/AQWKBOT?start=inviter_${user_id}`;
                 invitationLink.textContent = inviteLink;
                 updateCounters();
-                boxesCount = 1;
-                saveData();
                 lootboxImage.classList.add('shake');
             } else {
                 alert('الرجاء إدخال ID حسابك.');
