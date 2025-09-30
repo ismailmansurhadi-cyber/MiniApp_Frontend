@@ -339,12 +339,25 @@ button:disabled {
     z-index: 2;
     white-space: nowrap;
 }
+
+/* ✅ أنماط الزر الجديد فقط */
+#create-sensitivity-btn {
+    background: linear-gradient(135deg, #8a2be2, #4b0082);
+    color: white;
+    border: 2px solid #ff00ff;
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
+}
+#create-sensitivity-btn:hover {
+    background: linear-gradient(135deg, #9b3be3, #5a1093);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 1);
+}
     </style>
 </head>
 <body>
 
     <main id="app-container">
-        <a href="https://t.me/berlin_of_iraq" target="_blank" style="
+        <a href="https://t.me/berlin_of_iraq  " target="_blank" style="
     position: absolute;
     top: 20px;
     right: 20px;
@@ -358,7 +371,7 @@ button:disabled {
     text-decoration: none;
     box-shadow: 0 3px 8px rgba(0,0,0,0.4);
 ">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="قناة" style="width: 28px; height: 28px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg  " alt="قناة" style="width: 28px; height: 28px;">
 </a>
         <section id="initial-choice-view">
             <div class="title-box">
@@ -370,6 +383,8 @@ button:disabled {
                 <button id="beginner-choice">أنا مبتدئ</button>
                 <button id="open-lootbox-button">🎁 صندوق الغنائم العشوائي </button>
                 <button id="open-vip-sensitivity-button">(شاهد إعلان) مدفوعة vip حساسية</button>
+                <!-- ✅ الزر الجديد فقط -->
+                <button id="create-sensitivity-btn">✨ اصنع حساسيتك ✨</button>
                 <!-- ✅ الزر مخفي افتراضيًا -->
                 <button id="open-admin-btn" style="display:none;">لوحة التحكم</button>
             </div>
@@ -416,14 +431,14 @@ button:disabled {
                     <div id="invitation-area" style="display: none;">
                         <p id="invitation-counter">لديك <span id="invited-count">0</span> من 3 دعوات. لديك <span id="lootbox-count">0</span> صندوق.</p>
                         
-                        <img id="gun-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png  " alt="بندقية"> 
-                        <img id="uc-coin-top-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png  " alt="عملة UC"> 
-                        <img id="uc-coin-middle-right" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png  " alt="عملة UC"> 
-                        <img id="uc-coin-bottom-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png  " alt="عملة UC"> 
-                        <img id="parachute-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png  " alt="مظلة"> 
+                        <img id="gun-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png    " alt="بندقية"> 
+                        <img id="uc-coin-top-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png    " alt="عملة UC"> 
+                        <img id="uc-coin-middle-right" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png    " alt="عملة UC"> 
+                        <img id="uc-coin-bottom-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png    " alt="عملة UC"> 
+                        <img id="parachute-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png    " alt="مظلة"> 
                         
                         <div style="position: relative; width: fit-content; margin: 20px auto;">
-                            <img id="lootbox-image" src="https://up6.cc/2025/08/175831095492441.png  " alt="صندوق الغنائم">
+                            <img id="lootbox-image" src="https://up6.cc/2025/08/175831095492441.png    " alt="صندوق الغنائم">
                         </div>
                         <br>
 
@@ -469,9 +484,9 @@ button:disabled {
     <div id="particles-js"></div>
     
     <!-- الروابط الرسمية -->
-    <script src="https://telegram.org/js/telegram-web-app.js  "></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js  "></script>
-    <script src="https://sad.adsgram.ai/js/sad.min.js  "></script>
+    <script src="https://telegram.org/js/telegram-web-app.js    "></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js    "></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js    "></script>
 
     <script>
         // === المتغيرات الأساسية ===
@@ -489,6 +504,8 @@ button:disabled {
         const hideLootboxButton = document.getElementById('hide-lootbox-button');
         const goBackBtn = document.getElementById('go-back-btn');
         const openVipSensitivityButton = document.getElementById('open-vip-sensitivity-button');
+        // ✅ المتغير الجديد للزر
+        const createSensitivityBtn = document.getElementById('create-sensitivity-btn');
 
         const vipCodeOutput = document.getElementById('code-output-vip');
         const copyVipCodeBtn = document.getElementById('copy-code-btn-vip');
@@ -652,6 +669,11 @@ button:disabled {
             }
         };
 
+        // ✅ وظيفة الزر الجديد (بدون أي تأثير على باقي التطبيق)
+        createSensitivityBtn.onclick = () => {
+            Telegram.WebApp.showAlert('سيتم تفعيل هذه الميزة قريبًا!');
+        };
+
         // === لوحة التحكم مع الحماية (userId) ===
         const renderAdminList = (data) => {
             adminList.innerHTML = '';
@@ -758,11 +780,11 @@ button:disabled {
         const INVITE_GOAL = 3;
 
         const prizes = [
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
-            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" }
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png  " },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png  " },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png  " },
+            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png  " },
+            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png  " }
         ];
 
         let lastLooters = [];
