@@ -670,9 +670,74 @@ button:disabled {
         };
 
         // ✅ وظيفة الزر الجديد (بدون أي تأثير على باقي التطبيق)
-        createSensitivityBtn.onclick = () => {
-            Telegram.WebApp.showAlert('سيتم تفعيل هذه الميزة قريبًا!');
-        };
+        // ✅ وظيفة "اصنع حساسيتك" الحقيقية
+createSensitivityBtn.onclick = () => {
+    // إنشاء واجهة جمع البيانات ديناميكيًا
+    const customView = document.createElement('section');
+    customView.id = 'custom-sensitivity-view';
+    customView.classList.add('sensitivities-view');
+    customView.innerHTML = `
+        <div class="display-container" style="width:100%;max-width:400px;background:rgba(30,10,40,0.7);border:2px solid #ff00ff;border-radius:16px;padding:25px;box-shadow:0 0 20px rgba(138,43,226,0.6);">
+            <h2 style="color:#e0b0ff;text-align:center;font-size:22px;">🎯 اصنع حساسيتك</h2>
+            <input type="text" id="device-name" placeholder="📱 اسم جهازك" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
+            <select id="device-type" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
+                <option value="">🎮 نوع الجهاز</option>
+                <option value="mobile">موبايل</option>
+                <option value="tablet">آيباد/تابلت</option>
+                <option value="emulator">محاكي</option>
+            </select>
+            <input type="number" id="fps" placeholder="📊 الفريمات (30-120)" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
+            <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;">🚀 احصل على حساسيتك</button>
+            <div id="custom-result" style="margin-top:20px;display:none;"></div>
+        </div>
+    `;
+    document.getElementById('app-container').appendChild(customView);
+
+    // إخفاء باقي الأقسام
+    document.querySelectorAll('section').forEach(s => {
+        if (s.id !== 'custom-sensitivity-view') s.classList.add('hidden');
+    });
+    customView.classList.remove('hidden');
+
+    // معالجة الإرسال
+    document.getElementById('submit-custom').onclick = async () => {
+        const device = document.getElementById('device-name').value.trim();
+        const type = document.getElementById('device-type').value;
+        const fps = document.getElementById('fps').value;
+
+        if (!device || !type || !fps) {
+            Telegram.WebApp.showAlert('املأ جميع الحقول');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/custom-sensitivity`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ deviceName: device, deviceType: type, fps })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                document.getElementById('custom-result').innerHTML = `
+                    <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
+                        <p style="color:#ffd700;font-weight:bold;">🎯 حساسيتك:</p>
+                        <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${data.code}</pre>
+                        <button onclick="navigator.clipboard.writeText('${data.code}').then(()=>Telegram.WebApp.showAlert('تم النسخ!'))" 
+                                style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;">
+                            نسخ
+                        </button>
+                    </div>
+                `;
+                document.getElementById('custom-result').style.display = 'block';
+            } else {
+                Telegram.WebApp.showAlert(data.error || 'خطأ في السيرفر');
+            }
+        } catch (error) {
+            Telegram.WebApp.showAlert('فشل الاتصال بالخادم');
+        }
+    };
+};
 
         // === لوحة التحكم مع الحماية (userId) ===
         const renderAdminList = (data) => {
