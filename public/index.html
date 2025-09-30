@@ -340,7 +340,7 @@ button:disabled {
     white-space: nowrap;
 }
 
-/* ✅ أنماط الزر الجديد فقط */
+/* ✅ أنماط الزر الجديد */
 #create-sensitivity-btn {
     background: linear-gradient(135deg, #8a2be2, #4b0082);
     color: white;
@@ -383,7 +383,7 @@ button:disabled {
                 <button id="beginner-choice">أنا مبتدئ</button>
                 <button id="open-lootbox-button">🎁 صندوق الغنائم العشوائي </button>
                 <button id="open-vip-sensitivity-button">(شاهد إعلان) مدفوعة vip حساسية</button>
-                <!-- ✅ الزر الجديد فقط -->
+                <!-- ✅ الزر الجديد -->
                 <button id="create-sensitivity-btn">✨ اصنع حساسيتك ✨</button>
                 <!-- ✅ الزر مخفي افتراضيًا -->
                 <button id="open-admin-btn" style="display:none;">لوحة التحكم</button>
@@ -473,6 +473,7 @@ button:disabled {
                     <option value="pro">محترف</option>
                     <option value="beginner">مبتدئ</option>
                     <option value="vip">VIP</option>
+                    <option value="custom">مخصص (اصنع حساسيتك)</option>
                 </select>
                 <button type="submit" id="form-submit-btn">إضافة</button>
             </form>
@@ -504,7 +505,7 @@ button:disabled {
         const hideLootboxButton = document.getElementById('hide-lootbox-button');
         const goBackBtn = document.getElementById('go-back-btn');
         const openVipSensitivityButton = document.getElementById('open-vip-sensitivity-button');
-        // ✅ المتغير الجديد للزر
+        // ✅ المتغير الجديد
         const createSensitivityBtn = document.getElementById('create-sensitivity-btn');
 
         const vipCodeOutput = document.getElementById('code-output-vip');
@@ -669,91 +670,115 @@ button:disabled {
             }
         };
 
-        // ✅ وظيفة الزر الجديد (بدون أي تأثير على باقي التطبيق)
-        // ✅ وظيفة "اصنع حساسيتك" الحقيقية
-createSensitivityBtn.onclick = () => {
-    // إنشاء واجهة جمع البيانات ديناميكيًا
-    const customView = document.createElement('section');
-    customView.id = 'custom-sensitivity-view';
-    customView.classList.add('sensitivities-view');
-    customView.innerHTML = `
-        <div class="display-container" style="width:100%;max-width:400px;background:rgba(30,10,40,0.7);border:2px solid #ff00ff;border-radius:16px;padding:25px;box-shadow:0 0 20px rgba(138,43,226,0.6);">
-            <h2 style="color:#e0b0ff;text-align:center;font-size:22px;">🎯 اصنع حساسيتك</h2>
-            <input type="text" id="device-name" placeholder="📱 اسم جهازك" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
-            <select id="device-type" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
-                <option value="">🎮 نوع الجهاز</option>
-                <option value="mobile">موبايل</option>
-                <option value="tablet">آيباد/تابلت</option>
-                <option value="emulator">محاكي</option>
-            </select>
-            <input type="number" id="fps" placeholder="📊 الفريمات (30-120)" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
-            <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;">🚀 احصل على حساسيتك</button>
-            <div id="custom-result" style="margin-top:20px;display:none;"></div>
-        </div>
-    `;
-    document.getElementById('app-container').appendChild(customView);
+        // ✅ وظيفة الزر الجديد بالكامل
+        createSensitivityBtn.onclick = () => {
+            const customView = document.createElement('section');
+            customView.id = 'custom-sensitivity-view';
+            customView.classList.add('sensitivities-view');
+            customView.innerHTML = `
+                <div class="display-container" style="width:100%;max-width:400px;background:rgba(30,10,40,0.7);border:2px solid #ff00ff;border-radius:16px;padding:25px;box-shadow:0 0 20px rgba(138,43,226,0.6);">
+                    <h2 style="color:#e0b0ff;text-align:center;font-size:22px;">🎯 اصنع حساسيتك</h2>
+                    <input type="text" id="device-name" placeholder="📱 اسم جهازك" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
+                    <select id="device-type" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
+                        <option value="">🎮 نوع الجهاز</option>
+                        <option value="mobile">موبايل</option>
+                        <option value="tablet">آيباد/تابلت</option>
+                        <option value="emulator">محاكي</option>
+                    </select>
+                    <input type="number" id="fps" placeholder="📊 الفريمات (30-120)" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
+                    <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;">🚀 احصل على حساسيتك</button>
+                    <div id="custom-result" style="margin-top:20px;display:none;"></div>
+                </div>
+            `;
+            document.getElementById('app-container').appendChild(customView);
 
-    // إخفاء باقي الأقسام
-    document.querySelectorAll('section').forEach(s => {
-        if (s.id !== 'custom-sensitivity-view') s.classList.add('hidden');
-    });
-    customView.classList.remove('hidden');
-
-    // معالجة الإرسال
-    document.getElementById('submit-custom').onclick = async () => {
-        const device = document.getElementById('device-name').value.trim();
-        const type = document.getElementById('device-type').value;
-        const fps = document.getElementById('fps').value;
-
-        if (!device || !type || !fps) {
-            Telegram.WebApp.showAlert('املأ جميع الحقول');
-            return;
-        }
-
-        try {
-            const res = await fetch(`${API_BASE_URL}/api/custom-sensitivity`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ deviceName: device, deviceType: type, fps })
+            document.querySelectorAll('section').forEach(s => {
+                if (s.id !== 'custom-sensitivity-view') s.classList.add('hidden');
             });
+            customView.classList.remove('hidden');
 
-            const data = await res.json();
-            if (res.ok) {
-                document.getElementById('custom-result').innerHTML = `
-                    <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
-                        <p style="color:#ffd700;font-weight:bold;">🎯 حساسيتك:</p>
-                        <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${data.code}</pre>
-                        <button onclick="navigator.clipboard.writeText('${data.code}').then(()=>Telegram.WebApp.showAlert('تم النسخ!'))" 
-                                style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;">
-                            نسخ
-                        </button>
-                    </div>
-                `;
-                document.getElementById('custom-result').style.display = 'block';
-            } else {
-                Telegram.WebApp.showAlert(data.error || 'خطأ في السيرفر');
-            }
-        } catch (error) {
-            Telegram.WebApp.showAlert('فشل الاتصال بالخادم');
-        }
-    };
-};
+            document.getElementById('submit-custom').onclick = async () => {
+                const device = document.getElementById('device-name').value.trim();
+                const type = document.getElementById('device-type').value;
+                const fps = document.getElementById('fps').value;
+
+                if (!device || !type || !fps) {
+                    Telegram.WebApp.showAlert('املأ جميع الحقول');
+                    return;
+                }
+
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/custom-sensitivity`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ deviceName: device, deviceType: type, fps })
+                    });
+
+                    const data = await res.json();
+                    if (res.ok) {
+                        document.getElementById('custom-result').innerHTML = `
+                            <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
+                                <p style="color:#ffd700;font-weight:bold;">🎯 حساسيتك:</p>
+                                <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${data.code}</pre>
+                                <button onclick="navigator.clipboard.writeText('${data.code}').then(()=>Telegram.WebApp.showAlert('تم النسخ!'))" 
+                                        style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;">
+                                    نسخ
+                                </button>
+                            </div>
+                        `;
+                        document.getElementById('custom-result').style.display = 'block';
+                    } else {
+                        Telegram.WebApp.showAlert(data.error || 'خطأ في السيرفر');
+                    }
+                } catch (error) {
+                    Telegram.WebApp.showAlert('فشل الاتصال بالخادم');
+                }
+            };
+        };
 
         // === لوحة التحكم مع الحماية (userId) ===
-        const renderAdminList = (data) => {
+        const renderAdminList = async (data) => {
             adminList.innerHTML = '';
+            
+            // عرض الحساسيات العادية
             data.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('admin-list-item');
                 itemDiv.innerHTML = `
                     <span>${item.name} (${item.type})</span>
                     <div class="admin-actions">
-                        <button class="edit-btn" data-id="${item.id}">تعديل</button>
-                        <button class="delete-btn" data-id="${item.id}">حذف</button>
+                        <button class="edit-btn" data-id="${item.id}" data-type="normal">تعديل</button>
+                        <button class="delete-btn" data-id="${item.id}" data-type="normal">حذف</button>
                     </div>
                 `;
                 adminList.appendChild(itemDiv);
             });
+
+            // عرض الحساسيات المخصصة
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/custom-sensitivities`);
+                const customItems = await response.json();
+                if (customItems.length > 0) {
+                    const header = document.createElement('div');
+                    header.innerHTML = '<h3 style="color:#8a2be2;margin:15px 0 8px;text-align:center;">حساسيات "اصنع حساسيتك"</h3>';
+                    adminList.appendChild(header);
+
+                    customItems.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.classList.add('admin-list-item');
+                        itemDiv.innerHTML = `
+                            <span>كود: ${item.code} ${item.isActive ? '✅' : '❌'}</span>
+                            <div class="admin-actions">
+                                <button class="edit-btn" data-id="${item.id}" data-type="custom">تعديل</button>
+                                <button class="delete-btn" data-id="${item.id}" data-type="custom">حذف</button>
+                            </div>
+                        `;
+                        adminList.appendChild(itemDiv);
+                    });
+                }
+            } catch (error) {
+                console.error('فشل تحميل الحساسيات المخصصة:', error);
+            }
         };
         
         const resetForm = () => {
@@ -770,27 +795,36 @@ createSensitivityBtn.onclick = () => {
         
         addSensitivityForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const initData = window.Telegram?.WebApp?.initData || '';
-            const newOrUpdatedSensitivity = {
-                name: adminNameInput.value,
-                code: adminCodeInput.value,
-                imageUrl: adminImageInput.value,
-                type: adminTypeSelect.value,
-                userId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
-                initData: initData
-            };
-
-            if (editingId) {
-                await fetch(`${API_BASE_URL}/api/sensitivities/${editingId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newOrUpdatedSensitivity)
-                });
-            } else {
-                await fetch(`${API_BASE_URL}/api/sensitivities`, {
+            const initData = window.Telegram.WebApp.initData;
+            const type = adminTypeSelect.value;
+            
+            if (type === 'custom') {
+                const payload = {
+                    code: adminCodeInput.value,
+                    initData: initData
+                };
+                await fetch(`${API_BASE_URL}/api/custom-sensitivities`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newOrUpdatedSensitivity)
+                    body: JSON.stringify(payload)
+                });
+            } else {
+                const payload = {
+                    name: adminNameInput.value,
+                    code: adminCodeInput.value,
+                    imageUrl: adminImageInput.value,
+                    type: type,
+                    userId: window.Telegram.WebApp.initDataUnsafe.user.id,
+                    initData: initData
+                };
+                const url = editingId ? 
+                    `${API_BASE_URL}/api/sensitivities/${editingId}` : 
+                    `${API_BASE_URL}/api/sensitivities`;
+                const method = editingId ? 'PUT' : 'POST';
+                await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
             }
             fetchSensitivities();
@@ -799,28 +833,43 @@ createSensitivityBtn.onclick = () => {
         
         adminList.addEventListener('click', async (e) => {
             const target = e.target;
+            if (!target.classList.contains('edit-btn') && !target.classList.contains('delete-btn')) return;
+
             const id = target.getAttribute('data-id');
+            const type = target.getAttribute('data-type');
 
             if (target.classList.contains('edit-btn')) {
-                const itemToEdit = allSensitivitiesData.find(item => item.id === id);
-                if (itemToEdit) {
-                    adminNameInput.value = itemToEdit.name;
-                    adminCodeInput.value = itemToEdit.code;
-                    adminImageInput.value = itemToEdit.imageUrl;
-                    adminTypeSelect.value = itemToEdit.type;
-                    formSubmitBtn.textContent = 'تعديل';
-                    editingId = id;
+                if (type === 'custom') {
+                    const response = await fetch(`${API_BASE_URL}/api/custom-sensitivities`);
+                    const items = await response.json();
+                    const item = items.find(i => i.id === id);
+                    if (item) {
+                        adminCodeInput.value = item.code;
+                        adminTypeSelect.value = 'custom';
+                        formSubmitBtn.textContent = 'تعديل';
+                        editingId = id;
+                    }
+                } else {
+                    const itemToEdit = allSensitivitiesData.find(item => item.id === id);
+                    if (itemToEdit) {
+                        adminNameInput.value = itemToEdit.name;
+                        adminCodeInput.value = itemToEdit.code;
+                        adminImageInput.value = itemToEdit.imageUrl;
+                        adminTypeSelect.value = itemToEdit.type;
+                        formSubmitBtn.textContent = 'تعديل';
+                        editingId = id;
+                    }
                 }
             } else if (target.classList.contains('delete-btn')) {
-                if (confirm('هل أنت متأكد من حذف هذه الحساسية؟')) {
-                    const initData = window.Telegram?.WebApp?.initData || '';
-                    await fetch(`${API_BASE_URL}/api/sensitivities/${id}`, {
+                if (confirm('هل أنت متأكد؟')) {
+                    const initData = window.Telegram.WebApp.initData;
+                    const url = type === 'custom' ?
+                        `${API_BASE_URL}/api/custom-sensitivities/${id}` :
+                        `${API_BASE_URL}/api/sensitivities/${id}`;
+                    await fetch(url, {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            userId: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
-                            initData: initData
-                        })
+                        body: JSON.stringify({ initData })
                     });
                     fetchSensitivities();
                 }
