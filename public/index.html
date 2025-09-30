@@ -352,12 +352,28 @@ button:disabled {
     transform: translateY(-2px);
     box-shadow: 0 0 20px rgba(138, 43, 226, 1);
 }
+
+/* ✅ توسيط جميع المحتويات */
+.sensitivities-view .display-container,
+#custom-sensitivity-view .display-container {
+    margin: 0 auto !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.sensitivity-display {
+    text-align: center !important;
+    direction: rtl !important;
+}
     </style>
 </head>
 <body>
 
     <main id="app-container">
-        <a href="https://t.me/berlin_of_iraq  " target="_blank" style="
+        <a href="https://t.me/berlin_of_iraq" target="_blank" style="
     position: absolute;
     top: 20px;
     right: 20px;
@@ -371,7 +387,7 @@ button:disabled {
     text-decoration: none;
     box-shadow: 0 3px 8px rgba(0,0,0,0.4);
 ">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg  " alt="قناة" style="width: 28px; height: 28px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="قناة" style="width: 28px; height: 28px;">
 </a>
         <section id="initial-choice-view">
             <div class="title-box">
@@ -393,11 +409,17 @@ button:disabled {
         <section id="pro-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المحترفين</h2>
             <div id="pro-buttons-container" class="button-container"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="back-to-main-pro" class="copy-button">العودة إلى الواجهة الرئيسية</button>
+            </div>
         </section>
 
         <section id="beginner-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المبتدئين</h2>
             <div id="beginner-buttons-container" class="button-container"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="back-to-main-beginner" class="copy-button">العودة إلى الواجهة الرئيسية</button>
+            </div>
         </section>
 
         <section id="display-container" class="sensitivity-display hidden">
@@ -431,14 +453,14 @@ button:disabled {
                     <div id="invitation-area" style="display: none;">
                         <p id="invitation-counter">لديك <span id="invited-count">0</span> من 3 دعوات. لديك <span id="lootbox-count">0</span> صندوق.</p>
                         
-                        <img id="gun-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png    " alt="بندقية"> 
-                        <img id="uc-coin-top-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png    " alt="عملة UC"> 
-                        <img id="uc-coin-middle-right" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png    " alt="عملة UC"> 
-                        <img id="uc-coin-bottom-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png    " alt="عملة UC"> 
-                        <img id="parachute-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png    " alt="مظلة"> 
+                        <img id="gun-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png" alt="بندقية"> 
+                        <img id="uc-coin-top-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC"> 
+                        <img id="uc-coin-middle-right" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC"> 
+                        <img id="uc-coin-bottom-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC"> 
+                        <img id="parachute-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png" alt="مظلة"> 
                         
                         <div style="position: relative; width: fit-content; margin: 20px auto;">
-                            <img id="lootbox-image" src="https://up6.cc/2025/08/175831095492441.png    " alt="صندوق الغنائم">
+                            <img id="lootbox-image" src="https://up6.cc/2025/08/175831095492441.png" alt="صندوق الغنائم">
                         </div>
                         <br>
 
@@ -485,9 +507,9 @@ button:disabled {
     <div id="particles-js"></div>
     
     <!-- الروابط الرسمية -->
-    <script src="https://telegram.org/js/telegram-web-app.js    "></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js    "></script>
-    <script src="https://sad.adsgram.ai/js/sad.min.js    "></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
     <script>
         // === المتغيرات الأساسية ===
@@ -688,6 +710,9 @@ button:disabled {
                     <input type="number" id="fps" placeholder="📊 الفريمات (30-120)" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
                     <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;">🚀 احصل على حساسيتك</button>
                     <div id="custom-result" style="margin-top:20px;display:none;"></div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button id="back-to-main-custom" class="copy-button">العودة إلى الواجهة الرئيسية</button>
+                    </div>
                 </div>
             `;
             document.getElementById('app-container').appendChild(customView);
@@ -894,11 +919,11 @@ button:disabled {
         const INVITE_GOAL = 3;
 
         const prizes = [
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png  " },
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png  " },
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png  " },
-            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png  " },
-            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png  " }
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
+            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" }
         ];
 
         let lastLooters = [];
@@ -1059,6 +1084,23 @@ button:disabled {
                 }
             },
             "retina_detect": true
+        });
+
+        // ✅ أزرار العودة
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'back-to-main-pro' || 
+                e.target.id === 'back-to-main-beginner' || 
+                e.target.id === 'back-to-main-custom') {
+                initialChoiceView.classList.remove('hidden');
+                proSensitivitiesView.classList.add('hidden');
+                beginnerSensitivitiesView.classList.add('hidden');
+                displayContainer.classList.add('hidden');
+                lootboxView.classList.add('hidden');
+                vipSensitivityView.classList.add('hidden');
+                if (document.getElementById('custom-sensitivity-view')) {
+                    document.getElementById('custom-sensitivity-view').remove();
+                }
+            }
         });
     </script>
 
