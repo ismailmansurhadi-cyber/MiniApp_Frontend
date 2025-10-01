@@ -124,7 +124,7 @@ button:disabled {
     max-width: 400px;
     box-sizing: border-box;
     text-align: center;
-    margin: 0 auto; /* ← لتوسيط العنصر */
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -697,9 +697,15 @@ button:disabled {
             const customView = document.createElement('section');
             customView.id = 'custom-sensitivity-view';
             customView.classList.add('sensitivities-view');
+            // ✅ ضمان التوسيط
+            customView.style.display = 'flex';
+            customView.style.justifyContent = 'center';
+            customView.style.alignItems = 'center';
+            customView.style.width = '100%';
+            customView.style.padding = '20px';
             customView.innerHTML = `
-                <div class="display-container" style="width:100%;max-width:400px;background:rgba(30,10,40,0.7);border:2px solid #ff00ff;border-radius:16px;padding:25px;box-shadow:0 0 20px rgba(138,43,226,0.6);">
-                    <h2 style="color:#e0b0ff;text-align:center;font-size:22px;">🎯 اصنع حساسيتك</h2>
+                <div class="display-container" style="width:100%;max-width:400px;background:rgba(30,10,40,0.7);border:2px solid #ff00ff;border-radius:16px;padding:25px;box-shadow:0 0 20px rgba(138,43,226,0.6);text-align:center;">
+                    <h2 style="color:#e0b0ff;font-size:22px;margin:0 0 20px;">🎯 اصنع حساسيتك</h2>
                     <input type="text" id="device-name" placeholder="📱 اسم جهازك" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
                     <select id="device-type" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
                         <option value="">🎮 نوع الجهاز</option>
@@ -720,7 +726,6 @@ button:disabled {
             document.querySelectorAll('section').forEach(s => {
                 if (s.id !== 'custom-sensitivity-view') s.classList.add('hidden');
             });
-            customView.classList.remove('hidden');
 
             document.getElementById('submit-custom').onclick = async () => {
                 const device = document.getElementById('device-name').value.trim();
@@ -891,12 +896,20 @@ button:disabled {
                     const url = type === 'custom' ?
                         `${API_BASE_URL}/api/custom-sensitivities/${id}` :
                         `${API_BASE_URL}/api/sensitivities/${id}`;
-                    await fetch(url, {
-                        method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ initData })
-                    });
-                    fetchSensitivities();
+                    try {
+                        const res = await fetch(url, {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ initData })
+                        });
+                        if (res.ok) {
+                            fetchSensitivities();
+                        } else {
+                            Telegram.WebApp.showAlert('فشل الحذف');
+                        }
+                    } catch (error) {
+                        Telegram.WebApp.showAlert('خطأ في الاتصال');
+                    }
                 }
             }
         });
@@ -1036,7 +1049,7 @@ button:disabled {
                 if (lastLooters.length > 5) lastLooters.pop();
                 saveData();
                 fetchLastLooters();
-            }, 800); // مهلة 0.8 ثانية لمحاكاة الفتح
+            }, 800);
         }
     } else {
         alert('ليس لديك صناديق كافية للفتح.');
