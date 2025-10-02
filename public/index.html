@@ -6,7 +6,7 @@
     <title>صندوق الغنائم</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-/* الأنماط العامة للصفحة */
+/* الخلفية والأنماط العامة */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
@@ -20,25 +20,20 @@ body {
     position: relative;
     overflow-x: hidden;
 }
-/* خلفية شبكية خفيفة */
-body::before {
-    content: '';
-    position: absolute;
+.hidden {
+    display: none;
+}
+
+/* خلفية شبكات ديناميكية */
+#particles-js {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-        radial-gradient(circle at 10% 20%, rgba(0, 230, 230, 0.05) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(138, 43, 226, 0.05) 0%, transparent 20%),
-        repeating-linear-gradient(0deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 1px, transparent 1px, transparent 20px),
-        repeating-linear-gradient(90deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 1px, transparent 1px, transparent 20px);
     z-index: -1;
 }
-.hidden {
-    display: none;
-}
-/* الأنماط المحدثة لجميع الأزرار والعناصر */
+
 main#app-container {
     width: 100%;
     max-width: 450px;
@@ -49,7 +44,8 @@ main#app-container {
     z-index: 2;
     padding: 20px;
 }
-/* صندوق العنوان الرئيسي - مُحسّن */
+
+/* صندوق العنوان الرئيسي - مُحسّن بشكل احترافي */
 .title-box {
     background: linear-gradient(135deg, #004d40, #00796b);
     padding: 25px;
@@ -61,6 +57,7 @@ main#app-container {
     max-width: 400px;
     box-sizing: border-box;
     animation: titleGlow 2s infinite alternate;
+    text-align: center;
 }
 @keyframes titleGlow {
     from { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 8px 20px rgba(0, 0, 0, 0.6); }
@@ -88,7 +85,7 @@ main#app-container {
     max-width: 400px;
 }
 
-/* نمط الأزرار - موحد ومرتب */
+/* نمط الأزرار - موحد ومرتب مع تأثيرات حركية */
 button {
     width: 100%;
     padding: 16px;
@@ -187,9 +184,9 @@ button:disabled {
     color: white;
     border: 2px solid #ff00ff;
     box-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
-    animation: rainbowGlow 4s infinite;
+    animation: rainbow 3s infinite;
 }
-@keyframes rainbowGlow {
+@keyframes rainbow {
     0% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
     25% { box-shadow: 0 0 15px rgba(255, 0, 255, 0.8); }
     50% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); }
@@ -212,7 +209,7 @@ button:disabled {
     box-shadow: 0 0 18px rgba(255, 87, 34, 0.8);
 }
 
-/* باقي الأنماط كما هي (بدون تغيير) */
+/* أنماط صفحة الدعوة (صندوق الغنائم) */
 #lootbox-view .container {
     background: none;
     padding: 0;
@@ -330,6 +327,8 @@ button:disabled {
 .winner-item:last-child {
     border-bottom: none;
 }
+
+/* أنماط حركة صورة الصندوق */
 @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -353,6 +352,8 @@ button:disabled {
     position: relative;
     z-index: 1;
 }
+
+/* أنماط العناصر المتناثرة */
 .scattered-item {
     position: absolute;
     width: auto;
@@ -400,36 +401,8 @@ button:disabled {
     z-index: 2;
     white-space: nowrap;
 }
-#vip-sensitivity-view {
-    padding: 20px;
-    background-color: #33363b;
-    border-radius: 12px;
-    border: 1px solid #555;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    width: 100%;
-    max-width: 400px;
-    box-sizing: border-box;
-    text-align: center;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.sensitivities-view .display-container,
-#custom-sensitivity-view .display-container {
-    margin: 0 auto !important;
-    text-align: center !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-.sensitivity-display {
-    text-align: center !important;
-    direction: rtl !important;
-}
-/* === الحاوية كما هي (لم نلمسها) === */
+
+/* توسيط الحاوية عند العرض (تم حل المشكلة) */
 #display-container.hidden {
     display: none !important;
 }
@@ -468,6 +441,102 @@ button:disabled {
     padding: 12px !important;
     font-size: 16px !important;
     border-radius: 8px !important;
+}
+
+/* أنماط VIP */
+#vip-sensitivity-view {
+    padding: 20px;
+    background-color: #33363b;
+    border-radius: 12px;
+    border: 1px solid #555;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#vip-sensitivity-view .display-container {
+    width: 100%;
+    max-width: 300px;
+    background-color: #44474f;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-sizing: border-box;
+}
+#code-output-vip {
+    font-family: monospace;
+    font-size: 16px;
+    color: #e0e0e0;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+#copy-code-btn-vip {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    background: #4a7c8e;
+    color: white;
+    border: 2px solid #00ffff;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+#copy-code-btn-vip:hover {
+    background: #3a6c7e;
+}
+
+/* أنماط لوحة التحكم */
+.admin-panel {
+    background-color: #33363b;
+    border-radius: 12px;
+    border: 1px solid #555;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.admin-list {
+    width: 100%;
+    max-width: 300px;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #44474f;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+.admin-list-item {
+    background-color: #33363b;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #555;
+}
+.admin-actions button {
+    padding: 5px 10px;
+    margin: 0 2px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.admin-actions button:hover {
+    background-color: #5b6e9a;
 }
     </style>
 </head>
