@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صندوق الغنائم</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
 /* الخلفية والأنماط العامة - مطابقة للصورة */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0a0f1a 0%, #1a2332 50%, #0d1421 100%);
-    background-attachment: fixed;
+    background: url('https://i.ibb.co/5B8C3r3/pubg-background.jpg') no-repeat center center fixed; /* خلفية صحراوية محترقة مطابقة */
+    background-size: cover;
     color: #ffffff;
-    margin: 0;
-    padding: 0;
+    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    flex-direction: column;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
-/* تأثيرات الشرر والدخان - باستخدام CSS لتطابق الصورة */
+/* تأثير الدخان - طبقة شفافة متحركة */
 body::before {
     content: '';
     position: absolute;
@@ -29,199 +30,253 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, transparent 0%, rgba(10,15,26,0.8) 100%);
-    opacity: 0.7;
+    background: url('https://i.ibb.co/9V5r4pY/smoke-overlay.png') repeat; /* PNG لتأثير دخان */
+    background-size: 200% 200%;
+    animation: smokeMove 20s linear infinite;
+    opacity: 0.3;
     z-index: -1;
 }
 
-body::after {
-    content: '';
+@keyframes smokeMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 100% 100%; }
+}
+
+/* تأثير النار في الأسفل - مطابق */
+.fire-effect {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 30%;
-    background: linear-gradient(to top, #1a202c, transparent);
+    height: 150px;
+    background: url('https://i.ibb.co/hB0qH5G/fire-explosion.png') repeat-x bottom; /* PNG للنار */
+    background-size: 200px 150px;
+    animation: fireFlicker 1s infinite alternate;
+    opacity: 0.7;
     z-index: -1;
 }
 
-.hidden { display: none; }
+@keyframes fireFlicker {
+    0% { opacity: 0.7; transform: scaleY(1); }
+    100% { opacity: 0.5; transform: scaleY(1.1); }
+}
 
-/* شعار Tultegram - مطابق للموقع في الصورة */
-.logo {
+/* تأثير الرصاص في الجوانب */
+.bullet-left {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    top: 20%;
+    left: 5%;
+    width: 50px;
+    height: 50px;
+    background: url('https://i.ibb.co/0c6ZJ4b/bullet-shell.png') no-repeat center; /* PNG للرصاص */
+    background-size: contain;
+    animation: bulletFly 2s linear infinite;
 }
 
-.logo::before {
-    content: '📱';
-    font-size: 18px;
+.bullet-right {
+    position: absolute;
+    top: 30%;
+    right: 5%;
+    width: 50px;
+    height: 50px;
+    background: url('https://i.ibb.co/0c6ZJ4b/bullet-shell.png') no-repeat center;
+    background-size: contain;
+    animation: bulletFly 2.5s linear infinite reverse;
 }
 
-/* الحاوية الرئيسية */
+@keyframes bulletFly {
+    0% { transform: translateX(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateX(100px) rotate(360deg); opacity: 0; }
+}
+
+.hidden {
+    display: none;
+}
+
+/* خلفية شبكات ديناميكية - كما هي */
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
 main#app-container {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    max-width: 450px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     position: relative;
     z-index: 2;
+    padding: 20px;
 }
 
-/* العمود الذهبي المركزي - مطابق للصورة مع توهج */
-.golden-pole {
-    position: absolute;
-    width: 12px;
-    height: 280px;
-    background: linear-gradient(180deg, #ffd700 0%, #ffb000 30%, #ff8c00 70%, #b8860b 100%);
-    border-radius: 6px;
-    box-shadow: 
-        0 0 25px rgba(255, 215, 0, 0.9),
-        0 0 50px rgba(255, 140, 0, 0.5),
-        inset 0 0 8px rgba(255, 255, 255, 0.4);
-    z-index: 5;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* صندوق العنوان الرئيسي - مُحسّن بشكل احترافي - كما هي */
+.title-box {
+    background: linear-gradient(135deg, #004d40, #00796b);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 8px 20px rgba(0, 0, 0, 0.6);
+    border: 2px solid #00e6e6;
+    margin-bottom: 25px;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    animation: titleGlow 2s infinite alternate;
+    text-align: center;
+}
+@keyframes titleGlow {
+    from { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 8px 20px rgba(0, 0, 0, 0.6); }
+    to { box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 10px 25px rgba(0, 0, 0, 0.8); }
+}
+.title-box h1 {
+    font-size: 28px;
+    color: #00e6e6;
+    margin-bottom: 5px;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+    font-weight: bold;
+}
+.title-box p {
+    font-size: 16px;
+    color: #e0e0e0;
+    margin-top: 5px;
 }
 
-.golden-pole::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 20px;
-    background: radial-gradient(circle, #ffd700 0%, #ff8c00 100%);
-    border-radius: 50%;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
-}
-
-.golden-pole::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 15px;
-    background: radial-gradient(ellipse, rgba(255, 165, 0, 0.6) 0%, transparent 70%);
-    border-radius: 50%;
-}
-
-/* حاوية الأزرار السداسية */
-.hex-container {
-    position: relative;
-    width: 550px;
-    height: 550px;
-    max-width: 90vw;
-    max-height: 90vh;
-}
-
-/* الأزرار السداسية - تصميم معدني مطابق */
-.hex-button {
-    position: absolute;
-    width: 130px;
-    height: 150px;
-    background: linear-gradient(145deg, #5a6a7b 0%, #3a4a5b 50%, #2a3a4b 100%);
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+/* حاوية الأزرار الرئيسية - كما هي */
+.main-choice-container {
     display: flex;
     flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* نمط الأزرار - موحد ومرتب مع تأثيرات حركية - كما هي */
+button {
+    width: 100%;
+    padding: 16px;
+    margin: 0;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+button:hover::after {
+    left: 100%;
+}
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+button:active {
+    transform: translateY(0);
+}
+button:disabled {
+    background-color: #5b6e9a;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* أزرار مخصصة بألوان جذابة - كما هي */
+#pro-choice {
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    border-color: #00ff00;
+    box-shadow: 0 0 12px rgba(0, 255, 0, 0.6);
+}
+#pro-choice:hover {
+    background: linear-gradient(135deg, #0d47a1, #0b3a82);
+    box-shadow: 0 0 18px rgba(0, 255, 0, 0.8);
+}
+
+#beginner-choice {
+    background: linear-gradient(135deg, #4caf50, #388e3c);
+    border-color: #ffeb3b;
+    box-shadow: 0 0 12px rgba(255, 235, 59, 0.6);
+}
+#beginner-choice:hover {
+    background: linear-gradient(135deg, #388e3c, #2e7d32);
+    box-shadow: 0 0 18px rgba(255, 235, 59, 0.8);
+}
+
+#open-lootbox-button {
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    border-color: #ff5722;
+    box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
+}
+#open-lootbox-button:hover {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
+}
+
+#open-vip-sensitivity-button {
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    color: #000;
+    border: 2px solid #ff9800;
+    box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
+    display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid #b8860b;
-    box-shadow: 
-        0 6px 12px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        0 0 0 1px rgba(184, 134, 11, 0.4);
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 12px rgba(255, 193, 7, 0.6); }
+    50% { box-shadow: 0 0 20px rgba(255, 193, 7, 0.9); }
+}
+#open-vip-sensitivity-button:hover {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    transform: translateY(-3px);
+    box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
 }
 
-.hex-button:hover {
-    transform: scale(1.08);
-    box-shadow: 
-        0 10px 20px rgba(0, 0, 0, 0.6),
-        0 0 15px rgba(255, 140, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    border-color: #ffa500;
+#create-sensitivity-btn {
+    background: linear-gradient(135deg, #8a2be2, #4b0082);
+    color: white;
+    border: 2px solid #ff00ff;
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
+    animation: rainbow 3s infinite;
+}
+@keyframes rainbow {
+    0% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
+    25% { box-shadow: 0 0 15px rgba(255, 0, 255, 0.8); }
+    50% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); }
+    75% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.8); }
+    100% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
+}
+#create-sensitivity-btn:hover {
+    background: linear-gradient(135deg, #9b3be3, #5a1093);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 1);
 }
 
-.hex-button:active {
-    transform: scale(0.95);
+#open-admin-btn {
+    background: linear-gradient(135deg, #ff5722, #e64a19);
+    border-color: #fff;
+    box-shadow: 0 0 12px rgba(255, 87, 34, 0.6);
 }
-
-/* أيقونات الأزرار - مطابقة للصورة */
-.hex-icon {
-    font-size: 40px;
-    margin-bottom: 6px;
-    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.4));
+#open-admin-btn:hover {
+    background: linear-gradient(135deg, #e64a19, #d84315);
+    box-shadow: 0 0 18px rgba(255, 87, 34, 0.8);
 }
-
-/* نصوص الأزرار - بالعربية كما في الكود الأصلي */
-.hex-text {
-    color: #ffd700;
-    font-size: 12px;
-    font-weight: 900;
-    letter-spacing: 0.5px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-    text-align: center;
-    line-height: 1.2;
-}
-
-/* مواقع الأزرار - تطابق دقيق للصورة */
-.play-now {
-    top: 50px;
-    left: 70px;
-}
-
-.inventory {
-    top: 50px;
-    right: 70px;
-}
-
-.store {
-    bottom: 110px;
-    left: 30px;
-}
-
-.squad {
-    bottom: 110px;
-    right: 30px;
-}
-
-.stats {
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* تخصيص الأيقونات لتطابق الصورة (استخدمت إيموجي مشابهة) */
-.play-now .hex-icon { content: '👀'; color: #fff; }
-.inventory .hex-icon { content: '🔫'; color: #a9a9a9; }
-.store .hex-icon { content: '🎁'; color: #ffd700; } /* لصندوق الغنائم */
-.squad .hex-icon { content: '📺'; color: #add8e6; } /* للإعلان VIP */
-.stats .hex-icon { content: '✨'; color: #90ee90; } /* لاصنع حساسيتك */
-
-/* زر ADMIN - مخفي ويظهر فقط للمطور */
-.admin-btn {
-    display: none !important;
-}
-
-/* باقي الأنماط كما هي من الكود الأصلي (أضفتها هنا للكمال) */
-.title-box { display: none; } /* إخفاء العنوان القديم */
-.main-choice-container { display: none; }
 
 /* أنماط صفحة الدعوة (صندوق الغنائم) - كما هي */
 #lootbox-view .container {
@@ -430,6 +485,7 @@ main#app-container {
     text-align: center !important;
     direction: rtl !important;
 }
+/* === الحاوية كما هي (لم نلمسها) === */
 #display-container.hidden {
     display: none !important;
 }
@@ -469,116 +525,42 @@ main#app-container {
     font-size: 16px !important;
     border-radius: 8px !important;
 }
-
-/* استجابة للشاشات الصغيرة - كما هي */
-@media (max-width: 480px) {
-    .hex-container {
-        width: 300px;
-        height: 400px;
-    }
-    .hex-button {
-        width: 100px;
-        height: 115px;
-    }
-    .hex-text {
-        font-size: 8px;
-    }
-    .hex-icon {
-        font-size: 28px;
-    }
-    .golden-pole {
-        height: 220px;
-    }
-    .play-now {
-        top: 20px;
-        left: 10px;
-    }
-    .inventory {
-        top: 20px;
-        right: 10px;
-    }
-    .store {
-        bottom: 80px;
-        left: 0px;
-    }
-    .squad {
-        bottom: 80px;
-        right: 0px;
-    }
-    .stats {
-        bottom: 10px;
-    }
-}
     </style>
 </head>
 <body>
-    <!-- شعار Tultegram -->
-    <div class="logo">Tultegram</div>
-    
-    <!-- رابط التليجرام -->
-    <a href="https://t.me/berlin_of_iraq" target="_blank" style="
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        z-index: 1000;
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.4);
-    ">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="قناة" style="width: 28px; height: 28px;">
-    </a>
-    
     <main id="app-container">
+        <a href="https://t.me/berlin_of_iraq" target="_blank" style="
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="قناة" style="width: 28px; height: 28px;">
+</a>
         <section id="initial-choice-view">
-            <!-- العمود الذهبي -->
-            <div class="golden-pole"></div>
-            
-            <!-- حاوية الأزرار -->
-            <div class="hex-container">
-                <!-- أنا محترف -->
-                <div id="pro-choice" class="hex-button play-now">
-                    <div class="hex-icon">👀</div>
-                    <div class="hex-text">أنا محترف</div>
-                </div>
-                
-                <!-- أنا مبتدئ -->
-                <div id="beginner-choice" class="hex-button inventory">
-                    <div class="hex-icon">🔫</div>
-                    <div class="hex-text">أنا مبتدئ</div>
-                </div>
-                
-                <!-- صندوق الغنائم العشوائي -->
-                <div id="open-lootbox-button" class="hex-button store">
-                    <div class="hex-icon">💰</div>
-                    <div class="hex-text">صندوق الغنائم العشوائي</div>
-                </div>
-                
-                <!-- مدفوعة vip حساسية -->
-                <div id="open-vip-sensitivity-button" class="hex-button squad">
-                    <div class="hex-icon">👥</div>
-                    <div class="hex-text">مدفوعة vip حساسية</div>
-                </div>
-                
-                <!-- اصنع حساسيتك -->
-                <div id="create-sensitivity-btn" class="hex-button stats">
-                    <div class="hex-icon">📊</div>
-                    <div class="hex-text">اصنع حساسيتك</div>
-                </div>
-                
-                <!-- لوحة التحكم (مخفي) -->
-                <div id="open-admin-btn" class="hex-button admin-btn">
-                    <div class="hex-icon">⚙️</div>
-                    <div class="hex-text">لوحة التحكم</div>
-                </div>
+            <div class="title-box">
+                <h1>إحتراف ببجي يبدأ من هنا</h1>
+                <p>اختر مستواك لتجد أفضل الحساسيات</p>
+            </div>
+            <div class="main-choice-container">
+                <button id="pro-choice">أنا محترف</button>
+                <button id="beginner-choice">أنا مبتدئ</button>
+                <button id="open-lootbox-button">🎁 صندوق الغنائم العشوائي </button>
+                <button id="open-vip-sensitivity-button">(شاهد إعلان) مدفوعة vip حساسية</button>
+                <!-- ✅ الزر الجديد -->
+                <button id="create-sensitivity-btn">✨ اصنع حساسيتك ✨</button>
+                <!-- ✅ الزر مخفي افتراضيًا -->
+                <button id="open-admin-btn" style="display:none;">لوحة التحكم</button>
             </div>
         </section>
-        
-        <!-- باقي الـ sections من الكود الأصلي (أضفتها هنا للكمال) -->
         <section id="pro-sensitivities-view" class="sensitivities-view hidden">
             <h2>حساسيات المحترفين</h2>
             <div id="pro-buttons-container" class="button-container"></div>
@@ -598,19 +580,19 @@ main#app-container {
             <p id="code-output">اضغط على زر لعرض الكود</p>
             <button id="copy-code-btn" style="margin-top: 10px;">نسخ الكود</button>
         </section>
-        <section id="vip-sensitivity-view" class="sensitivities-view hidden">
-            <div class="display-container" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-                <p style="color: #ffd700; margin-bottom: 20px; font-weight: bold; text-align: center;">
-                    يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة
-                </p>
-                <div id="display-container-vip" class="sensitivity-display" style="width: 100%; max-width: 300px; background-color: #44474f; padding: 15px; border-radius: 8px; text-align: center; box-sizing: border-box;">
-                    <div id="code-output-vip" dir="rtl" style="font-family: monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all;"></div>
-                    <button id="copy-code-btn-vip" style="margin-top: 15px; padding: 10px; background: #4a7c8e; color: white; border: 2px solid #00ffff; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%;">
-                        نسخ الكود
-                    </button>
-                </div>
-            </div>
-        </section>
+     <section id="vip-sensitivity-view" class="sensitivities-view hidden">
+    <div class="display-container" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <p style="color: #ffd700; margin-bottom: 20px; font-weight: bold; text-align: center;">
+            يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة
+        </p>
+        <div id="display-container-vip" class="sensitivity-display" style="width: 100%; max-width: 300px; background-color: #44474f; padding: 15px; border-radius: 8px; text-align: center; box-sizing: border-box;">
+            <div id="code-output-vip" dir="rtl" style="font-family: monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all;"></div>
+            <button id="copy-code-btn-vip" style="margin-top: 15px; padding: 10px; background: #4a7c8e; color: white; border: 2px solid #00ffff; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%;">
+                نسخ الكود
+            </button>
+        </div>
+    </div>
+</section>
         <section id="lootbox-view" class="sensitivities-view hidden">
             <div class="container">
                 <div id="lootbox-area">
@@ -971,7 +953,7 @@ main#app-container {
             } else {
                 const payload = {
                     name: adminNameInput.value,
-                    code: adminCodeInput.value;
+                    code: adminCodeInput.value,
                     imageUrl: adminImageInput.value,
                     type: type,
                     userId: window.Telegram.WebApp.initDataUnsafe.user.id,
