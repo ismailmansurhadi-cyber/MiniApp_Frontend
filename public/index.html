@@ -9,7 +9,8 @@
 /* الخلفية والأنماط العامة */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
+    background-size: cover;
     color: #ffffff;
     padding: 20px;
     display: flex;
@@ -402,7 +403,21 @@ button:disabled {
     white-space: nowrap;
 }
 
-/* توسيط الحاوية عند العرض (تم حل المشكلة) */
+/* توسيط جميع المحتويات */
+.sensitivities-view .display-container,
+#custom-sensitivity-view .display-container {
+    margin: 0 auto !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.sensitivity-display {
+    text-align: center !important;
+    direction: rtl !important;
+}
+/* === الحاوية كما هي (لم نلمسها) === */
 #display-container.hidden {
     display: none !important;
 }
@@ -441,102 +456,6 @@ button:disabled {
     padding: 12px !important;
     font-size: 16px !important;
     border-radius: 8px !important;
-}
-
-/* أنماط VIP */
-#vip-sensitivity-view {
-    padding: 20px;
-    background-color: #33363b;
-    border-radius: 12px;
-    border: 1px solid #555;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    width: 100%;
-    max-width: 400px;
-    box-sizing: border-box;
-    text-align: center;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-#vip-sensitivity-view .display-container {
-    width: 100%;
-    max-width: 300px;
-    background-color: #44474f;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    box-sizing: border-box;
-}
-#code-output-vip {
-    font-family: monospace;
-    font-size: 16px;
-    color: #e0e0e0;
-    white-space: pre-wrap;
-    word-break: break-all;
-}
-#copy-code-btn-vip {
-    width: 100%;
-    max-width: 300px;
-    padding: 10px;
-    background: #4a7c8e;
-    color: white;
-    border: 2px solid #00ffff;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-#copy-code-btn-vip:hover {
-    background: #3a6c7e;
-}
-
-/* أنماط لوحة التحكم */
-.admin-panel {
-    background-color: #33363b;
-    border-radius: 12px;
-    border: 1px solid #555;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    padding: 20px;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.admin-list {
-    width: 100%;
-    max-width: 300px;
-    margin: 20px 0;
-    padding: 10px;
-    background-color: #44474f;
-    border-radius: 8px;
-    box-sizing: border-box;
-}
-.admin-list-item {
-    background-color: #33363b;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #555;
-}
-.admin-actions button {
-    padding: 5px 10px;
-    margin: 0 2px;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-.admin-actions button:hover {
-    background-color: #5b6e9a;
 }
     </style>
 </head>
