@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صندوق الغنائم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
-    <style>
+    <link rel="stylesheet" href="styles.css">
+<style>
 /* الخلفية والأنماط العامة */
 body {
-    font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
@@ -43,7 +43,6 @@ main#app-container {
     z-index: 2;
     padding: 20px;
 }
-
 /* === مربع العنوان: أصغر + خط عربي احترافي === */
 .title-box {
     background: linear-gradient(135deg, #0c2a3a, #1a4a5f);
@@ -56,6 +55,7 @@ main#app-container {
     max-width: 400px;
     box-sizing: border-box;
     text-align: center;
+    font-family: 'Tajawal', 'Segoe UI', sans-serif;
 }
 .title-box h1 {
     font-size: 22px;
@@ -70,7 +70,6 @@ main#app-container {
     margin-top: 3px;
     font-weight: 500;
 }
-
 /* حاوية الأزرار الرئيسية */
 .main-choice-container {
     display: flex;
@@ -79,7 +78,6 @@ main#app-container {
     width: 100%;
     max-width: 400px;
 }
-
 /* === نمط الزجاجي السماوي للأزرار (شفاف) === */
 button {
     width: 100%;
@@ -411,7 +409,7 @@ button:disabled {
     font-size: 16px !important;
     border-radius: 8px !important;
 }
-    </style>
+</style>
 </head>
 <body>
     <main id="app-container">
@@ -441,7 +439,9 @@ button:disabled {
                 <button id="beginner-choice">أنا مبتدئ</button>
                 <button id="open-lootbox-button">🎁 صندوق الغنائم العشوائي </button>
                 <button id="open-vip-sensitivity-button">(شاهد إعلان) مدفوعة vip حساسية</button>
+                <!-- ✅ الزر الجديد -->
                 <button id="create-sensitivity-btn">✨ اصنع حساسيتك ✨</button>
+                <!-- ✅ الزر مخفي افتراضيًا -->
                 <button id="open-admin-btn" style="display:none;">لوحة التحكم</button>
             </div>
         </section>
