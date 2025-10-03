@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صندوق الغنائم</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
     <style>
 /* الخلفية والأنماط العامة */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
@@ -24,7 +24,6 @@ body {
 .hidden {
     display: none;
 }
-
 /* خلفية شبكات ديناميكية */
 #particles-js {
     position: fixed;
@@ -34,7 +33,6 @@ body {
     height: 100%;
     z-index: -1;
 }
-
 main#app-container {
     width: 100%;
     max-width: 450px;
@@ -46,14 +44,14 @@ main#app-container {
     padding: 20px;
 }
 
-/* صندوق العنوان الرئيسي - مُحسّن بشكل احترافي */
+/* === مربع العنوان الرئيسي - مُحسّن بحجم أصغر وخط حديث === */
 .title-box {
-    background: linear-gradient(135deg, #004d40, #00796b);
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 8px 20px rgba(0, 0, 0, 0.6);
-    border: 2px solid #00e6e6;
-    margin-bottom: 25px;
+    background: linear-gradient(135deg, #0d2b45, #1a568c);
+    padding: 18px;
+    border-radius: 14px;
+    box-shadow: 0 0 16px rgba(0, 195, 255, 0.5), 0 6px 16px rgba(0, 0, 0, 0.5);
+    border: 2px solid #00c3ff;
+    margin-bottom: 22px;
     width: 100%;
     max-width: 400px;
     box-sizing: border-box;
@@ -61,20 +59,22 @@ main#app-container {
     text-align: center;
 }
 @keyframes titleGlow {
-    from { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 8px 20px rgba(0, 0, 0, 0.6); }
-    to { box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 10px 25px rgba(0, 0, 0, 0.8); }
+    from { box-shadow: 0 0 16px rgba(0, 195, 255, 0.5), 0 6px 16px rgba(0, 0, 0, 0.5); }
+    to { box-shadow: 0 0 24px rgba(0, 195, 255, 0.8), 0 8px 20px rgba(0, 0, 0, 0.7); }
 }
 .title-box h1 {
-    font-size: 28px;
-    color: #00e6e6;
-    margin-bottom: 5px;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
-    font-weight: bold;
+    font-size: 24px;
+    color: #00e0ff;
+    margin-bottom: 4px;
+    text-shadow: 0 0 4px rgba(0, 224, 255, 0.8);
+    font-weight: 700;
+    font-family: 'Tajawal', sans-serif;
 }
 .title-box p {
-    font-size: 16px;
-    color: #e0e0e0;
-    margin-top: 5px;
+    font-size: 14px;
+    color: #cceeff;
+    margin-top: 4px;
+    font-weight: 500;
 }
 
 /* حاوية الأزرار الرئيسية */
@@ -86,7 +86,7 @@ main#app-container {
     max-width: 400px;
 }
 
-/* نمط الأزرار - موحد ومرتب مع تأثيرات حركية */
+/* === نمط زجاجي موحد لجميع الأزرار === */
 button {
     width: 100%;
     padding: 16px;
@@ -97,11 +97,16 @@ button {
     cursor: pointer;
     color: white;
     border: 2px solid transparent;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    background: rgba(30, 30, 40, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     transition: all 0.25s ease;
     position: relative;
     overflow: hidden;
+    box-sizing: border-box;
 }
+
 button::after {
     content: '';
     position: absolute;
@@ -112,74 +117,47 @@ button::after {
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transition: left 0.6s ease;
 }
+
 button:hover::after {
     left: 100%;
 }
+
 button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
 }
+
 button:active {
     transform: translateY(0);
 }
+
 button:disabled {
-    background-color: #5b6e9a;
+    background: rgba(90, 90, 110, 0.6);
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
 
-/* أزرار مخصصة بألوان جذابة */
-#pro-choice {
-    background: linear-gradient(135deg, #1a73e8, #0d47a1);
-    border-color: #00ff00;
-    box-shadow: 0 0 12px rgba(0, 255, 0, 0.6);
-}
-#pro-choice:hover {
-    background: linear-gradient(135deg, #0d47a1, #0b3a82);
-    box-shadow: 0 0 18px rgba(0, 255, 0, 0.8);
-}
-
-#beginner-choice {
-    background: linear-gradient(135deg, #4caf50, #388e3c);
-    border-color: #ffeb3b;
-    box-shadow: 0 0 12px rgba(255, 235, 59, 0.6);
-}
-#beginner-choice:hover {
-    background: linear-gradient(135deg, #388e3c, #2e7d32);
-    box-shadow: 0 0 18px rgba(255, 235, 59, 0.8);
-}
-
-#open-lootbox-button {
-    background: linear-gradient(135deg, #ffc107, #ff9800);
-    border-color: #ff5722;
-    box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
-}
-#open-lootbox-button:hover {
-    background: linear-gradient(135deg, #ff9800, #f57c00);
-    box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
-}
-
+/* === استثناء: زر الحساسية المدفوعة (VIP) - لون ذهبي مميز === */
 #open-vip-sensitivity-button {
     background: linear-gradient(135deg, #ffc107, #ff9800);
     color: #000;
     border: 2px solid #ff9800;
     box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     animation: pulse 2s infinite;
 }
+
+#open-vip-sensitivity-button:hover {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
+}
+
 @keyframes pulse {
     0%, 100% { box-shadow: 0 0 12px rgba(255, 193, 7, 0.6); }
     50% { box-shadow: 0 0 20px rgba(255, 193, 7, 0.9); }
 }
-#open-vip-sensitivity-button:hover {
-    background: linear-gradient(135deg, #ff9800, #f57c00);
-    transform: translateY(-3px);
-    box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
-}
 
+/* === استثناء: زر "اصنع حساسيتك" - لون بنفسجي مميز === */
 #create-sensitivity-btn {
     background: linear-gradient(135deg, #8a2be2, #4b0082);
     color: white;
@@ -187,6 +165,12 @@ button:disabled {
     box-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
     animation: rainbow 3s infinite;
 }
+
+#create-sensitivity-btn:hover {
+    background: linear-gradient(135deg, #9b3be3, #5a1093);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 1);
+}
+
 @keyframes rainbow {
     0% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
     25% { box-shadow: 0 0 15px rgba(255, 0, 255, 0.8); }
@@ -194,23 +178,8 @@ button:disabled {
     75% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.8); }
     100% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
 }
-#create-sensitivity-btn:hover {
-    background: linear-gradient(135deg, #9b3be3, #5a1093);
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(138, 43, 226, 1);
-}
 
-#open-admin-btn {
-    background: linear-gradient(135deg, #ff5722, #e64a19);
-    border-color: #fff;
-    box-shadow: 0 0 12px rgba(255, 87, 34, 0.6);
-}
-#open-admin-btn:hover {
-    background: linear-gradient(135deg, #e64a19, #d84315);
-    box-shadow: 0 0 18px rgba(255, 87, 34, 0.8);
-}
-
-/* أنماط صفحة الدعوة (صندوق الغنائم) */
+/* أنماط صفحة الدعوة (صندوق الغنائم) - بدون تغيير */
 #lootbox-view .container {
     background: none;
     padding: 0;
@@ -329,7 +298,7 @@ button:disabled {
     border-bottom: none;
 }
 
-/* أنماط حركة صورة الصندوق */
+/* أنماط الحركة */
 @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -354,7 +323,7 @@ button:disabled {
     z-index: 1;
 }
 
-/* أنماط العناصر المتناثرة */
+/* العناصر المتناثرة */
 .scattered-item {
     position: absolute;
     width: auto;
@@ -403,7 +372,7 @@ button:disabled {
     white-space: nowrap;
 }
 
-/* توسيط جميع المحتويات */
+/* توسيط المحتوى */
 .sensitivities-view .display-container,
 #custom-sensitivity-view .display-container {
     margin: 0 auto !important;
@@ -417,7 +386,6 @@ button:disabled {
     text-align: center !important;
     direction: rtl !important;
 }
-/* === الحاوية كما هي (لم نلمسها) === */
 #display-container.hidden {
     display: none !important;
 }
@@ -487,9 +455,7 @@ button:disabled {
                 <button id="beginner-choice">أنا مبتدئ</button>
                 <button id="open-lootbox-button">🎁 صندوق الغنائم العشوائي </button>
                 <button id="open-vip-sensitivity-button">(شاهد إعلان) مدفوعة vip حساسية</button>
-                <!-- ✅ الزر الجديد -->
                 <button id="create-sensitivity-btn">✨ اصنع حساسيتك ✨</button>
-                <!-- ✅ الزر مخفي افتراضيًا -->
                 <button id="open-admin-btn" style="display:none;">لوحة التحكم</button>
             </div>
         </section>
@@ -585,7 +551,9 @@ button:disabled {
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script>
-        // === المتغيرات الأساسية ===
+        // === نفس كود الجافاسكربت الأصلي دون تغيير ===
+        // (تم حذفه هنا للاختصار، لكن يجب أن يبقى كما هو في ملفك)
+        // ✅ لا حاجة لتغيير أي شيء في الجافاسكربت
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
@@ -599,7 +567,6 @@ button:disabled {
         const hideLootboxButton = document.getElementById('hide-lootbox-button');
         const goBackBtn = document.getElementById('go-back-btn');
         const openVipSensitivityButton = document.getElementById('open-vip-sensitivity-button');
-        // ✅ المتغير الجديد
         const createSensitivityBtn = document.getElementById('create-sensitivity-btn');
         const vipCodeOutput = document.getElementById('code-output-vip');
         const copyVipCodeBtn = document.getElementById('copy-code-btn-vip');
@@ -617,10 +584,8 @@ button:disabled {
         let allSensitivitiesData = null;
         let editingId = null;
         const ADMIN_USER_ID = '658500340';
-        // ✅ تم إصلاح الرابط بإزالة المسافات الزائدة
         const API_BASE_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app';
         let adController = null;
-        // === تهيئة AdsGram ===
         function initAdsGram() {
             if (window.Adsgram && !adController) {
                 try {
@@ -635,7 +600,6 @@ button:disabled {
         } else {
             initAdsGram();
         }
-        // === ✅ إصلاح زر لوحة التحكم: يعمل عند الضغط (لك فقط) ===
         document.addEventListener('DOMContentLoaded', () => {
             if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
                 const adminBtn = document.getElementById('open-admin-btn');
@@ -653,7 +617,6 @@ button:disabled {
                 }
             }
         });
-        // === وظائف العرض ===
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
             proSensitivitiesView.classList.add('hidden');
@@ -664,7 +627,6 @@ button:disabled {
             vipSensitivityView.classList.add('hidden');
             viewToShow.classList.remove('hidden');
         }
-        // === جلب البيانات ===
         const fetchSensitivities = async () => {
             try {
                 const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
@@ -707,7 +669,6 @@ button:disabled {
                 };
             }
         };
-        // ✅ زر الإعلان وفق الوثائق الرسمية
         openVipSensitivityButton.onclick = function() {
             openVipSensitivityButton.disabled = true;
             openVipSensitivityButton.textContent = 'جارٍ تحميل الإعلان...';
@@ -749,12 +710,10 @@ button:disabled {
                 });
             }
         };
-        // ✅ وظيفة الزر الجديد بالكامل
         createSensitivityBtn.onclick = () => {
             const customView = document.createElement('section');
             customView.id = 'custom-sensitivity-view';
             customView.classList.add('sensitivities-view');
-            // ✅ ضمان التوسيط
             customView.style.display = 'flex';
             customView.style.justifyContent = 'center';
             customView.style.alignItems = 'center';
@@ -817,10 +776,8 @@ button:disabled {
                 }
             };
         };
-        // === لوحة التحكم مع الحماية (userId) ===
         const renderAdminList = async (data) => {
             adminList.innerHTML = '';
-            // عرض الحساسيات العادية
             data.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('admin-list-item');
@@ -833,7 +790,6 @@ button:disabled {
                 `;
                 adminList.appendChild(itemDiv);
             });
-            // عرض الحساسيات المخصصة
             try {
                 const response = await fetch(`${API_BASE_URL}/api/custom-sensitivities`);
                 const customItems = await response.json();
@@ -954,7 +910,6 @@ button:disabled {
                 }
             }
         });
-        // === صندوق الغنائم (بدون تغيير) ===
         const lootboxArea = document.getElementById('lootbox-area');
         const saveIdButton = document.getElementById('save-id-button');
         const playerIdInput = document.getElementById('player-id-input');
@@ -1053,11 +1008,9 @@ button:disabled {
             openBoxButton.disabled = true;
             resultArea.innerHTML = '<p style="color: #ffd700;">يتم فتح الصندوق...</p>';
             lootboxImage.classList.remove('shake');
-            // مهلة قصيرة لتأثير "فتح الصندوق"
             setTimeout(() => {
                 const userName = getUserName();
                 const prize = prizes[Math.floor(Math.random() * prizes.length)];
-                // إنشاء عنصر الصورة + النص
                 const prizeElement = document.createElement('div');
                 prizeElement.style.textAlign = 'center';
                 prizeElement.style.marginTop = '15px';
@@ -1119,7 +1072,6 @@ button:disabled {
             },
             "retina_detect": true
         });
-        // ✅ أزرار العودة
         document.addEventListener('click', (e) => {
             if (e.target.id === 'back-to-main-pro' || 
                 e.target.id === 'back-to-main-beginner' || 
