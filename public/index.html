@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صندوق الغنائم</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
+   <style>
 /* الخلفية والأنماط العامة */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -43,36 +43,35 @@ main#app-container {
     z-index: 2;
     padding: 20px;
 }
-/* صندوق العنوان الرئيسي - مُحسّن بشكل احترافي */
+
+/* === مربع العنوان: أصغر + خط عربي احترافي === */
 .title-box {
-    background: linear-gradient(135deg, #004d40, #00796b);
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 8px 20px rgba(0, 0, 0, 0.6);
-    border: 2px solid #00e6e6;
-    margin-bottom: 25px;
+    background: linear-gradient(135deg, #0c2a3a, #1a4a5f);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 0 14px rgba(0, 180, 220, 0.6), 0 4px 10px rgba(0, 0, 0, 0.4);
+    border: 1.5px solid #00b4d8;
+    margin-bottom: 20px;
     width: 100%;
     max-width: 400px;
     box-sizing: border-box;
-    animation: titleGlow 2s infinite alternate;
     text-align: center;
-}
-@keyframes titleGlow {
-    from { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 8px 20px rgba(0, 0, 0, 0.6); }
-    to { box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 10px 25px rgba(0, 0, 0, 0.8); }
+    font-family: 'Tajawal', 'Segoe UI', sans-serif;
 }
 .title-box h1 {
-    font-size: 28px;
-    color: #00e6e6;
-    margin-bottom: 5px;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
-    font-weight: bold;
+    font-size: 22px;
+    color: #00d8ff;
+    margin-bottom: 4px;
+    text-shadow: 0 0 4px rgba(0, 216, 255, 0.7);
+    font-weight: 700;
 }
 .title-box p {
-    font-size: 16px;
-    color: #e0e0e0;
-    margin-top: 5px;
+    font-size: 13px;
+    color: #cceeff;
+    margin-top: 3px;
+    font-weight: 500;
 }
+
 /* حاوية الأزرار الرئيسية */
 .main-choice-container {
     display: flex;
@@ -81,7 +80,7 @@ main#app-container {
     width: 100%;
     max-width: 400px;
 }
-/* === نمط عام للأزرار: شفاف زجاجي سماوي === */
+/* نمط الأزرار - موحد ومرتب مع تأثيرات حركية */
 button {
     width: 100%;
     padding: 16px;
@@ -92,14 +91,10 @@ button {
     cursor: pointer;
     color: white;
     border: 2px solid transparent;
-    background: rgba(10, 30, 40, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 12px rgba(0, 255, 255, 0.3), 0 0 8px rgba(0, 255, 255, 0.5);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transition: all 0.25s ease;
     position: relative;
     overflow: hidden;
-    box-sizing: border-box;
 }
 button::after {
     content: '';
@@ -108,7 +103,7 @@ button::after {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transition: left 0.6s ease;
 }
 button:hover::after {
@@ -116,19 +111,45 @@ button:hover::after {
 }
 button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0, 255, 255, 0.4), 0 0 12px rgba(0, 255, 255, 0.7);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 button:active {
     transform: translateY(0);
 }
 button:disabled {
-    background: rgba(30, 40, 50, 0.6);
+    background-color: #5b6e9a;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
-
-/* === استثناء: الحساسية المدفوعة (يبقى ذهبيًا كما هو) === */
+/* أزرار مخصصة بألوان جذابة */
+#pro-choice {
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    border-color: #00ff00;
+    box-shadow: 0 0 12px rgba(0, 255, 0, 0.6);
+}
+#pro-choice:hover {
+    background: linear-gradient(135deg, #0d47a1, #0b3a82);
+    box-shadow: 0 0 18px rgba(0, 255, 0, 0.8);
+}
+#beginner-choice {
+    background: linear-gradient(135deg, #4caf50, #388e3c);
+    border-color: #ffeb3b;
+    box-shadow: 0 0 12px rgba(255, 235, 59, 0.6);
+}
+#beginner-choice:hover {
+    background: linear-gradient(135deg, #388e3c, #2e7d32);
+    box-shadow: 0 0 18px rgba(255, 235, 59, 0.8);
+}
+#open-lootbox-button {
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    border-color: #ff5722;
+    box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
+}
+#open-lootbox-button:hover {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
+}
 #open-vip-sensitivity-button {
     background: linear-gradient(135deg, #ffc107, #ff9800);
     color: #000;
@@ -148,8 +169,6 @@ button:disabled {
     transform: translateY(-3px);
     box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
 }
-
-/* === استثناء: اصنع حساسيتك (يبقى بنفسجيًا كما هو) === */
 #create-sensitivity-btn {
     background: linear-gradient(135deg, #8a2be2, #4b0082);
     color: white;
@@ -169,10 +188,15 @@ button:disabled {
     transform: translateY(-3px);
     box-shadow: 0 0 20px rgba(138, 43, 226, 1);
 }
-
-/* === باقي الأزرار (المحترف، المبتدئ، صندوق الغنائم، لوحة التحكم) تبقى شفافة تلقائيًا === */
-/* لا حاجة لتعريف منفصل لأنها تتبع نمط `button` العام */
-
+#open-admin-btn {
+    background: linear-gradient(135deg, #ff5722, #e64a19);
+    border-color: #fff;
+    box-shadow: 0 0 12px rgba(255, 87, 34, 0.6);
+}
+#open-admin-btn:hover {
+    background: linear-gradient(135deg, #e64a19, #d84315);
+    box-shadow: 0 0 18px rgba(255, 87, 34, 0.8);
+}
 /* أنماط صفحة الدعوة (صندوق الغنائم) */
 #lootbox-view .container {
     background: none;
@@ -417,7 +441,7 @@ button:disabled {
     font-size: 16px !important;
     border-radius: 8px !important;
 }
-    </style>
+</style>
 </head>
 <body>
     <main id="app-container">
