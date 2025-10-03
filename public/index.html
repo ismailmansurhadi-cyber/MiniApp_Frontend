@@ -87,8 +87,8 @@ main#app-container {
     max-width: 400px;
 }
 
-/* === نمط الزجاجي السماوي للأزرار (كما في الصورة) === */
-button {
+/* === نمط الزجاجي السماوي للأزرار الرئيسية فقط === */
+.main-button {
     width: 100%;
     padding: 16px;
     margin: 0;
@@ -111,7 +111,7 @@ button {
 }
 
 /* تأثير الضوء عند المرور */
-button::after {
+.main-button::after {
     content: '';
     position: absolute;
     top: 0;
@@ -122,20 +122,20 @@ button::after {
     transition: left 0.6s ease;
 }
 
-button:hover::after {
+.main-button:hover::after {
     left: 100%;
 }
 
-button:hover {
+.main-button:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(0, 255, 255, 0.4), 0 0 15px rgba(0, 255, 255, 0.7);
 }
 
-button:active {
+.main-button:active {
     transform: translateY(0);
 }
 
-button:disabled {
+.main-button:disabled {
     background: rgba(30, 40, 50, 0.6);
     cursor: not-allowed;
     transform: none;
@@ -492,12 +492,13 @@ button:disabled {
                 <p>اختر مستواك لتجد أفضل الحساسيات</p>
             </div>
             <div class="main-choice-container">
-                <button id="pro-choice">أنا محترف</button>
-                <button id="beginner-choice">أنا مبتدئ</button>
-                <button id="open-lootbox-button">🎁 صندوق الغنائم العشوائي </button>
+                <!-- ✅ تم إضافة كلاس main-button للأزرار الرئيسية فقط -->
+                <button id="pro-choice" class="main-button">أنا محترف</button>
+                <button id="beginner-choice" class="main-button">أنا مبتدئ</button>
+                <button id="open-lootbox-button" class="main-button">🎁 صندوق الغنائم العشوائي </button>
                 <button id="open-vip-sensitivity-button">(شاهد إعلان) مدفوعة vip حساسية</button>
                 <button id="create-sensitivity-btn">✨ اصنع حساسيتك ✨</button>
-                <button id="open-admin-btn" style="display:none;">لوحة التحكم</button>
+                <button id="open-admin-btn" style="display:none;" class="main-button">لوحة التحكم</button>
             </div>
         </section>
         <section id="pro-sensitivities-view" class="sensitivities-view hidden">
