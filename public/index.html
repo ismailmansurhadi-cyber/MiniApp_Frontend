@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صندوق الغنائم</title>
-    <link rel="stylesheet" href="styles.css">
-   <style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    <style>
 /* الخلفية والأنماط العامة */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
@@ -56,7 +56,6 @@ main#app-container {
     max-width: 400px;
     box-sizing: border-box;
     text-align: center;
-    font-family: 'Tajawal', 'Segoe UI', sans-serif;
 }
 .title-box h1 {
     font-size: 22px;
@@ -80,7 +79,8 @@ main#app-container {
     width: 100%;
     max-width: 400px;
 }
-/* نمط الأزرار - موحد ومرتب مع تأثيرات حركية */
+
+/* === نمط الزجاجي السماوي للأزرار (شفاف) === */
 button {
     width: 100%;
     padding: 16px;
@@ -91,11 +91,16 @@ button {
     cursor: pointer;
     color: white;
     border: 2px solid transparent;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    background: rgba(10, 30, 40, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 255, 255, 0.3), 0 0 8px rgba(0, 255, 255, 0.5);
     transition: all 0.25s ease;
     position: relative;
     overflow: hidden;
+    box-sizing: border-box;
 }
+
 button::after {
     content: '';
     position: absolute;
@@ -103,61 +108,36 @@ button::after {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
     transition: left 0.6s ease;
 }
+
 button:hover::after {
     left: 100%;
 }
+
 button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 16px rgba(0, 255, 255, 0.4), 0 0 12px rgba(0, 255, 255, 0.7);
 }
+
 button:active {
     transform: translateY(0);
 }
+
 button:disabled {
-    background-color: #5b6e9a;
+    background: rgba(30, 40, 50, 0.6);
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
-/* أزرار مخصصة بألوان جذابة */
-#pro-choice {
-    background: linear-gradient(135deg, #1a73e8, #0d47a1);
-    border-color: #00ff00;
-    box-shadow: 0 0 12px rgba(0, 255, 0, 0.6);
-}
-#pro-choice:hover {
-    background: linear-gradient(135deg, #0d47a1, #0b3a82);
-    box-shadow: 0 0 18px rgba(0, 255, 0, 0.8);
-}
-#beginner-choice {
-    background: linear-gradient(135deg, #4caf50, #388e3c);
-    border-color: #ffeb3b;
-    box-shadow: 0 0 12px rgba(255, 235, 59, 0.6);
-}
-#beginner-choice:hover {
-    background: linear-gradient(135deg, #388e3c, #2e7d32);
-    box-shadow: 0 0 18px rgba(255, 235, 59, 0.8);
-}
-#open-lootbox-button {
-    background: linear-gradient(135deg, #ffc107, #ff9800);
-    border-color: #ff5722;
-    box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
-}
-#open-lootbox-button:hover {
-    background: linear-gradient(135deg, #ff9800, #f57c00);
-    box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
-}
+
+/* === استثناء: الحساسية المدفوعة (يبقى ذهبيًا) === */
 #open-vip-sensitivity-button {
     background: linear-gradient(135deg, #ffc107, #ff9800);
     color: #000;
     border: 2px solid #ff9800;
     box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     animation: pulse 2s infinite;
 }
 @keyframes pulse {
@@ -169,6 +149,8 @@ button:disabled {
     transform: translateY(-3px);
     box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
 }
+
+/* === استثناء: اصنع حساسيتك (يبقى بنفسجيًا) === */
 #create-sensitivity-btn {
     background: linear-gradient(135deg, #8a2be2, #4b0082);
     color: white;
@@ -188,16 +170,8 @@ button:disabled {
     transform: translateY(-3px);
     box-shadow: 0 0 20px rgba(138, 43, 226, 1);
 }
-#open-admin-btn {
-    background: linear-gradient(135deg, #ff5722, #e64a19);
-    border-color: #fff;
-    box-shadow: 0 0 12px rgba(255, 87, 34, 0.6);
-}
-#open-admin-btn:hover {
-    background: linear-gradient(135deg, #e64a19, #d84315);
-    box-shadow: 0 0 18px rgba(255, 87, 34, 0.8);
-}
-/* أنماط صفحة الدعوة (صندوق الغنائم) */
+
+/* باقي الأنماط — كما هي دون تغيير */
 #lootbox-view .container {
     background: none;
     padding: 0;
@@ -315,7 +289,6 @@ button:disabled {
 .winner-item:last-child {
     border-bottom: none;
 }
-/* أنماط حركة صورة الصندوق */
 @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -339,7 +312,6 @@ button:disabled {
     position: relative;
     z-index: 1;
 }
-/* أنماط العناصر المتناثرة */
 .scattered-item {
     position: absolute;
     width: auto;
@@ -387,7 +359,6 @@ button:disabled {
     z-index: 2;
     white-space: nowrap;
 }
-/* توسيط جميع المحتويات */
 .sensitivities-view .display-container,
 #custom-sensitivity-view .display-container {
     margin: 0 auto !important;
@@ -401,7 +372,6 @@ button:disabled {
     text-align: center !important;
     direction: rtl !important;
 }
-/* === الحاوية كما هي (لم نلمسها) === */
 #display-container.hidden {
     display: none !important;
 }
@@ -441,7 +411,7 @@ button:disabled {
     font-size: 16px !important;
     border-radius: 8px !important;
 }
-</style>
+    </style>
 </head>
 <body>
     <main id="app-container">
@@ -471,9 +441,7 @@ button:disabled {
                 <button id="beginner-choice">أنا مبتدئ</button>
                 <button id="open-lootbox-button">🎁 صندوق الغنائم العشوائي </button>
                 <button id="open-vip-sensitivity-button">(شاهد إعلان) مدفوعة vip حساسية</button>
-                <!-- ✅ الزر الجديد -->
                 <button id="create-sensitivity-btn">✨ اصنع حساسيتك ✨</button>
-                <!-- ✅ الزر مخفي افتراضيًا -->
                 <button id="open-admin-btn" style="display:none;">لوحة التحكم</button>
             </div>
         </section>
