@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صندوق الغنائم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <style>
 /* الخلفية والأنماط العامة */
 body {
-    font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
@@ -43,15 +43,14 @@ main#app-container {
     z-index: 2;
     padding: 20px;
 }
-
-/* === مربع العنوان الرئيسي - أصغر وأجمل === */
+/* صندوق العنوان الرئيسي - مُحسّن بشكل احترافي */
 .title-box {
-    background: linear-gradient(135deg, #0d2b45, #1a568c);
-    padding: 18px;
-    border-radius: 14px;
-    box-shadow: 0 0 16px rgba(0, 195, 255, 0.5), 0 6px 16px rgba(0, 0, 0, 0.5);
-    border: 2px solid #00c3ff;
-    margin-bottom: 22px;
+    background: linear-gradient(135deg, #004d40, #00796b);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 8px 20px rgba(0, 0, 0, 0.6);
+    border: 2px solid #00e6e6;
+    margin-bottom: 25px;
     width: 100%;
     max-width: 400px;
     box-sizing: border-box;
@@ -59,25 +58,21 @@ main#app-container {
     text-align: center;
 }
 @keyframes titleGlow {
-    from { box-shadow: 0 0 16px rgba(0, 195, 255, 0.5), 0 6px 16px rgba(0, 0, 0, 0.5); }
-    to { box-shadow: 0 0 24px rgba(0, 195, 255, 0.8), 0 8px 20px rgba(0, 0, 0, 0.7); }
+    from { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 8px 20px rgba(0, 0, 0, 0.6); }
+    to { box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 10px 25px rgba(0, 0, 0, 0.8); }
 }
 .title-box h1 {
-    font-size: 24px;
-    color: #00e0ff;
-    margin-bottom: 4px;
-    text-shadow: 0 0 4px rgba(0, 224, 255, 0.8);
-    font-weight: 700;
-    font-family: 'Tajawal', sans-serif;
+    font-size: 28px;
+    color: #00e6e6;
+    margin-bottom: 5px;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+    font-weight: bold;
 }
 .title-box p {
-    font-size: 14px;
-    color: #cceeff;
-    margin-top: 4px;
-    font-weight: 500;
-    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    color: #e0e0e0;
+    margin-top: 5px;
 }
-
 /* حاوية الأزرار الرئيسية */
 .main-choice-container {
     display: flex;
@@ -86,9 +81,8 @@ main#app-container {
     width: 100%;
     max-width: 400px;
 }
-
-/* === نمط الزجاجي السماوي للأزرار الرئيسية فقط === */
-.main-button {
+/* === نمط عام للأزرار: شفاف زجاجي سماوي === */
+button {
     width: 100%;
     padding: 16px;
     margin: 0;
@@ -98,20 +92,16 @@ main#app-container {
     cursor: pointer;
     color: white;
     border: 2px solid transparent;
-    /* خلفية زجاجية سماوية شفافة */
     background: rgba(10, 30, 40, 0.7);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    /* حدود زرقاء متوهجة */
-    box-shadow: 0 4px 12px rgba(0, 255, 255, 0.3), 0 0 10px rgba(0, 255, 255, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 255, 255, 0.3), 0 0 8px rgba(0, 255, 255, 0.5);
     transition: all 0.25s ease;
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
 }
-
-/* تأثير الضوء عند المرور */
-.main-button::after {
+button::after {
     content: '';
     position: absolute;
     top: 0;
@@ -121,28 +111,24 @@ main#app-container {
     background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
     transition: left 0.6s ease;
 }
-
-.main-button:hover::after {
+button:hover::after {
     left: 100%;
 }
-
-.main-button:hover {
+button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0, 255, 255, 0.4), 0 0 15px rgba(0, 255, 255, 0.7);
+    box-shadow: 0 6px 16px rgba(0, 255, 255, 0.4), 0 0 12px rgba(0, 255, 255, 0.7);
 }
-
-.main-button:active {
+button:active {
     transform: translateY(0);
 }
-
-.main-button:disabled {
+button:disabled {
     background: rgba(30, 40, 50, 0.6);
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
 
-/* === استثناء: زر الحساسية المدفوعة (VIP) - ذهبي كما هو === */
+/* === استثناء: الحساسية المدفوعة (يبقى ذهبيًا كما هو) === */
 #open-vip-sensitivity-button {
     background: linear-gradient(135deg, #ffc107, #ff9800);
     color: #000;
@@ -163,7 +149,7 @@ main#app-container {
     box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
 }
 
-/* === استثناء: زر "اصنع حساسيتك" - بنفسجي كما هو === */
+/* === استثناء: اصنع حساسيتك (يبقى بنفسجيًا كما هو) === */
 #create-sensitivity-btn {
     background: linear-gradient(135deg, #8a2be2, #4b0082);
     color: white;
@@ -184,43 +170,8 @@ main#app-container {
     box-shadow: 0 0 20px rgba(138, 43, 226, 1);
 }
 
-/* باقي الأنماط — بدون تغيير */
-#pro-choice {
-    background: linear-gradient(135deg, #1a73e8, #0d47a1);
-    border-color: #00ff00;
-    box-shadow: 0 0 12px rgba(0, 255, 0, 0.6);
-}
-#pro-choice:hover {
-    background: linear-gradient(135deg, #0d47a1, #0b3a82);
-    box-shadow: 0 0 18px rgba(0, 255, 0, 0.8);
-}
-#beginner-choice {
-    background: linear-gradient(135deg, #4caf50, #388e3c);
-    border-color: #ffeb3b;
-    box-shadow: 0 0 12px rgba(255, 235, 59, 0.6);
-}
-#beginner-choice:hover {
-    background: linear-gradient(135deg, #388e3c, #2e7d32);
-    box-shadow: 0 0 18px rgba(255, 235, 59, 0.8);
-}
-#open-lootbox-button {
-    background: linear-gradient(135deg, #ffc107, #ff9800);
-    border-color: #ff5722;
-    box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
-}
-#open-lootbox-button:hover {
-    background: linear-gradient(135deg, #ff9800, #f57c00);
-    box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
-}
-#open-admin-btn {
-    background: linear-gradient(135deg, #ff5722, #e64a19);
-    border-color: #fff;
-    box-shadow: 0 0 12px rgba(255, 87, 34, 0.6);
-}
-#open-admin-btn:hover {
-    background: linear-gradient(135deg, #e64a19, #d84315);
-    box-shadow: 0 0 18px rgba(255, 87, 34, 0.8);
-}
+/* === باقي الأزرار (المحترف، المبتدئ، صندوق الغنائم، لوحة التحكم) تبقى شفافة تلقائيًا === */
+/* لا حاجة لتعريف منفصل لأنها تتبع نمط `button` العام */
 
 /* أنماط صفحة الدعوة (صندوق الغنائم) */
 #lootbox-view .container {
@@ -426,6 +377,7 @@ main#app-container {
     text-align: center !important;
     direction: rtl !important;
 }
+/* === الحاوية كما هي (لم نلمسها) === */
 #display-container.hidden {
     display: none !important;
 }
@@ -468,7 +420,6 @@ main#app-container {
     </style>
 </head>
 <body>
-    <!-- نفس HTML من ملفك الأصلي -->
     <main id="app-container">
         <a href="https://t.me/berlin_of_iraq" target="_blank" style="
     position: absolute;
@@ -492,13 +443,14 @@ main#app-container {
                 <p>اختر مستواك لتجد أفضل الحساسيات</p>
             </div>
             <div class="main-choice-container">
-                <!-- ✅ تم إضافة كلاس main-button للأزرار الرئيسية فقط -->
-                <button id="pro-choice" class="main-button">أنا محترف</button>
-                <button id="beginner-choice" class="main-button">أنا مبتدئ</button>
-                <button id="open-lootbox-button" class="main-button">🎁 صندوق الغنائم العشوائي </button>
+                <button id="pro-choice">أنا محترف</button>
+                <button id="beginner-choice">أنا مبتدئ</button>
+                <button id="open-lootbox-button">🎁 صندوق الغنائم العشوائي </button>
                 <button id="open-vip-sensitivity-button">(شاهد إعلان) مدفوعة vip حساسية</button>
+                <!-- ✅ الزر الجديد -->
                 <button id="create-sensitivity-btn">✨ اصنع حساسيتك ✨</button>
-                <button id="open-admin-btn" style="display:none;" class="main-button">لوحة التحكم</button>
+                <!-- ✅ الزر مخفي افتراضيًا -->
+                <button id="open-admin-btn" style="display:none;">لوحة التحكم</button>
             </div>
         </section>
         <section id="pro-sensitivities-view" class="sensitivities-view hidden">
@@ -593,7 +545,7 @@ main#app-container {
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script>
-        // === نفس الجافاسكربت من ملفك الأصلي — لا حاجة للتغيير ===
+        // === نفس الجافاسكربت الأصلي بدون أي تغيير ===
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
