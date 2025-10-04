@@ -429,61 +429,64 @@ button:disabled {
     font-size: 16px !important;
     border-radius: 8px !important;
 }
-/* === تأثير فاخر للزرَّين: ضوء داخلي + خطوط متحركة === */
+/* === تأثيرات خفيفة للزرين: أنا محترف وأنا مبتدئ === */
 #pro-choice::before,
-#beginner-choice::before,
-#open-lootbox-button::before {
+#beginner-choice::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-        radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.1) 2px, transparent 4px),
-        radial-gradient(circle at 70% 70%, rgba(0, 200, 255, 0.1) 2px, transparent 4px);
-    background-size: 60px 60px;
-    animation: waveGlow 8s linear infinite;
-    pointer-events: none;
+    background: linear-gradient(45deg, transparent, rgba(0,255,255,0.1), transparent);
+    opacity: 0.3;
     z-index: 1;
+    animation: glowPulse 4s infinite ease-in-out;
 }
 
-@keyframes waveGlow {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    50% { transform: translate(-10px, -10px) rotate(180deg); }
-    100% { transform: translate(0, 0) rotate(360deg); }
+@keyframes glowPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
 }
 
-/* تأثير الضوء المتلألئ من وسط الزر */
-#pro-choice::after,
-#beginner-choice::after,
-#open-lootbox-button::after {
+#pro-choice:hover::before,
+#beginner-choice:hover::before {
+    opacity: 0.6;
+    animation: none;
+}
+
+/* === خلفية ديناميكية خفيفة (شبكة) === */
+#app-container::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(0, 255, 255, 0.3) 0%, transparent 50%);
-    opacity: 0.6;
-    animation: innerPulse 3s ease-in-out infinite;
+    background: radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.05) 0%, transparent 20%);
     pointer-events: none;
+    z-index: -1;
+}
+
+/* === خطوط ضوئية خفيفة على الزرّين عند التحويم === */
+#pro-choice::after,
+#beginner-choice::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
     z-index: 1;
-    transform: translate(-50%, -50%);
 }
 
-@keyframes innerPulse {
-    0% { opacity: 0.6; }
-    50% { opacity: 0.9; }
-    100% { opacity: 0.6; }
-}
-
-/* رفع النص فوق التأثير */
-#pro-choice,
-#beginner-choice,
-#open-lootbox-button {
-    z-index: 2;
-    position: relative;
+#pro-choice:hover::after,
+#beginner-choice:hover::after {
+    left: 100%;
 }
 </style>
 </head>
