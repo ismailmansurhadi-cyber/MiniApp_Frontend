@@ -476,9 +476,7 @@ button:disabled {
 </style>
 </head>
 <body>
-   <audio id="click-sound" preload="auto">
-    <source src="https://github.com/karim-elnaggar/sounds/raw/main/click.mp3" type="audio/mpeg">
-</audio>
+    <!-- لا حاجة لعنصر <audio> -->
     <main id="app-container">
         <a href="https://t.me/berlin_of_iraq" target="_blank" style="
     position: absolute;
@@ -1139,17 +1137,41 @@ button:disabled {
             }
         });
 
-        const clickSound = document.getElementById('click-sound');
+        // ✅ نظام صوت النقرة الجديد باستخدام Web Audio API
+        let audioContext = null;
+        let clickBuffer = null;
 
-document.addEventListener('click', function(e) {
-    if (e.target.tagName === 'BUTTON') {
-        if (clickSound) {
-            clickSound.currentTime = 0;
-            clickSound.volume = 0.6;
-            clickSound.play().catch(() => {});
+        async function initAudio() {
+            if (audioContext) return;
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            try {
+                const response = await fetch('https://github.com/karim-elnaggar/sounds/raw/main/click.mp3');
+                const arrayBuffer = await response.arrayBuffer();
+                clickBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            } catch (e) {
+                console.warn("فشل تحميل صوت النقرة:", e);
+            }
         }
-    }
-});
+
+        function playClickSound() {
+            if (!clickBuffer || !audioContext) return;
+            const source = audioContext.createBufferSource();
+            source.buffer = clickBuffer;
+            source.connect(audioContext.destination);
+            source.start();
+        }
+
+        // تهيئة عند أول تفاعل
+        document.addEventListener('click', () => {
+            initAudio();
+        }, { once: true });
+
+        // تشغيل الصوت عند النقر على أي زر
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                playClickSound();
+            }
+        });
     </script>
 </body>
 </html>
