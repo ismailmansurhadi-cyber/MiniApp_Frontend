@@ -476,7 +476,7 @@ button:disabled {
 </style>
 </head>
 <body>
-    <!-- ✅ تم استبدال رابط الصوت برابط يعمل -->
+    <!-- ✅ صوت النقرة الجديد (يعمل في Telegram WebApp) -->
     <audio id="click-sound" preload="auto">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
     </audio>
@@ -1140,25 +1140,25 @@ button:disabled {
             }
         });
 
-        // ✅ كود الصوت المُحسّن (بدون تعليقات عربية)
+        // ✅ كود تشغيل الصوت الجديد — يعمل في Telegram WebApp
         let audioInitialized = false;
         const clickSound = document.getElementById('click-sound');
 
         function playClickSound() {
             if (!clickSound) return;
             clickSound.currentTime = 0;
-            clickSound.volume = 0.6;
-            clickSound.play().catch(() => {});
+            clickSound.volume = 0.7;
+            clickSound.play().catch(() => {
+                // تجاهل الأخطاء (مثل عدم دعم autoplay)
+            });
         }
 
-        document.addEventListener('click', () => {
-            if (!audioInitialized) {
-                audioInitialized = true;
-            }
-        }, { once: true });
-
-        document.addEventListener('click', (e) => {
+        // عند أول نقرة على أي زر — نهيئ ونشغل الصوت فورًا
+        document.addEventListener('click', function(e) {
             if (e.target.tagName === 'BUTTON') {
+                if (!audioInitialized) {
+                    audioInitialized = true;
+                }
                 playClickSound();
             }
         });
