@@ -476,10 +476,9 @@ button:disabled {
 </style>
 </head>
 <body>
-    <!-- ✅ صوت النقرة الجديد (يعمل في Telegram WebApp) -->
-    <audio id="click-sound" preload="auto">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
-    </audio>
+   <audio id="click-sound" preload="auto">
+    <source src="https://github.com/karim-elnaggar/sounds/raw/main/click.mp3" type="audio/mpeg">
+</audio>
     <main id="app-container">
         <a href="https://t.me/berlin_of_iraq" target="_blank" style="
     position: absolute;
@@ -1140,28 +1139,17 @@ button:disabled {
             }
         });
 
-        // ✅ كود تشغيل الصوت الجديد — يعمل في Telegram WebApp
-        let audioInitialized = false;
         const clickSound = document.getElementById('click-sound');
 
-        function playClickSound() {
-            if (!clickSound) return;
+document.addEventListener('click', function(e) {
+    if (e.target.tagName === 'BUTTON') {
+        if (clickSound) {
             clickSound.currentTime = 0;
-            clickSound.volume = 0.7;
-            clickSound.play().catch(() => {
-                // تجاهل الأخطاء (مثل عدم دعم autoplay)
-            });
+            clickSound.volume = 0.6;
+            clickSound.play().catch(() => {});
         }
-
-        // عند أول نقرة على أي زر — نهيئ ونشغل الصوت فورًا
-        document.addEventListener('click', function(e) {
-            if (e.target.tagName === 'BUTTON') {
-                if (!audioInitialized) {
-                    audioInitialized = true;
-                }
-                playClickSound();
-            }
-        });
+    }
+});
     </script>
 </body>
 </html>
