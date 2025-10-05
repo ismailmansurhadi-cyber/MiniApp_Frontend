@@ -491,6 +491,10 @@ button:disabled {
 </style>
 </head>
 <body>
+    <!-- صوت النقر -->
+<audio id="click-sound" preload="auto">
+    <source src="https://www.soundjay.com/buttons/sounds/button-09.mp3" type="audio/mpeg">
+</audio>
     <main id="app-container">
         <a href="https://t.me/berlin_of_iraq" target="_blank" style="
     position: absolute;
@@ -1147,6 +1151,18 @@ button:disabled {
                 vipSensitivityView.classList.add('hidden');
                 if (document.getElementById('custom-sensitivity-view')) {
                     document.getElementById('custom-sensitivity-view').remove();
+                }
+            }
+        });
+        // تشغيل الصوت عند الضغط على أي زر
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON') {
+                const audio = document.getElementById('click-sound');
+                if (audio) {
+                    audio.currentTime = 0; // إعادة الصوت من البداية
+                    audio.play().catch(() => {});
+                // تجاهل الخطأ (مثل سياسة autoplay في بعض المتصفحات)
+            
                 }
             }
         });
