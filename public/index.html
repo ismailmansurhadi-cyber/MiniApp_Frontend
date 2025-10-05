@@ -787,6 +787,7 @@ button:disabled {
             document.querySelectorAll('section').forEach(s => {
                 if (s.id !== 'custom-sensitivity-view') s.classList.add('hidden');
             });
+
             document.getElementById('submit-custom').onclick = async () => {
                 const device = document.getElementById('device-name').value.trim();
                 const type = document.getElementById('device-type').value;
@@ -795,33 +796,71 @@ button:disabled {
                     Telegram.WebApp.showAlert('املأ جميع الحقول');
                     return;
                 }
-                try {
-                    const res = await fetch(`${API_BASE_URL}/api/custom-sensitivity`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ deviceName: device, deviceType: type, fps })
-                    });
-                    const data = await res.json();
-                    if (res.ok) {
-                        document.getElementById('custom-result').innerHTML = `
-                            <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
-                                <p style="color:#ffd700;font-weight:bold;">🎯 حساسيتك:</p>
-                                <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${data.code}</pre>
-                                <button onclick="navigator.clipboard.writeText('${data.code}').then(()=>Telegram.WebApp.showAlert('تم النسخ!'))" 
-                                        style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;">
-                                    نسخ
-                                </button>
-                            </div>
-                        `;
-                        document.getElementById('custom-result').style.display = 'block';
-                    } else {
-                        Telegram.WebApp.showAlert(data.error || 'خطأ في السيرفر');
+
+                const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'guest';
+                const lastCustomTimeKey = `last_custom_sensitivity_${userId}`;
+                const lastTime = localStorage.getItem(lastCustomTimeKey);
+                const now = Date.now();
+                const ONE_DAY = 24 * 60 * 60 * 1000;
+
+                if (lastTime && (now - parseInt(lastTime)) < ONE_DAY) {
+                    // المحاولة الثانية: عرض إعلان
+                    if (!adController) {
+                        Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات.');
+                        return;
                     }
-                } catch (error) {
-                    Telegram.WebApp.showAlert('فشل الاتصال بالخادم');
+
+                    adController.show()
+                        .then((result) => {
+                            if (result.done && !result.error) {
+                                // ✅ شاهد الإعلان كاملاً → أعطِ الكود
+                                proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey);
+                            } else {
+                                // ❌ أغلق الإعلان مبكرًا
+                                Telegram.WebApp.showAlert('❌ لن تحصل على مكافأتك إذا لم تكمل الإعلان!');
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('AdsGram error:', error);
+                            Telegram.WebApp.showAlert('❌ فشل في عرض الإعلان.');
+                        });
+                } else {
+                    // ✅ أول مرة اليوم
+                    proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey);
                 }
             };
         };
+
+        // دالة مساعدة لإنشاء الحساسية
+        async function proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey) {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/custom-sensitivity`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ deviceName: device, deviceType: type, fps })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    localStorage.setItem(lastCustomTimeKey, Date.now().toString());
+                    document.getElementById('custom-result').innerHTML = `
+                        <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
+                            <p style="color:#ffd700;font-weight:bold;">🎯 حساسيتك الحصرية:</p>
+                            <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${data.code}</pre>
+                            <button onclick="navigator.clipboard.writeText('${data.code}').then(()=>Telegram.WebApp.showAlert('تم النسخ!'))" 
+                                    style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;">
+                                📋 نسخ الكود
+                            </button>
+                        </div>
+                    `;
+                    document.getElementById('custom-result').style.display = 'block';
+                } else {
+                    Telegram.WebApp.showAlert(data.error || 'خطأ في السيرفر');
+                }
+            } catch (error) {
+                Telegram.WebApp.showAlert('فشل الاتصال بالخادم');
+            }
+        };
+
         const renderAdminList = async (data) => {
             adminList.innerHTML = '';
             data.forEach(item => {
@@ -1060,8 +1099,8 @@ button:disabled {
                 const userName = getUserName();
                 const prize = prizes[Math.floor(Math.random() * prizes.length)];
                 const prizeElement = document.createElement('div');
-                prizeElement.style.textAlign = 'center';
-                prizeElement.style.marginTop = '15px';
+                prizeElement.style.setProperty('text-align', 'center');
+                prizeElement.style.setProperty('margin-top', '15px');
                 prizeElement.innerHTML = `
                     <img src="${prize.imageUrl}" alt="${prize.name}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
                     <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;">لقد ربحت: ${prize.name}</p>
@@ -1135,7 +1174,8 @@ button:disabled {
                 }
             }
         });
-        // ✅ تم حذف كود الصوت بالكامل لتحسين الأداء وتجنب المشاكل
+        // ✅ تم حذف كود الصوت بالكامل
+        // ✅ تم تطبيق نظام "مرة واحدة في اليوم + إعلان" لزر "اصنع حساسيتك"
     </script>
 </body>
 </html>
