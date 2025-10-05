@@ -491,10 +491,9 @@ button:disabled {
 </style>
 </head>
 <body>
-    <!-- صوت النقر -->
-<audio id="click-sound" preload="auto">
-    <source src="https://www.soundjay.com/buttons/sounds/button-09.mp3" type="audio/mpeg">
-</audio>
+    <audio id="click-sound">
+        <source src="https://www.soundjay.com/buttons/sounds/button-09.mp3" type="audio/mpeg">
+    </audio>
     <main id="app-container">
         <a href="https://t.me/berlin_of_iraq" target="_blank" style="
     position: absolute;
@@ -1155,17 +1154,41 @@ button:disabled {
             }
         });
         // تشغيل الصوت عند الضغط على أي زر
-        document.addEventListener('click', function(e) {
-            if (e.target.tagName === 'BUTTON') {
-                const audio = document.getElementById('click-sound');
-                if (audio) {
-                    audio.currentTime = 0; // إعادة الصوت من البداية
-                    audio.play().catch(() => {});
-                // تجاهل الخطأ (مثل سياسة autoplay في بعض المتصفحات)
-            
-                }
-            }
+// تشغيل الصوت عند النقر على أي زر (مع دعم Telegram WebApp)
+let audioInitialized = false;
+const clickSound = document.getElementById('click-sound');
+
+document.addEventListener('click', function(e) {
+    if (e.target.tagName === 'BUTTON') {
+        // التهيئه عند أول تفاعل
+        if (!audioInitialized && clickSound) {
+            // محاولة تشغيل صامت لتهيئة الصوت
+            clickSound.volume = 0;
+            clickSound.play().then(() => {
+                clickSound.pause();
+                clickSound.currentTime = 0;
+                clickSound.volume = 1;
+                audioInitialized = true;
+                // تشغيل الصوت الفعلي الآن
+                playClickSound();
+            }).catch(() => {
+                // إذا فشل، نعتبر أن الصوت غير مدعوم
+                audioInitialized = true;
+            });
+        } else {
+            playClickSound();
+        }
+    }
+});
+
+function playClickSound() {
+    if (clickSound) {
+        clickSound.currentTime = 0;
+        clickSound.play().catch(() => {
+            // تجاهل الأخطاء (مثل عدم دعم autoplay)
         });
+    }
+}
     </script>
 </body>
 </html>
