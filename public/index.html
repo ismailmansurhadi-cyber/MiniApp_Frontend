@@ -98,7 +98,6 @@ button {
     overflow: hidden;
     box-sizing: border-box;
 }
-
 /* تأثير المكعبات المتحركة داخل الأزرار (للأزرار الثلاثة فقط) */
 button::before {
     content: '';
@@ -112,13 +111,11 @@ button::before {
     opacity: 0.3;
     animation: floatGlow 4s infinite ease-in-out;
 }
-
 @keyframes floatGlow {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
     100% { transform: scale(1); }
 }
-
 button::after {
     content: '';
     position: absolute;
@@ -129,27 +126,22 @@ button::after {
     background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
     transition: left 0.6s ease;
 }
-
 button:hover::after {
     left: 100%;
 }
-
 button:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(0, 255, 255, 0.4), 0 0 12px rgba(0, 255, 255, 0.7);
 }
-
 button:active {
     transform: translateY(0);
 }
-
 button:disabled {
     background: rgba(30, 40, 50, 0.6);
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
-
 /* === استثناء: الحساسية المدفوعة (يبقى ذهبيًا) === */
 #open-vip-sensitivity-button {
     background: linear-gradient(135deg, #ffc107, #ff9800);
@@ -167,7 +159,6 @@ button:disabled {
     transform: translateY(-3px);
     box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
 }
-
 /* === استثناء: اصنع حساسيتك (يبقى بنفسجيًا) === */
 #create-sensitivity-btn {
     background: linear-gradient(135deg, #8a2be2, #4b0082);
@@ -188,7 +179,6 @@ button:disabled {
     transform: translateY(-3px);
     box-shadow: 0 0 20px rgba(138, 43, 226, 1);
 }
-
 /* باقي الأنماط — كما هي دون تغيير */
 #lootbox-view .container {
     background: none;
@@ -443,19 +433,16 @@ button:disabled {
     z-index: 1;
     animation: glowPulse 4s infinite ease-in-out;
 }
-
 @keyframes glowPulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.02); }
     100% { transform: scale(1); }
 }
-
 #pro-choice:hover::before,
 #beginner-choice:hover::before {
     opacity: 0.6;
     animation: none;
 }
-
 /* === خلفية ديناميكية خفيفة (شبكة) === */
 #app-container::before {
     content: '';
@@ -469,7 +456,6 @@ button:disabled {
     pointer-events: none;
     z-index: -1;
 }
-
 /* === خطوط ضوئية خفيفة على الزرّين عند التحويم === */
 #pro-choice::after,
 #beginner-choice::after {
@@ -483,7 +469,6 @@ button:disabled {
     transition: left 0.6s ease;
     z-index: 1;
 }
-
 #pro-choice:hover::after,
 #beginner-choice:hover::after {
     left: 100%;
@@ -491,8 +476,9 @@ button:disabled {
 </style>
 </head>
 <body>
-    <audio id="click-sound">
-        <source src="https://www.soundjay.com/buttons/sounds/button-09.mp3" type="audio/mpeg">
+    <!-- ✅ تم استبدال رابط الصوت برابط يعمل -->
+    <audio id="click-sound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
     </audio>
     <main id="app-container">
         <a href="https://t.me/berlin_of_iraq" target="_blank" style="
@@ -1153,42 +1139,29 @@ button:disabled {
                 }
             }
         });
-        // تشغيل الصوت عند الضغط على أي زر
-// تشغيل الصوت عند النقر على أي زر (مع دعم Telegram WebApp)
-let audioInitialized = false;
-const clickSound = document.getElementById('click-sound');
 
-document.addEventListener('click', function(e) {
-    if (e.target.tagName === 'BUTTON') {
-        // التهيئه عند أول تفاعل
-        if (!audioInitialized && clickSound) {
-            // محاولة تشغيل صامت لتهيئة الصوت
-            clickSound.volume = 0;
-            clickSound.play().then(() => {
-                clickSound.pause();
-                clickSound.currentTime = 0;
-                clickSound.volume = 1;
-                audioInitialized = true;
-                // تشغيل الصوت الفعلي الآن
-                playClickSound();
-            }).catch(() => {
-                // إذا فشل، نعتبر أن الصوت غير مدعوم
-                audioInitialized = true;
-            });
-        } else {
-            playClickSound();
+        // ✅ كود الصوت المُحسّن (بدون تعليقات عربية)
+        let audioInitialized = false;
+        const clickSound = document.getElementById('click-sound');
+
+        function playClickSound() {
+            if (!clickSound) return;
+            clickSound.currentTime = 0;
+            clickSound.volume = 0.6;
+            clickSound.play().catch(() => {});
         }
-    }
-});
 
-function playClickSound() {
-    if (clickSound) {
-        clickSound.currentTime = 0;
-        clickSound.play().catch(() => {
-            // تجاهل الأخطاء (مثل عدم دعم autoplay)
+        document.addEventListener('click', () => {
+            if (!audioInitialized) {
+                audioInitialized = true;
+            }
+        }, { once: true });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                playClickSound();
+            }
         });
-    }
-}
     </script>
 </body>
 </html>
