@@ -6,10 +6,8 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   // التحقق من وجود Telegram WebApp
   const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'guest_' + Date.now();
-  
   gtag('config', 'G-W1RTXYRFZF', {
     'cookie_flags': 'SameSite=None;Secure',
     'client_storage': 'none', // لا يستخدم cookies أو localStorage
@@ -814,7 +812,6 @@ button:disabled {
             document.querySelectorAll('section').forEach(s => {
                 if (s.id !== 'custom-sensitivity-view') s.classList.add('hidden');
             });
-
             document.getElementById('submit-custom').onclick = async () => {
                 const device = document.getElementById('device-name').value.trim();
                 const type = document.getElementById('device-type').value;
@@ -823,13 +820,11 @@ button:disabled {
                     Telegram.WebApp.showAlert('املأ جميع الحقول');
                     return;
                 }
-
                 const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'guest';
                 const lastCustomTimeKey = `last_custom_sensitivity_${userId}`;
                 const lastTime = localStorage.getItem(lastCustomTimeKey);
                 const now = Date.now();
                 const ONE_DAY = 24 * 60 * 60 * 1000;
-
                 if (lastTime && (now - parseInt(lastTime)) < ONE_DAY) {
                     // ✅ عرض واجهة توضيحية بدل الإعلان المباشر
                     document.getElementById('custom-result').innerHTML = `
@@ -853,14 +848,12 @@ button:disabled {
                         </div>
                     `;
                     document.getElementById('custom-result').style.display = 'block';
-
                     // عند النقر على "شاهد الإعلان"
                     document.getElementById('watch-ad-btn').onclick = () => {
                         if (!adController) {
                             Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات.');
                             return;
                         }
-
                         adController.show()
                             .then((result) => {
                                 if (result.done && !result.error) {
@@ -880,7 +873,6 @@ button:disabled {
                 }
             };
         };
-
         // دالة مساعدة لإنشاء الحساسية
         async function proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey) {
             try {
@@ -910,7 +902,6 @@ button:disabled {
                 Telegram.WebApp.showAlert('فشل الاتصال بالخادم');
             }
         };
-
         const renderAdminList = async (data) => {
             adminList.innerHTML = '';
             data.forEach(item => {
@@ -1069,6 +1060,114 @@ button:disabled {
             { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
+
+        // 🔥 === نظام حفظ الدعوات والصناديق على الإنترنت (تم استبدال الدوال القديمة) ===
+        const BIN_ID = "67c8a1e2e41b1e3218d5f0a1";
+        const API_KEY = "$2a$10$YdJ4kN2sR7VxJz8qO9ZB.eO/6xZJ6K5dF8xW3sT1qY2rU4vW9X0a";
+        const API_URL = "https://api.jsonbin.io/v3/b";
+
+        async function saveData() {
+          if (user_id && user_id !== 'guest_user') {
+            try {
+              const res = await fetch(`${API_URL}/${BIN_ID}`, {
+                method: "GET",
+                headers: { "X-Master-Key": API_KEY }
+              });
+              const currentData = await res.json();
+              const newData = { ...currentData.record };
+              newData[user_id] = {
+                invitations: invitationsCount,
+                boxes: boxesCount,
+                lastLooters: lastLooters
+              };
+              await fetch(`${API_URL}/${BIN_ID}`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-Master-Key": API_KEY
+                },
+                body: JSON.stringify(newData)
+              });
+            } catch (e) {
+              console.log("فشل الحفظ على الإنترنت");
+            }
+          }
+        }
+
+        async function loadData() {
+          if (user_id && user_id !== 'guest_user') {
+            try {
+              const res = await fetch(`${API_URL}/${BIN_ID}`, {
+                headers: { "X-Master-Key": API_KEY }
+              });
+              const data = await res.json();
+              const user = data.record?.[user_id];
+              if (user) {
+                invitationsCount = user.invitations || 0;
+                boxesCount = user.boxes || 0;
+                lastLooters = user.lastLooters || [];
+              } else {
+                invitationsCount = 0;
+                boxesCount = 0;
+                lastLooters = [];
+                saveData();
+              }
+            } catch (e) {
+              invitationsCount = 0;
+              boxesCount = 0;
+              lastLooters = [];
+            }
+            updateCounters();
+            fetchLastLooters();
+          }
+        }
+
+        async function checkInvitation() {
+          if (window.Telegram.WebApp.initDataUnsafe.start_param) {
+            const param = window.Telegram.WebApp.initDataUnsafe.start_param;
+            if (param.startsWith('inviter_')) {
+              const inviterId = param.split('_')[1];
+              if (inviterId == user_id) return;
+
+              try {
+                const res = await fetch(`${API_URL}/${BIN_ID}`, {
+                  headers: { "X-Master-Key": API_KEY }
+                });
+                const data = await res.json();
+                const invitedAlready = data.record?.[user_id];
+                if (invitedAlready) return;
+
+                const inviterData = data.record?.[inviterId] || { invitations: 0, boxes: 0 };
+                let newInvites = inviterData.invitations;
+                let newBoxes = inviterData.boxes;
+
+                if (newInvites + 1 >= 3) {
+                  newBoxes += 1;
+                  newInvites = 0;
+                } else {
+                  newInvites += 1;
+                }
+
+                const updatedData = { ...data.record };
+                updatedData[inviterId] = { ...inviterData, invitations: newInvites, boxes: newBoxes };
+                updatedData[user_id] = { invitations: 0, boxes: 0, lastLooters: [] };
+
+                await fetch(`${API_URL}/${BIN_ID}`, {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": API_KEY
+                  },
+                  body: JSON.stringify(updatedData)
+                });
+              } catch (e) {
+                console.log("فشل تسجيل الدعوة");
+              }
+            }
+          }
+        }
+        // 🔥 === نهاية نظام الحفظ الجديد ===
+
         function getUserId() {
             if (window.Telegram.WebApp.initDataUnsafe.user) {
                 return window.Telegram.WebApp.initDataUnsafe.user.id;
@@ -1084,66 +1183,7 @@ button:disabled {
             document.getElementById('invitation-counter').textContent = `لديك ${invitationsCount} من ${INVITE_GOAL} دعوات. لديك ${boxesCount} صندوق.`;
             openBoxButton.disabled = boxesCount < 1;
         }
-        function saveData() {
-            if (user_id && user_id !== 'guest_user') {
-                localStorage.setItem(`invitations_${user_id}`, invitationsCount);
-                localStorage.setItem(`boxes_${user_id}`, boxesCount);
-                localStorage.setItem('lastLooters', JSON.stringify(lastLooters));
-            }
-        }
-        function loadData() {
-            if (user_id && user_id !== 'guest_user') {
-                const savedInvitations = localStorage.getItem(`invitations_${user_id}`);
-                const savedBoxes = localStorage.getItem(`boxes_${user_id}`);
-                const savedLooters = localStorage.getItem('lastLooters');
-                
-                // ✅ تهيئة المستخدم لأول مرة إذا لم يكن موجودًا
-                if (savedInvitations === null) {
-                    localStorage.setItem(`invitations_${user_id}`, '0');
-                    invitationsCount = 0;
-                } else {
-                    invitationsCount = parseInt(savedInvitations, 10);
-                }
-                
-                if (savedBoxes === null) {
-                    localStorage.setItem(`boxes_${user_id}`, '0');
-                    boxesCount = 0;
-                } else {
-                    boxesCount = parseInt(savedBoxes, 10);
-                }
-                
-                if (savedLooters) {
-                    lastLooters = JSON.parse(savedLooters);
-                }
-            }
-        }
-        function checkInvitation() {
-            if (window.Telegram.WebApp.initDataUnsafe.start_param) {
-                const param = window.Telegram.WebApp.initDataUnsafe.start_param;
-                if (param.startsWith('inviter_')) {
-                    const inviterId = param.split('_')[1];
-                    if (inviterId == user_id) return; // لا يدعو نفسه
 
-                    // ✅ تأكد من أن المدعو مهيأ في localStorage
-                    if (localStorage.getItem(`invitations_${user_id}`) === null) {
-                        // هذا المستخدم دخل عبر رابط دعوة لأول مرة
-                        const inviterInvitations = parseInt(localStorage.getItem(`invitations_${inviterId}`) || '0', 10);
-                        const inviterBoxes = parseInt(localStorage.getItem(`boxes_${inviterId}`) || '0', 10);
-
-                        if (inviterInvitations + 1 < INVITE_GOAL) {
-                            localStorage.setItem(`invitations_${inviterId}`, inviterInvitations + 1);
-                        } else if (inviterInvitations + 1 === INVITE_GOAL) {
-                            localStorage.setItem(`boxes_${inviterId}`, inviterBoxes + 1);
-                            localStorage.setItem(`invitations_${inviterId}`, '0');
-                        }
-
-                        // ✅ تهيئة المدعو لتجنب التكرار
-                        localStorage.setItem(`invitations_${user_id}`, '0');
-                        localStorage.setItem(`boxes_${user_id}`, '0');
-                    }
-                }
-            }
-        }
         window.Telegram.WebApp.ready();
         user_id = getUserId();
         loadData();
