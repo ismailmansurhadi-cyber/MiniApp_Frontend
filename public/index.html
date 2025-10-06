@@ -530,7 +530,18 @@ button:disabled {
         </section>
      <section id="vip-sensitivity-view" class="sensitivities-view hidden">
     <div class="display-container" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-        <p class="vip-update-notice">يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة</p>
+        <!-- ✅ عبارة التحديث اليومي بخط نيون جذاب -->
+        <p class="vip-update-notice" style="
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff00aa;
+            text-shadow: 0 0 8px rgba(255, 0, 170, 0.8), 0 0 16px rgba(255, 0, 170, 0.6);
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ff00aa;
+        ">يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة</p>
         <div id="display-container-vip" class="sensitivity-display" style="width: 100%; max-width: 300px; background-color: #ff00aa; padding: 15px; border-radius: 8px; text-align: center; box-sizing: border-box;">
             <div id="code-output-vip" dir="rtl" style="font-family: monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all;"></div>
             <button id="copy-code-btn-vip" style="margin-top: 15px; padding: 10px; background: #4a7c8e; color: white; border: 2px solid #00ffff; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%;">
@@ -804,28 +815,51 @@ button:disabled {
                 const ONE_DAY = 24 * 60 * 60 * 1000;
 
                 if (lastTime && (now - parseInt(lastTime)) < ONE_DAY) {
-                    // المحاولة الثانية: عرض إعلان
-                    if (!adController) {
-                        Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات.');
-                        return;
-                    }
+                    // ✅ عرض واجهة توضيحية بدل الإعلان المباشر
+                    document.getElementById('custom-result').innerHTML = `
+                        <div style="background:rgba(20,5,30,0.9);border:2px solid #ff5500;border-radius:12px;padding:20px;text-align:center;color:#ffd700;font-weight:bold;">
+                            <p style="font-size:15px;margin:0 0 15px;line-height:1.4;">
+                                يمكنك في اليوم صنع حساسية واحدة مجانًا.<br>
+                                إذا أردت صناعة حساسية مخصصة أخرى، شاهد الإعلان أولًا.
+                            </p>
+                            <button id="watch-ad-btn" style="
+                                background:linear-gradient(135deg, #ff8c00, #ff5500);
+                                color:white;
+                                border:none;
+                                padding:12px 25px;
+                                border-radius:10px;
+                                font-weight:bold;
+                                font-size:16px;
+                                cursor:pointer;
+                                box-shadow:0 0 12px rgba(255,85,0,0.7);
+                                transition: transform 0.2s;
+                            ">👀 شاهد الإعلان</button>
+                        </div>
+                    `;
+                    document.getElementById('custom-result').style.display = 'block';
 
-                    adController.show()
-                        .then((result) => {
-                            if (result.done && !result.error) {
-                                // ✅ شاهد الإعلان كاملاً → أعطِ الكود
-                                proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey);
-                            } else {
-                                // ❌ أغلق الإعلان مبكرًا
-                                Telegram.WebApp.showAlert('❌ لن تحصل على مكافأتك إذا لم تكمل الإعلان!');
-                            }
-                        })
-                        .catch((error) => {
-                            console.error('AdsGram error:', error);
-                            Telegram.WebApp.showAlert('❌ فشل في عرض الإعلان.');
-                        });
+                    // عند النقر على "شاهد الإعلان"
+                    document.getElementById('watch-ad-btn').onclick = () => {
+                        if (!adController) {
+                            Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات.');
+                            return;
+                        }
+
+                        adController.show()
+                            .then((result) => {
+                                if (result.done && !result.error) {
+                                    proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey);
+                                } else {
+                                    Telegram.WebApp.showAlert('❌ لن تحصل على مكافأتك إذا لم تكمل الإعلان!');
+                                }
+                            })
+                            .catch((error) => {
+                                console.error('AdsGram error:', error);
+                                Telegram.WebApp.showAlert('❌ فشل في عرض الإعلان.');
+                            });
+                    };
                 } else {
-                    // ✅ أول مرة اليوم
+                    // أول مرة اليوم
                     proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey);
                 }
             };
@@ -1176,6 +1210,7 @@ button:disabled {
         });
         // ✅ تم حذف كود الصوت بالكامل
         // ✅ تم تطبيق نظام "مرة واحدة في اليوم + إعلان" لزر "اصنع حساسيتك"
+        // ✅ تم تحسين عبارة التحديث اليومي بخط نيون جذاب
     </script>
 </body>
 </html>
