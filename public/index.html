@@ -1080,9 +1080,25 @@ button:disabled {
                 const savedInvitations = localStorage.getItem(`invitations_${user_id}`);
                 const savedBoxes = localStorage.getItem(`boxes_${user_id}`);
                 const savedLooters = localStorage.getItem('lastLooters');
-                if (savedInvitations !== null) invitationsCount = parseInt(savedInvitations, 10);
-                if (savedBoxes !== null) boxesCount = parseInt(savedBoxes, 10);
-                if (savedLooters) lastLooters = JSON.parse(savedLooters);
+                
+                // ✅ تهيئة المستخدم لأول مرة إذا لم يكن موجودًا
+                if (savedInvitations === null) {
+                    localStorage.setItem(`invitations_${user_id}`, '0');
+                    invitationsCount = 0;
+                } else {
+                    invitationsCount = parseInt(savedInvitations, 10);
+                }
+                
+                if (savedBoxes === null) {
+                    localStorage.setItem(`boxes_${user_id}`, '0');
+                    boxesCount = 0;
+                } else {
+                    boxesCount = parseInt(savedBoxes, 10);
+                }
+                
+                if (savedLooters) {
+                    lastLooters = JSON.parse(savedLooters);
+                }
             }
         }
         function checkInvitation() {
@@ -1090,14 +1106,24 @@ button:disabled {
                 const param = window.Telegram.WebApp.initDataUnsafe.start_param;
                 if (param.startsWith('inviter_')) {
                     const inviterId = param.split('_')[1];
-                    if (inviterId == user_id) return;
-                    const inviterInvitations = parseInt(localStorage.getItem(`invitations_${inviterId}`) || '0', 10);
-                    const inviterBoxes = parseInt(localStorage.getItem(`boxes_${inviterId}`) || '0', 10);
-                    if (inviterInvitations + 1 < INVITE_GOAL) {
-                        localStorage.setItem(`invitations_${inviterId}`, inviterInvitations + 1);
-                    } else if (inviterInvitations + 1 === INVITE_GOAL) {
-                        localStorage.setItem(`boxes_${inviterId}`, inviterBoxes + 1);
-                        localStorage.setItem(`invitations_${inviterId}`, 0);
+                    if (inviterId == user_id) return; // لا يدعو نفسه
+
+                    // ✅ تأكد من أن المدعو مهيأ في localStorage
+                    if (localStorage.getItem(`invitations_${user_id}`) === null) {
+                        // هذا المستخدم دخل عبر رابط دعوة لأول مرة
+                        const inviterInvitations = parseInt(localStorage.getItem(`invitations_${inviterId}`) || '0', 10);
+                        const inviterBoxes = parseInt(localStorage.getItem(`boxes_${inviterId}`) || '0', 10);
+
+                        if (inviterInvitations + 1 < INVITE_GOAL) {
+                            localStorage.setItem(`invitations_${inviterId}`, inviterInvitations + 1);
+                        } else if (inviterInvitations + 1 === INVITE_GOAL) {
+                            localStorage.setItem(`boxes_${inviterId}`, inviterBoxes + 1);
+                            localStorage.setItem(`invitations_${inviterId}`, '0');
+                        }
+
+                        // ✅ تهيئة المدعو لتجنب التكرار
+                        localStorage.setItem(`invitations_${user_id}`, '0');
+                        localStorage.setItem(`boxes_${user_id}`, '0');
                     }
                 }
             }
@@ -1209,8 +1235,9 @@ button:disabled {
             }
         });
         // ✅ تم حذف كود الصوت بالكامل
-        // ✅ تم تطبيق نظام "مرة واحدة في اليوم + إعلان" لزر "اصنع حساسيتك"
-        // ✅ تم تحسين عبارة التحديث اليومي بخط نيون جذاب
+        // ✅ تم إصلاح نظام الدعوات في صندوق الغنائم
+        // ✅ تم تحسين زر "اصنع حساسيتك"
+        // ✅ تم تحسين عبارة التحديث اليومي
     </script>
 </body>
 </html>
