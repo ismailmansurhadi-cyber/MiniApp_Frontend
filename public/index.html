@@ -1120,53 +1120,52 @@ button:disabled {
         }
 
         async function checkInvitation() {
-          const param = window.Telegram.WebApp.initDataUnsafe.start_param;
-          if (!param || !param.startsWith('inviter_')) return;
+  const param = window.Telegram.WebApp.initDataUnsafe.start_param;
+  if (!param || !param.startsWith('inviter_')) return;
 
-          const inviterId = param.split('_')[1];
-          if (inviterId == user_id || user_id === 'guest_user') return;
+  const inviterId = param.split('_')[1];
+  if (inviterId == user_id || user_id === 'guest_user') return;
 
-          try {
-            const res = await fetch(`${API_URL}/${BIN_ID}`, {
-              headers: { "X-Master-Key": API_KEY }
-            });
-            const data = (await res.json()).record || {};
-            
-            // إذا كان المدعو موجودًا مسبقًا → تجاهل (لمنع التكرار)
-            if (data[user_id]) return;
+  try {
+    // جلب البيانات الحالية
+    const res = await fetch(`${API_URL}/${BIN_ID}`, {
+      headers: { "X-Master-Key": API_KEY }
+    });
+    const data = (await res.json()).record || {};
 
-            const inviterData = data[inviterId] || { invitations: 0, boxes: 0 };
-            let newInvites = inviterData.invitations;
-            let newBoxes = inviterData.boxes;
+    // ✅ لا نتحقق من وجود المدعو — نحسب الدعوة دائمًا
+    const inviterData = data[inviterId] || { invitations: 0, boxes: 0 };
+    let newInvites = inviterData.invitations;
+    let newBoxes = inviterData.boxes;
 
-            if (newInvites + 1 >= 3) {
-              newBoxes += 1;
-              newInvites = 0;
-            } else {
-              newInvites += 1;
-            }
+    if (newInvites + 1 >= 3) {
+      newBoxes += 1;
+      newInvites = 0;
+    } else {
+      newInvites += 1;
+    }
 
-            const updatedData = { ...data };
-            updatedData[inviterId] = { ...inviterData, invitations: newInvites, boxes: newBoxes };
-            updatedData[user_id] = { invitations: 0, boxes: 0, lastLooters: [] };
+    const updatedData = { ...data };
+    updatedData[inviterId] = { ...inviterData, invitations: newInvites, boxes: newBoxes };
+    // ✅ لا نحتاج تهيئة المدعو — فقط نحسب للمُرسل
 
-            await fetch(`${API_URL}/${BIN_ID}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                "X-Master-Key": API_KEY
-              },
-              body: JSON.stringify(updatedData)
-            });
+    await fetch(`${API_URL}/${BIN_ID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Master-Key": API_KEY
+      },
+      body: JSON.stringify(updatedData)
+    });
 
-            // تحديث العداد فورًا للمُرسل
-            invitationsCount = newInvites;
-            boxesCount = newBoxes;
-            updateCounters();
-          } catch (e) {
-            console.log("فشل تسجيل الدعوة:", e);
-          }
-        }
+    // تحديث العداد فورًا
+    invitationsCount = newInvites;
+    boxesCount = newBoxes;
+    updateCounters();
+  } catch (e) {
+    console.log("فشل تسجيل الدعوة:", e);
+  }
+}
         // 🔥 === نهاية نظام الحفظ الجديد ===
 
         function getUserId() {
