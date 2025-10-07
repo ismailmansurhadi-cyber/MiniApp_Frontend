@@ -1159,7 +1159,7 @@ button:disabled {
               body: JSON.stringify(updatedData)
             });
 
-            // تحديث العداد فورًا
+            // تحديث العداد فورًا للمُرسل
             invitationsCount = newInvites;
             boxesCount = newBoxes;
             updateCounters();
@@ -1188,9 +1188,14 @@ button:disabled {
         window.Telegram.WebApp.ready();
         user_id = getUserId();
         loadData();
-        checkInvitation();
+        checkInvitation(); // ← يتم تنفيذه تلقائيًا عند التحميل
         updateCounters();
         fetchLastLooters();
+
+        // ✅ تم إزالة الحاجة إلى "حفظ ID" لحساب الدعوة
+        // باقي الأحداث كما هي (openBoxButton.onclick, إلخ)
+
+        // ... (باقي الكود كما هو دون تغيير) ...
         saveIdButton.onclick = function() {
             const pubgId = playerIdInput.value.trim();
             if (pubgId) {
