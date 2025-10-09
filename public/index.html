@@ -623,8 +623,28 @@ button:disabled {
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
+    <!-- 🔥 Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
     <script>
-        // === نفس الجافاسكربت الأصلي بدون أي تغيير ===
+        // === تهيئة Firebase ===
+        const firebaseConfig = {
+          apiKey: "AIzaSyCNpoIzfQb9fLEZ8k7uaTyxAh5Cb1Xwz14",
+          authDomain: "my-lootbox.firebaseapp.com",
+          databaseURL: "https://my-lootbox-default-rtdb.europe-west1.firebasedatabase.app",
+          projectId: "my-lootbox",
+          storageBucket: "my-lootbox.firebasestorage.app",
+          messagingSenderId: "696677741027",
+          appId: "1:696677741027:web:e8975e5ca99690a17330d6",
+          measurementId: "G-J7FQS0GKB2"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+    </script>
+
+    <script>
+        // === نفس الجافاسكربت الأصلي بدون أي تغيير في المنطق أو الواجهة ===
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
@@ -1061,112 +1081,93 @@ button:disabled {
         ];
         let lastLooters = [];
 
-        // 🔥 === نظام حفظ الدعوات والصناديق على الإنترنت (تم استبدال الدوال القديمة) ===
-        const BIN_ID = "68e5338c43b1c97be95db7aa";
-        const API_KEY = "$2a$10$J7hnpezNmbGbRbENITUgouCC3fgpeG/pF7S84vjJpBd0uwnujJGvS";
-        const API_URL = "https://api.jsonbin.io/v3/b";
-
+        // 🔥 === نظام جديد باستخدام Firebase Realtime Database ===
         async function saveData() {
-          if (user_id && user_id !== 'guest_user') {
-            try {
-              const res = await fetch(`${API_URL}/${BIN_ID}`, {
-                method: "GET",
-                headers: { "X-Master-Key": API_KEY }
-              });
-              const currentData = (await res.json()).record || {};
-              currentData[user_id] = {
-                invitations: invitationsCount,
-                boxes: boxesCount,
-                lastLooters: lastLooters
-              };
-              await fetch(`${API_URL}/${BIN_ID}`, {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                  "X-Master-Key": API_KEY
-                },
-                body: JSON.stringify(currentData)
-              });
-            } catch (e) { console.log("فشل الحفظ"); }
+          if (!user_id || user_id === 'guest_user') return;
+          try {
+            await database.ref('users/' + user_id).set({
+              invitations: invitationsCount,
+              boxes: boxesCount,
+              lastLooters: lastLooters
+            });
+          } catch (e) {
+            console.error("فشل حفظ البيانات:", e);
           }
         }
 
         async function loadData() {
-          if (user_id && user_id !== 'guest_user') {
-            try {
-              const res = await fetch(`${API_URL}/${BIN_ID}`, {
-                headers: { "X-Master-Key": API_KEY }
-              });
-              const data = (await res.json()).record || {};
-              const user = data[user_id];
-              if (user) {
-                invitationsCount = user.invitations || 0;
-                boxesCount = user.boxes || 0;
-                lastLooters = user.lastLooters || [];
-              } else {
-                invitationsCount = 0;
-                boxesCount = 0;
-                lastLooters = [];
-                // لا نحفظ هنا حتى لا نتدخل مع checkInvitation
-              }
-            } catch (e) {
+          if (!user_id || user_id === 'guest_user') return;
+          try {
+            const snapshot = await database.ref('users/' + user_id).once('value');
+            const data = snapshot.val();
+            if (data) {
+              invitationsCount = data.invitations || 0;
+              boxesCount = data.boxes || 0;
+              lastLooters = data.lastLooters || [];
+            } else {
               invitationsCount = 0;
               boxesCount = 0;
               lastLooters = [];
             }
-            updateCounters();
-            fetchLastLooters();
+          } catch (e) {
+            invitationsCount = 0;
+            boxesCount = 0;
+            lastLooters = [];
           }
+          updateCounters();
+          fetchLastLooters();
         }
 
         async function checkInvitation() {
-  const param = window.Telegram.WebApp.initDataUnsafe.start_param;
-  if (!param || !param.startsWith('inviter_')) return;
+          const param = window.Telegram.WebApp.initDataUnsafe.start_param;
+          if (!param || !param.startsWith('inviter_')) return;
+          const inviterId = param.split('_')[1];
+          const invitedUserId = user_id;
 
-  const inviterId = param.split('_')[1];
-  if (inviterId == user_id || user_id === 'guest_user') return;
+          if (!invitedUserId || invitedUserId === 'guest_user' || inviterId == invitedUserId) return;
 
-  try {
-    // جلب البيانات الحالية
-    const res = await fetch(`${API_URL}/${BIN_ID}`, {
-      headers: { "X-Master-Key": API_KEY }
-    });
-    const data = (await res.json()).record || {};
+          try {
+            // ✅ التحقق: هل سبق أن دُعي هذا المستخدم؟
+            const invitedSnapshot = await database.ref('invited/' + invitedUserId).once('value');
+            if (invitedSnapshot.exists()) {
+              console.log("المستخدم سبق دعوته");
+              return;
+            }
 
-    // ✅ لا نتحقق من وجود المدعو — نحسب الدعوة دائمًا
-    const inviterData = data[inviterId] || { invitations: 0, boxes: 0 };
-    let newInvites = inviterData.invitations;
-    let newBoxes = inviterData.boxes;
+            // جلب بيانات المُرسِل
+            const inviterSnapshot = await database.ref('users/' + inviterId).once('value');
+            const inviterData = inviterSnapshot.val() || { invitations: 0, boxes: 0 };
 
-    if (newInvites + 1 >= 3) {
-      newBoxes += 1;
-      newInvites = 0;
-    } else {
-      newInvites += 1;
-    }
+            let newInvites = inviterData.invitations;
+            let newBoxes = inviterData.boxes;
 
-    const updatedData = { ...data };
-    updatedData[inviterId] = { ...inviterData, invitations: newInvites, boxes: newBoxes };
-    // ✅ لا نحتاج تهيئة المدعو — فقط نحسب للمُرسل
+            if (newInvites + 1 >= INVITE_GOAL) {
+              newBoxes += 1;
+              newInvites = 0;
+            } else {
+              newInvites += 1;
+            }
 
-    await fetch(`${API_URL}/${BIN_ID}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Master-Key": API_KEY
-      },
-      body: JSON.stringify(updatedData)
-    });
+            // حفظ بيانات المُرسِل
+            await database.ref('users/' + inviterId).set({
+              ...inviterData,
+              invitations: newInvites,
+              boxes: newBoxes
+            });
 
-    // تحديث العداد فورًا
-    invitationsCount = newInvites;
-    boxesCount = newBoxes;
-    updateCounters();
-  } catch (e) {
-    console.log("فشل تسجيل الدعوة:", e);
-  }
-}
-        // 🔥 === نهاية نظام الحفظ الجديد ===
+            // تسجيل أن هذا المدعو قد تم دعوته (لمنع التكرار)
+            await database.ref('invited/' + invitedUserId).set({
+              inviter: inviterId,
+              timestamp: Date.now()
+            });
+
+            console.log(`تم احتساب دعوة من ${inviterId} إلى ${invitedUserId}`);
+
+          } catch (e) {
+            console.error("فشل تسجيل الدعوة:", e);
+          }
+        }
+        // 🔥 === نهاية نظام Firebase ===
 
         function getUserId() {
             if (window.Telegram.WebApp.initDataUnsafe.user) {
@@ -1183,7 +1184,6 @@ button:disabled {
             document.getElementById('invitation-counter').textContent = `لديك ${invitationsCount} من ${INVITE_GOAL} دعوات. لديك ${boxesCount} صندوق.`;
             openBoxButton.disabled = boxesCount < 1;
         }
-
         window.Telegram.WebApp.ready();
         user_id = getUserId();
         loadData();
@@ -1191,10 +1191,6 @@ button:disabled {
         updateCounters();
         fetchLastLooters();
 
-        // ✅ تم إزالة الحاجة إلى "حفظ ID" لحساب الدعوة
-        // باقي الأحداث كما هي (openBoxButton.onclick, إلخ)
-
-        // ... (باقي الكود كما هو دون تغيير) ...
         saveIdButton.onclick = function() {
             const pubgId = playerIdInput.value.trim();
             if (pubgId) {
@@ -1210,6 +1206,7 @@ button:disabled {
                 alert('الرجاء إدخال ID حسابك.');
             }
         };
+
        openBoxButton.onclick = async function() {
     if (boxesCount > 0) {
         if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
@@ -1241,6 +1238,7 @@ button:disabled {
         alert('ليس لديك صناديق كافية للفتح.');
     }
 };
+
         function fetchLastLooters() {
             winnersListContainer.innerHTML = '';
             if (lastLooters.length > 0) {
@@ -1252,6 +1250,7 @@ button:disabled {
                 });
             }
         }
+
         copyLinkButton.onclick = function() {
             const link = invitationLink.textContent;
             if (link) {
@@ -1260,7 +1259,9 @@ button:disabled {
                 });
             }
         };
+
         fetchSensitivities();
+
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
@@ -1280,6 +1281,7 @@ button:disabled {
             },
             "retina_detect": true
         });
+
         document.addEventListener('click', (e) => {
             if (e.target.id === 'back-to-main-pro' || 
                 e.target.id === 'back-to-main-beginner' || 
@@ -1295,10 +1297,6 @@ button:disabled {
                 }
             }
         });
-        // ✅ تم حذف كود الصوت بالكامل
-        // ✅ تم إصلاح نظام الدعوات في صندوق الغنائم
-        // ✅ تم تحسين زر "اصنع حساسيتك"
-        // ✅ تم تحسين عبارة التحديث اليومي
     </script>
 </body>
 </html>
