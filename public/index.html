@@ -10,7 +10,7 @@
   const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'guest_' + Date.now();
   gtag('config', 'G-W1RTXYRFZF', {
     'cookie_flags': 'SameSite=None;Secure',
-    'client_storage': 'none',
+    'client_storage': 'none', // لا يستخدم cookies أو localStorage
     'user_id': userId.toString()
   });
 </script>
@@ -624,7 +624,7 @@ button:disabled {
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
-    <!-- 🔥 Firebase CDN -->
+    <!-- 🔥 Firebase CDN (بدون type="module") -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
