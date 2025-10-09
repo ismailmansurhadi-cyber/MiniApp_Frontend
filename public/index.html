@@ -10,7 +10,7 @@
   const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'guest_' + Date.now();
   gtag('config', 'G-W1RTXYRFZF', {
     'cookie_flags': 'SameSite=None;Secure',
-    'client_storage': 'none', // لا يستخدم cookies أو localStorage
+    'client_storage': 'none',
     'user_id': userId.toString()
   });
 </script>
@@ -627,6 +627,7 @@ button:disabled {
     <!-- 🔥 Firebase CDN -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
     <script>
         // === تهيئة Firebase ===
         const firebaseConfig = {
