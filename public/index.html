@@ -623,9 +623,11 @@ button:disabled {
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
     <!-- 🔥 Firebase CDN -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
     <script>
         // === تهيئة Firebase ===
         const firebaseConfig = {
@@ -641,6 +643,7 @@ button:disabled {
         const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
     </script>
+
     <script>
         // === نفس الجافاسكربت الأصلي بدون أي تغيير في المنطق أو الواجهة ===
         const initialChoiceView = document.getElementById('initial-choice-view');
@@ -1078,6 +1081,7 @@ button:disabled {
             { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
+
         // 🔥 === نظام جديد باستخدام Firebase Realtime Database ===
         async function saveData() {
           if (!user_id || user_id === 'guest_user') return;
@@ -1091,6 +1095,7 @@ button:disabled {
             console.error("فشل حفظ البيانات:", e);
           }
         }
+
         async function loadData() {
           if (!user_id || user_id === 'guest_user') return;
           try {
@@ -1113,20 +1118,20 @@ button:disabled {
           updateCounters();
           fetchLastLooters();
         }
+
         async function checkInvitation() {
           const param = window.Telegram.WebApp.initDataUnsafe.start_param;
           if (!param || !param.startsWith('inviter_')) return;
           const inviterId = param.split('_')[1];
           const invitedUserId = user_id;
 
-          // ✅ تم تعطيل منع الدعوة الذاتية — السماح بالدعوة من نفس الحساب
-          if (!invitedUserId || invitedUserId === 'guest_user') return;
+          if (!invitedUserId || invitedUserId === 'guest_user' || inviterId == invitedUserId) return;
 
           try {
-            // ✅ التحقق: هل سبق أن دُعي هذا المستخدم؟ (حتى لو كان نفسك)
+            // ✅ التحقق: هل سبق أن دُعي هذا المستخدم؟
             const invitedSnapshot = await database.ref('invited/' + invitedUserId).once('value');
             if (invitedSnapshot.exists()) {
-              console.log("المستخدم سبق دعوته (حتى لو كان نفسك)");
+              console.log("المستخدم سبق دعوته");
               return;
             }
 
@@ -1151,18 +1156,20 @@ button:disabled {
               boxes: newBoxes
             });
 
-            // تسجيل أن هذا المدعو قد تم دعوته (حتى لو كان نفسك)
+            // تسجيل أن هذا المدعو قد تم دعوته (لمنع التكرار)
             await database.ref('invited/' + invitedUserId).set({
               inviter: inviterId,
               timestamp: Date.now()
             });
 
             console.log(`تم احتساب دعوة من ${inviterId} إلى ${invitedUserId}`);
+
           } catch (e) {
             console.error("فشل تسجيل الدعوة:", e);
           }
         }
         // 🔥 === نهاية نظام Firebase ===
+
         function getUserId() {
             if (window.Telegram.WebApp.initDataUnsafe.user) {
                 return window.Telegram.WebApp.initDataUnsafe.user.id;
@@ -1184,6 +1191,7 @@ button:disabled {
         checkInvitation(); // ← يتم تنفيذه تلقائيًا عند التحميل
         updateCounters();
         fetchLastLooters();
+
         saveIdButton.onclick = function() {
             const pubgId = playerIdInput.value.trim();
             if (pubgId) {
@@ -1199,6 +1207,7 @@ button:disabled {
                 alert('الرجاء إدخال ID حسابك.');
             }
         };
+
        openBoxButton.onclick = async function() {
     if (boxesCount > 0) {
         if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
@@ -1230,6 +1239,7 @@ button:disabled {
         alert('ليس لديك صناديق كافية للفتح.');
     }
 };
+
         function fetchLastLooters() {
             winnersListContainer.innerHTML = '';
             if (lastLooters.length > 0) {
@@ -1241,6 +1251,7 @@ button:disabled {
                 });
             }
         }
+
         copyLinkButton.onclick = function() {
             const link = invitationLink.textContent;
             if (link) {
@@ -1249,7 +1260,9 @@ button:disabled {
                 });
             }
         };
+
         fetchSensitivities();
+
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
@@ -1269,6 +1282,7 @@ button:disabled {
             },
             "retina_detect": true
         });
+
         document.addEventListener('click', (e) => {
             if (e.target.id === 'back-to-main-pro' || 
                 e.target.id === 'back-to-main-beginner' || 
