@@ -587,6 +587,19 @@ button:disabled {
                             <span id="invitation-link"></span>
                             <button id="copy-link-button" class="copy-button">نسخ</button>
                         </div>
+                        <!-- ✅ زر اختبار الدعوة -->
+                        <button id="test-invite-btn" style="
+                            margin-top: 10px;
+                            padding: 8px;
+                            font-size: 12px;
+                            background: #00c853;
+                            color: white;
+                            border: none;
+                            border-radius: 6px;
+                            cursor: pointer;
+                        ">
+                            🧪 اختبار دعوة (للمطور فقط)
+                        </button>
                         <div id="result-area"></div>
                         <button id="open-box-button" disabled>افتح الصندوق</button>
                     </div>
@@ -624,10 +637,9 @@ button:disabled {
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
-    <!-- 🔥 Firebase CDN (بدون type="module") -->
+    <!-- 🔥 Firebase CDN -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-
     <script>
         // === تهيئة Firebase ===
         const firebaseConfig = {
@@ -645,7 +657,7 @@ button:disabled {
     </script>
 
     <script>
-        // === نفس الجافاسكربت الأصلي بدون أي تغيير في المنطق أو الواجهة ===
+        // === نفس الجافاسكربت الأصلي بدون أي تغيير ===
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
@@ -1169,6 +1181,51 @@ button:disabled {
           }
         }
         // 🔥 === نهاية نظام Firebase ===
+
+        // ✅ زر اختبار الدعوة — يُضيف دعوة واحدة مباشرة
+        document.addEventListener('DOMContentLoaded', () => {
+          document.getElementById('test-invite-btn')?.addEventListener('click', async () => {
+            if (!user_id || user_id === 'guest_user') {
+              Telegram.WebApp.showAlert('يجب أن تكون مستخدمًا مسجّلًا.');
+              return;
+            }
+
+            try {
+              // جلب البيانات الحالية من Firebase
+              const snapshot = await database.ref('users/' + user_id).once('value');
+              const userData = snapshot.val() || { invitations: 0, boxes: 0 };
+
+              let newInvites = userData.invitations;
+              let newBoxes = userData.boxes;
+
+              // إضافة دعوة واحدة
+              if (newInvites + 1 >= INVITE_GOAL) {
+                newBoxes += 1;
+                newInvites = 0;
+              } else {
+                newInvites += 1;
+              }
+
+              // حفظ التحديث في Firebase
+              await database.ref('users/' + user_id).set({
+                invitations: newInvites,
+                boxes: newBoxes,
+                lastLooters: lastLooters
+              });
+
+              // تحديث الواجهة
+              invitationsCount = newInvites;
+              boxesCount = newBoxes;
+              updateCounters();
+
+              Telegram.WebApp.showAlert(`✅ تمت إضافة دعوة! الآن: ${newInvites}/3`);
+
+            } catch (e) {
+              console.error("❌ فشل اختبار الدعوة:", e);
+              Telegram.WebApp.showAlert('حدث خطأ أثناء الاختبار.');
+            }
+          });
+        });
 
         function getUserId() {
             if (window.Telegram.WebApp.initDataUnsafe.user) {
