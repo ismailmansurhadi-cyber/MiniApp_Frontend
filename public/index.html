@@ -1096,24 +1096,28 @@ button:disabled {
         async function loadData() {
           if (!user_id || user_id === 'guest_user') return;
           try {
-            const snapshot = await database.ref('users/' + user_id).once('value');
-            const data = snapshot.val();
-            if (data) {
-              invitationsCount = data.invitations || 0;
-              boxesCount = data.boxes || 0;
-              lastLooters = data.lastLooters || [];
-            } else {
-              invitationsCount = 0;
-              boxesCount = 0;
-              lastLooters = [];
-            }
+            // استخدام on('value') للاستماع المستمر للتغييرات
+            database.ref('users/' + user_id).on('value', (snapshot) => {
+              const data = snapshot.val();
+              if (data) {
+                invitationsCount = data.invitations || 0;
+                boxesCount = data.boxes || 0;
+                lastLooters = data.lastLooters || [];
+              } else {
+                invitationsCount = 0;
+                boxesCount = 0;
+                lastLooters = [];
+              }
+              updateCounters();
+              fetchLastLooters();
+            });
           } catch (e) {
+            console.error("فشل تحميل البيانات:", e);
             invitationsCount = 0;
             boxesCount = 0;
             lastLooters = [];
+            updateCounters();
           }
-          updateCounters();
-          fetchLastLooters();
         }
         async function checkInvitation() {
           const param = window.Telegram.WebApp.initDataUnsafe.start_param;
@@ -1151,6 +1155,7 @@ button:disabled {
               timestamp: Date.now()
             });
             console.log(`تم احتساب دعوة من ${inviterId} إلى ${invitedUserId}`);
+            saveData();  // حفظ التغييرات فوراً
           } catch (e) {
             console.error("فشل تسجيل الدعوة:", e);
           }
@@ -1174,16 +1179,19 @@ button:disabled {
         window.Telegram.WebApp.ready();
         user_id = getUserId();
 
-        // ✅ تنفيذ checkInvitation() فور التحميل (حتى لو لم يدخل "صندوق الغنائم")
+        // ✅ تنفيذ checkInvitation() فور الدخول (حتى لو لم يدخل "صندوق الغنائم")
+        // هذا يضمن احتساب الدعوة فور تحميل التطبيق، بغض النظر عن فتح أي زر
+        // كما يدعم حسابات مختلفة على نفس الجهاز (بناءً على user_id الفريد من Telegram)
         if (user_id && user_id !== 'guest_user') {
             checkInvitation();
         }
 
+        // ✅ تحميل البيانات بعد التحقق من الدعوة مباشرة
         loadData();
         updateCounters();
         fetchLastLooters();
 
-        // ✅ زر التحديث
+        // ✅ زر التحديث (احتفاظ به كخيار يدوي احتياطي)
         document.getElementById('refresh-btn')?.addEventListener('click', () => {
             loadData();
         });
