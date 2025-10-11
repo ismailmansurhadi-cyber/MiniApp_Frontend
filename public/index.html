@@ -625,10 +625,9 @@ button:disabled {
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-    <!-- 🔥 Firebase CDN مع إضافة Auth -->
+    <!-- 🔥 Firebase CDN -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <script>
         // === تهيئة Firebase ===
         const firebaseConfig = {
@@ -643,7 +642,6 @@ button:disabled {
         };
         const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        const auth = firebase.auth();  // إضافة Auth للحل
     </script>
     <script>
         // === نفس الجافاسكربت الأصلي بدون أي تغيير في المنطق أو الواجهة ===
@@ -1089,8 +1087,7 @@ button:disabled {
             await database.ref('users/' + user_id).set({
               invitations: invitationsCount,
               boxes: boxesCount,
-              lastLooters: lastLooters,
-              owner: user_id  // إضافة للتحقق من المالك (حل مشكلة الحفظ المتعدد)
+              lastLooters: lastLooters
             });
           } catch (e) {
             console.error("فشل حفظ البيانات:", e);
@@ -1099,27 +1096,24 @@ button:disabled {
         async function loadData() {
           if (!user_id || user_id === 'guest_user') return;
           try {
-            database.ref('users/' + user_id).on('value', (snapshot) => {
-              const data = snapshot.val();
-              if (data && data.owner === user_id) {  // تحقق إضافي للأمان والحفظ المتعدد
-                invitationsCount = data.invitations || 0;
-                boxesCount = data.boxes || 0;
-                lastLooters = data.lastLooters || [];
-              } else {
-                invitationsCount = 0;
-                boxesCount = 0;
-                lastLooters = [];
-              }
-              updateCounters();
-              fetchLastLooters();
-            });
+            const snapshot = await database.ref('users/' + user_id).once('value');
+            const data = snapshot.val();
+            if (data) {
+              invitationsCount = data.invitations || 0;
+              boxesCount = data.boxes || 0;
+              lastLooters = data.lastLooters || [];
+            } else {
+              invitationsCount = 0;
+              boxesCount = 0;
+              lastLooters = [];
+            }
           } catch (e) {
-            console.error("فشل تحميل البيانات:", e);
             invitationsCount = 0;
             boxesCount = 0;
             lastLooters = [];
-            updateCounters();
           }
+          updateCounters();
+          fetchLastLooters();
         }
         async function checkInvitation() {
           const param = window.Telegram.WebApp.initDataUnsafe.start_param;
@@ -1128,11 +1122,13 @@ button:disabled {
           const invitedUserId = user_id;
           if (!invitedUserId || invitedUserId === 'guest_user' || inviterId == invitedUserId) return;
           try {
+            // ✅ التحقق: هل سبق أن دُعي هذا المستخدم؟
             const invitedSnapshot = await database.ref('invited/' + invitedUserId).once('value');
             if (invitedSnapshot.exists()) {
               console.log("المستخدم سبق دعوته");
               return;
             }
+            // جلب بيانات المُرسِل
             const inviterSnapshot = await database.ref('users/' + inviterId).once('value');
             const inviterData = inviterSnapshot.val() || { invitations: 0, boxes: 0 };
             let newInvites = inviterData.invitations;
@@ -1143,17 +1139,18 @@ button:disabled {
             } else {
               newInvites += 1;
             }
+            // حفظ بيانات المُرسِل
             await database.ref('users/' + inviterId).set({
               ...inviterData,
               invitations: newInvites,
               boxes: newBoxes
             });
+            // تسجيل أن هذا المدعو قد تم دعوته (لمنع التكرار)
             await database.ref('invited/' + invitedUserId).set({
               inviter: inviterId,
               timestamp: Date.now()
             });
             console.log(`تم احتساب دعوة من ${inviterId} إلى ${invitedUserId}`);
-            saveData();  // حفظ فوري
           } catch (e) {
             console.error("فشل تسجيل الدعوة:", e);
           }
@@ -1177,12 +1174,7 @@ button:disabled {
         window.Telegram.WebApp.ready();
         user_id = getUserId();
 
-        // ✅ تصديق Anonymous لـ Firebase Auth (حل الأمان والحفظ المتعدد)
-        auth.signInAnonymously().then(() => {
-          console.log("تم التصديق بنجاح");
-        }).catch((error) => console.error("Auth error:", error));
-
-        // ✅ تنفيذ checkInvitation() فور الدخول
+        // ✅ تنفيذ checkInvitation() فور التحميل (حتى لو لم يدخل "صندوق الغنائم")
         if (user_id && user_id !== 'guest_user') {
             checkInvitation();
         }
