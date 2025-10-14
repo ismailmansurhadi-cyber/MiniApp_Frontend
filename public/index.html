@@ -6,7 +6,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  // التحقق من وجود Telegram WebApp
   const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'guest_' + Date.now();
   gtag('config', 'G-W1RTXYRFZF', {
     'cookie_flags': 'SameSite=None;Secure',
@@ -361,18 +360,6 @@ button:disabled {
     right: 20px;
     transform: rotate(-15deg);
 }
-#yourbotname-text {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #ffd700;
-    font-size: 16px;
-    font-weight: bold;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-    z-index: 2;
-    white-space: nowrap;
-}
 .sensitivities-view .display-container,
 #custom-sensitivity-view .display-container {
     margin: 0 auto !important;
@@ -680,9 +667,6 @@ button:disabled {
                 const adminBtn = document.getElementById('open-admin-btn');
                 if (adminBtn) {
                     adminBtn.style.display = 'block';
-                    adminBtn.addEventListener('click', () => {
-                        showView(adminPanel);
-                    });
                 }
             }
         });
@@ -1044,7 +1028,7 @@ button:disabled {
             }
         });
 
-        const lootboxArea = document.getElementById('lootbox-area');
+        // === نظام صندوق الغنائم ===
         const saveIdButton = document.getElementById('save-id-button');
         const playerIdInput = document.getElementById('player-id-input');
         const invitationArea = document.getElementById('invitation-area');
@@ -1147,7 +1131,8 @@ button:disabled {
         }
 
         function updateCounters() {
-            document.getElementById('invitation-counter').textContent = `لديك ${invitationsCount} من ${INVITE_GOAL} دعوات. لديك ${boxesCount} صندوق.`;
+            document.getElementById('invited-count').textContent = invitationsCount;
+            document.getElementById('lootbox-count').textContent = boxesCount;
             document.getElementById('open-box-button').disabled = boxesCount < 1;
         }
 
@@ -1164,8 +1149,10 @@ button:disabled {
             }
         }
 
+        // === بدء التطبيق ===
         window.Telegram.WebApp.ready();
         user_id = getUserId();
+        // ✅ احتساب الدعوة فور التحميل (بدون شرط)
         checkInvitation();
 
         document.getElementById('refresh-btn')?.addEventListener('click', () => {
@@ -1179,10 +1166,13 @@ button:disabled {
                 document.getElementById('player-id-input').style.display = 'none';
                 this.style.display = 'none';
                 document.getElementById('invitation-area').style.display = 'block';
-                const inviteLink = `https://mini-app-frontend-gamma.vercel.app/index.html?start=inviter_${user_id}`;
+                // ✅ رابط دعوة عبر بوت Telegram
+                const inviteLink = `https://t.me/AQWKBOT?start=inviter_${user_id}`;
                 document.getElementById('invitation-link').textContent = inviteLink;
                 updateCounters();
                 document.getElementById('lootbox-image').classList.add('shake');
+                // تحميل البيانات بعد إدخال ID
+                loadData();
             } else {
                 alert('الرجاء إدخال ID حسابك.');
             }
@@ -1228,6 +1218,10 @@ button:disabled {
                 });
             }
         };
+
+        // زر لوحة التحكم
+        document.getElementById('open-admin-btn')?.addEventListener('click', () => showView(adminPanel));
+        document.getElementById('go-back-btn')?.addEventListener('click', () => showView(initialChoiceView));
 
         particlesJS('particles-js', {
             "particles": {
