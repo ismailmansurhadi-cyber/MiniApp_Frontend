@@ -150,6 +150,26 @@ button:disabled {
     transform: none;
     box-shadow: none;
 }
+
+/* أنماط خاصة لأزرار العودة إلى الواجهة الرئيسية */
+button.copy-button,
+#hide-lootbox-button,
+#go-back-btn {
+    background: transparent !important;
+    color: #00e6e6 !important;
+    border: 2px solid #00e6e6 !important;
+    box-shadow: 0 0 10px rgba(0, 230, 230, 0.5) !important;
+    font-weight: bold !important;
+    backdrop-filter: blur(4px) !important;
+}
+button.copy-button:hover,
+#hide-lootbox-button:hover,
+#go-back-btn:hover {
+    background: rgba(0, 230, 230, 0.1) !important;
+    box-shadow: 0 0 15px rgba(0, 230, 230, 0.8) !important;
+    transform: translateY(-2px) !important;
+}
+
 #open-vip-sensitivity-button {
     background: linear-gradient(135deg, #ffc107, #ff9800);
     color: #000;
@@ -645,7 +665,6 @@ button:disabled {
         const ADMIN_USER_ID = '658500340';
         const API_BASE_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app';
         let adController = null;
-
         function initAdsGram() {
             if (window.Adsgram && !adController) {
                 try {
@@ -655,13 +674,11 @@ button:disabled {
                 }
             }
         }
-
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", initAdsGram);
         } else {
             initAdsGram();
         }
-
         document.addEventListener('DOMContentLoaded', () => {
             if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
                 const adminBtn = document.getElementById('open-admin-btn');
@@ -669,8 +686,21 @@ button:disabled {
                     adminBtn.style.display = 'block';
                 }
             }
-        });
 
+            // === ربط جميع أزرار العودة ===
+            const backButtons = [
+                document.getElementById('back-to-main-pro'),
+                document.getElementById('back-to-main-beginner'),
+                document.getElementById('hide-lootbox-button'),
+                document.getElementById('go-back-btn')
+            ];
+
+            backButtons.forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', () => showView(initialChoiceView));
+                }
+            });
+        });
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
             proSensitivitiesView.classList.add('hidden');
@@ -681,7 +711,6 @@ button:disabled {
             vipSensitivityView.classList.add('hidden');
             viewToShow.classList.remove('hidden');
         }
-
         const fetchSensitivities = async () => {
             try {
                 const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
@@ -697,7 +726,6 @@ button:disabled {
                 alert('فشل في جلب البيانات من الواجهة الخلفية.');
             }
         };
-
         const createSensitivityButtons = (data, container) => {
             container.innerHTML = '';
             data.forEach(item => {
@@ -708,7 +736,6 @@ button:disabled {
                 container.appendChild(button);
             });
         };
-
         const handleSensitivityClick = (item) => {
             displayContainer.classList.remove('hidden');
             codeOutput.textContent = item.code;
@@ -726,7 +753,6 @@ button:disabled {
                 };
             }
         };
-
         openVipSensitivityButton.onclick = function() {
             openVipSensitivityButton.disabled = true;
             openVipSensitivityButton.textContent = 'جارٍ تحميل الإعلان...';
@@ -758,7 +784,6 @@ button:disabled {
                     openVipSensitivityButton.textContent = '(شاهد إعلان) مدفوعة vip حساسية';
                 });
         };
-
         copyVipCodeBtn.onclick = function() {
             const code = vipCodeOutput.textContent;
             if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جارٍ تحميل الإعلان...') {
@@ -769,7 +794,6 @@ button:disabled {
                 });
             }
         };
-
         createSensitivityBtn.onclick = () => {
             const customView = document.createElement('section');
             customView.id = 'custom-sensitivity-view';
@@ -801,6 +825,16 @@ button:disabled {
             document.querySelectorAll('section').forEach(s => {
                 if (s.id !== 'custom-sensitivity-view') s.classList.add('hidden');
             });
+
+            // ربط زر العودة في الصفحة المخصصة
+            const backToMainCustom = document.getElementById('back-to-main-custom');
+            if (backToMainCustom) {
+                backToMainCustom.addEventListener('click', () => {
+                    customView.remove();
+                    showView(initialChoiceView);
+                });
+            }
+
             document.getElementById('submit-custom').onclick = async () => {
                 const device = document.getElementById('device-name').value.trim();
                 const type = document.getElementById('device-type').value;
@@ -859,7 +893,6 @@ button:disabled {
                 }
             };
         };
-
         async function proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey) {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/custom-sensitivity`, {
@@ -888,7 +921,6 @@ button:disabled {
                 Telegram.WebApp.showAlert('فشل الاتصال بالخادم');
             }
         };
-
         const renderAdminList = async (data) => {
             adminList.innerHTML = '';
             data.forEach(item => {
@@ -927,18 +959,18 @@ button:disabled {
                 console.error('فشل تحميل الحساسيات المخصصة:', error);
             }
         };
-
         const resetForm = () => {
             addSensitivityForm.reset();
             formSubmitBtn.textContent = 'إضافة';
             editingId = null;
         };
-
         proChoiceButton.addEventListener('click', () => showView(proSensitivitiesView));
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
-        hideLootboxButton.addEventListener('click', () => showView(initialChoiceView));
-        goBackBtn.addEventListener('click', () => showView(initialChoiceView));
+
+        // ❌ تم إزالة السطرين التاليين لأن التكرار غير ضروري بعد التعديل الشامل
+        // hideLootboxButton.addEventListener('click', () => showView(initialChoiceView));
+        // goBackBtn.addEventListener('click', () => showView(initialChoiceView));
 
         addSensitivityForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -976,7 +1008,6 @@ button:disabled {
             fetchSensitivities();
             resetForm();
         });
-
         adminList.addEventListener('click', async (e) => {
             const target = e.target;
             if (!target.classList.contains('edit-btn') && !target.classList.contains('delete-btn')) return;
@@ -1027,7 +1058,6 @@ button:disabled {
                 }
             }
         });
-
         // === نظام صندوق الغنائم ===
         const saveIdButton = document.getElementById('save-id-button');
         const playerIdInput = document.getElementById('player-id-input');
@@ -1052,7 +1082,6 @@ button:disabled {
             { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
-
         async function saveData() {
           if (!user_id || user_id === 'guest_user') return;
           try {
@@ -1065,7 +1094,6 @@ button:disabled {
             console.error("فشل حفظ البيانات:", e);
           }
         }
-
         async function loadData() {
           if (!user_id || user_id === 'guest_user') return;
           try {
@@ -1088,7 +1116,6 @@ button:disabled {
           updateCounters();
           fetchLastLooters();
         }
-
         async function checkInvitation() {
           const urlParams = new URLSearchParams(window.location.search);
           const startParam = urlParams.get('start');
@@ -1116,26 +1143,22 @@ button:disabled {
             console.error("❌ فشل الدعوة:", e);
           }
         }
-
         function getUserId() {
             if (window.Telegram.WebApp.initDataUnsafe?.user) {
                 return window.Telegram.WebApp.initDataUnsafe.user.id;
             }
             return 'guest_' + Date.now();
         }
-
         function getUserName() {
             const user = window.Telegram.WebApp.initDataUnsafe?.user;
             if (user) return user.first_name || 'مستخدم';
             return 'مستخدم';
         }
-
         function updateCounters() {
             document.getElementById('invited-count').textContent = invitationsCount;
             document.getElementById('lootbox-count').textContent = boxesCount;
             document.getElementById('open-box-button').disabled = boxesCount < 1;
         }
-
         function fetchLastLooters() {
             const container = document.getElementById('winners-list-container');
             container.innerHTML = '';
@@ -1148,17 +1171,14 @@ button:disabled {
                 });
             }
         }
-
         // === بدء التطبيق ===
         window.Telegram.WebApp.ready();
         user_id = getUserId();
         // ✅ احتساب الدعوة فور التحميل (بدون شرط)
         checkInvitation();
-
         document.getElementById('refresh-btn')?.addEventListener('click', () => {
             loadData();
         });
-
         document.getElementById('save-id-button').onclick = function() {
             const pubgId = document.getElementById('player-id-input').value.trim();
             if (pubgId) {
@@ -1177,7 +1197,6 @@ button:disabled {
                 alert('الرجاء إدخال ID حسابك.');
             }
         };
-
         document.getElementById('open-box-button').onclick = async function() {
             if (boxesCount > 0) {
                 if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
@@ -1209,7 +1228,6 @@ button:disabled {
                 alert('ليس لديك صناديق كافية للفتح.');
             }
         };
-
         document.getElementById('copy-link-button').onclick = function() {
             const link = document.getElementById('invitation-link').textContent;
             if (link) {
@@ -1218,10 +1236,8 @@ button:disabled {
                 });
             }
         };
-
         // زر لوحة التحكم
         document.getElementById('open-admin-btn')?.addEventListener('click', () => showView(adminPanel));
-        document.getElementById('go-back-btn')?.addEventListener('click', () => showView(initialChoiceView));
 
         particlesJS('particles-js', {
             "particles": {
@@ -1242,7 +1258,6 @@ button:disabled {
             },
             "retina_detect": true
         });
-
         fetchSensitivities();
     </script>
 </body>
