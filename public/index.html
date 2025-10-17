@@ -18,8 +18,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صندوق الغنائم</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- خطوط عربية جذابة -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800&family=Tajawal:wght@600;700&display=swap" rel="stylesheet">
+    <!-- خط عربي عصري -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 /* الخلفية والأنماط العامة */
 body {
@@ -90,6 +90,8 @@ main#app-container {
     width: 100%;
     max-width: 400px;
 }
+
+/* ✅ تحديث خط الأزرار ليكون عصريًا */
 button {
     width: 100%;
     padding: 16px;
@@ -108,6 +110,8 @@ button {
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
+    /* ✅ خط عربي عصري */
+    font-family: 'Cairo', 'Tajawal', sans-serif;
 }
 button::before {
     content: '';
@@ -263,6 +267,7 @@ button.copy-button:hover,
     color: #fff;
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    font-family: 'Cairo', 'Tajawal', sans-serif;
 }
 #lootbox-area button:hover {
     background-color: #1565c0;
@@ -433,6 +438,7 @@ button.copy-button:hover,
     padding: 12px !important;
     font-size: 16px !important;
     border-radius: 8px !important;
+    font-family: 'Cairo', 'Tajawal', sans-serif;
 }
 #pro-choice::before,
 #beginner-choice::before {
@@ -486,7 +492,7 @@ button.copy-button:hover,
     left: 100%;
 }
 
-/* === Welcome Banner - عصري وجذاب === */
+/* === Welcome Banner === */
 .welcome-banner {
     position: fixed;
     top: 0;
@@ -532,7 +538,7 @@ button.copy-button:hover,
     100% { opacity: 1; }
 }
 .welcome-content h2 {
-    font-family: 'Cairo', 'Tajawal', sans-serif;
+    font-family: 'Cairo', sans-serif;
     font-weight: 800;
     font-size: 22px;
     margin-bottom: 14px;
@@ -557,7 +563,7 @@ button.copy-button:hover,
     font-weight: 800;
 }
 .welcome-content button {
-    font-family: 'Cairo', 'Tajawal', sans-serif;
+    font-family: 'Cairo', sans-serif;
     background: linear-gradient(135deg, #00c3ff, #0077ff);
     color: white;
     border: none;
@@ -643,7 +649,7 @@ button.copy-button:hover,
         ">يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة</p>
         <div id="display-container-vip" class="sensitivity-display" style="width: 100%; max-width: 300px; background-color: #ff00aa; padding: 15px; border-radius: 8px; text-align: center; box-sizing: border-box;">
             <div id="code-output-vip" dir="rtl" style="font-family: monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all;"></div>
-            <button id="copy-code-btn-vip" style="margin-top: 15px; padding: 10px; background: #4a7c8e; color: white; border: 2px solid #00ffff; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%;">
+            <button id="copy-code-btn-vip" style="margin-top: 15px; padding: 10px; background: #4a7c8e; color: white; border: 2px solid #00ffff; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; font-family: 'Cairo', sans-serif;">
                 نسخ الكود
             </button>
         </div>
@@ -811,6 +817,30 @@ button.copy-button:hover,
                     adminBtn.style.display = 'block';
                 }
             }
+
+            // ✅ ربط جميع أزرار العودة
+            const backButtons = [
+                document.getElementById('back-to-main-pro'),
+                document.getElementById('back-to-main-beginner'),
+                document.getElementById('hide-lootbox-button'),
+                document.getElementById('go-back-btn')
+            ];
+
+            backButtons.forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', () => showView(initialChoiceView));
+                }
+            });
+
+            // ✅ ربط زر العودة الديناميكي باستخدام التفويض (event delegation)
+            document.addEventListener('click', (e) => {
+                if (e.target && e.target.id === 'back-to-main-custom') {
+                    const customView = document.getElementById('custom-sensitivity-view');
+                    if (customView) customView.remove();
+                    showView(initialChoiceView);
+                }
+            });
+
             // عرض النافذة الترحيبية
             showWelcomeBanner();
         });
@@ -919,16 +949,16 @@ button.copy-button:hover,
             customView.style.padding = '20px';
             customView.innerHTML = `
                 <div class="display-container" style="width:100%;max-width:400px;background:rgba(30,10,40,0.7);border:2px solid #ff00ff;border-radius:16px;padding:25px;box-shadow:0 0 20px rgba(138,43,226,0.6);text-align:center;">
-                    <h2 style="color:#e0b0ff;font-size:22px;margin:0 0 20px;">🎯 اصنع حساسيتك</h2>
-                    <input type="text" id="device-name" placeholder="📱 اسم جهازك" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
-                    <select id="device-type" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
+                    <h2 style="color:#e0b0ff;font-size:22px;margin:0 0 20px;font-family:'Cairo',sans-serif;">🎯 اصنع حساسيتك</h2>
+                    <input type="text" id="device-name" placeholder="📱 اسم جهازك" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:'Cairo',sans-serif;">
+                    <select id="device-type" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:'Cairo',sans-serif;">
                         <option value="">🎮 نوع الجهاز</option>
                         <option value="mobile">موبايل</option>
                         <option value="tablet">آيباد/تابلت</option>
                         <option value="emulator">محاكي</option>
                     </select>
-                    <input type="number" id="fps" placeholder="📊 الفريمات (30-120)" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
-                    <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;">🚀 احصل على حساسيتك</button>
+                    <input type="number" id="fps" placeholder="📊 الفريمات (30-120)" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:'Cairo',sans-serif;">
+                    <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;font-family:'Cairo',sans-serif;">🚀 احصل على حساسيتك</button>
                     <div id="custom-result" style="margin-top:20px;display:none;"></div>
                     <div style="text-align: center; margin-top: 20px;">
                         <button id="back-to-main-custom" class="copy-button">العودة إلى الواجهة الرئيسية</button>
@@ -939,16 +969,6 @@ button.copy-button:hover,
             document.querySelectorAll('section').forEach(s => {
                 if (s.id !== 'custom-sensitivity-view') s.classList.add('hidden');
             });
-
-            // ربط زر العودة في الصفحة المخصصة
-            const backToMainCustom = document.getElementById('back-to-main-custom');
-            if (backToMainCustom) {
-                backToMainCustom.addEventListener('click', () => {
-                    customView.remove();
-                    showView(initialChoiceView);
-                });
-            }
-
             document.getElementById('submit-custom').onclick = async () => {
                 const device = document.getElementById('device-name').value.trim();
                 const type = document.getElementById('device-type').value;
@@ -965,7 +985,7 @@ button.copy-button:hover,
                 if (lastTime && (now - parseInt(lastTime)) < ONE_DAY) {
                     document.getElementById('custom-result').innerHTML = `
                         <div style="background:rgba(20,5,30,0.9);border:2px solid #ff5500;border-radius:12px;padding:20px;text-align:center;color:#ffd700;font-weight:bold;">
-                            <p style="font-size:15px;margin:0 0 15px;line-height:1.4;">
+                            <p style="font-size:15px;margin:0 0 15px;line-height:1.4;font-family:'Cairo',sans-serif;">
                                 يمكنك في اليوم صنع حساسية واحدة مجانًا.<br>
                                 إذا أردت صناعة حساسية مخصصة أخرى، شاهد الإعلان أولًا.
                             </p>
@@ -980,6 +1000,7 @@ button.copy-button:hover,
                                 cursor:pointer;
                                 box-shadow:0 0 12px rgba(255,85,0,0.7);
                                 transition: transform 0.2s;
+                                font-family:'Cairo',sans-serif;
                             ">👀 شاهد الإعلان</button>
                         </div>
                     `;
@@ -1019,10 +1040,10 @@ button.copy-button:hover,
                     localStorage.setItem(lastCustomTimeKey, Date.now().toString());
                     document.getElementById('custom-result').innerHTML = `
                         <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
-                            <p style="color:#ffd700;font-weight:bold;">🎯 حساسيتك الحصرية:</p>
+                            <p style="color:#ffd700;font-weight:bold;font-family:'Cairo',sans-serif;">🎯 حساسيتك الحصرية:</p>
                             <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${data.code}</pre>
                             <button onclick="navigator.clipboard.writeText('${data.code}').then(()=>Telegram.WebApp.showAlert('تم النسخ!'))" 
-                                    style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;">
+                                    style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;font-family:'Cairo',sans-serif;">
                                 📋 نسخ الكود
                             </button>
                         </div>
@@ -1054,7 +1075,7 @@ button.copy-button:hover,
                 const customItems = await response.json();
                 if (customItems.length > 0) {
                     const header = document.createElement('div');
-                    header.innerHTML = '<h3 style="color:#8a2be2;margin:15px 0 8px;text-align:center;">حساسيات "اصنع حساسيتك"</h3>';
+                    header.innerHTML = '<h3 style="color:#8a2be2;margin:15px 0 8px;text-align:center;font-family:\'Cairo\',sans-serif;">حساسيات "اصنع حساسيتك"</h3>';
                     adminList.appendChild(header);
                     customItems.forEach(item => {
                         const itemDiv = document.createElement('div');
@@ -1081,8 +1102,7 @@ button.copy-button:hover,
         proChoiceButton.addEventListener('click', () => showView(proSensitivitiesView));
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
-        hideLootboxButton.addEventListener('click', () => showView(initialChoiceView));
-        goBackBtn.addEventListener('click', () => showView(initialChoiceView));
+        // ❌ تم إزالة التكرار: ربط أزرار العودة موجود الآن في DOMContentLoaded
         addSensitivityForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const initData = window.Telegram.WebApp.initData;
@@ -1322,7 +1342,7 @@ button.copy-button:hover,
                         prizeElement.style.setProperty('margin-top', '15px');
                         prizeElement.innerHTML = `
                             <img src="${prize.imageUrl}" alt="${prize.name}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
-                            <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;">لقد ربحت: ${prize.name}</p>
+                            <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;font-family:'Cairo',sans-serif;">لقد ربحت: ${prize.name}</p>
                         `;
                         document.getElementById('result-area').innerHTML = '';
                         document.getElementById('result-area').appendChild(prizeElement);
@@ -1349,7 +1369,6 @@ button.copy-button:hover,
         };
         // زر لوحة التحكم
         document.getElementById('open-admin-btn')?.addEventListener('click', () => showView(adminPanel));
-        document.getElementById('go-back-btn')?.addEventListener('click', () => showView(initialChoiceView));
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
