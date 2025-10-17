@@ -68,14 +68,20 @@ main#app-container {
     max-width: 400px;
     box-sizing: border-box;
     text-align: center;
-    font-family: 'Tajawal', 'Segoe UI', sans-serif;
+    font-family: 'Cairo', 'Tajawal', sans-serif;
 }
+/* ✅ عنوان مميز بتدرج لوني */
 .title-box h1 {
-    font-size: 22px;
-    color: #00d8ff;
-    margin-bottom: 4px;
-    text-shadow: 0 0 4px rgba(0, 216, 255, 0.7);
-    font-weight: 700;
+    font-size: 24px;
+    color: transparent;
+    background: linear-gradient(90deg, #00d8ff, #00ffaa, #ffd700);
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 6px;
+    text-shadow: 0 0 8px rgba(0, 216, 255, 0.5);
+    font-weight: 800;
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: -0.5px;
 }
 .title-box p {
     font-size: 13px;
@@ -90,7 +96,6 @@ main#app-container {
     width: 100%;
     max-width: 400px;
 }
-
 /* ✅ تحديث خط الأزرار ليكون عصريًا */
 button {
     width: 100%;
@@ -156,7 +161,6 @@ button:disabled {
     transform: none;
     box-shadow: none;
 }
-
 /* أنماط خاصة لأزرار العودة */
 button.copy-button,
 #hide-lootbox-button,
@@ -175,13 +179,27 @@ button.copy-button:hover,
     box-shadow: 0 0 15px rgba(0, 230, 230, 0.8) !important;
     transform: translateY(-2px) !important;
 }
-
+/* ✅ زر الحساسية المدفوعة بسطرين */
 #open-vip-sensitivity-button {
     background: linear-gradient(135deg, #ffc107, #ff9800);
     color: #000;
     border: 2px solid #ff9800;
     box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
     animation: pulse 2s infinite;
+    /* عرض سطرين */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 16px;
+    line-height: 1.3;
+    text-align: center;
+}
+#open-vip-sensitivity-button .ad-label {
+    font-size: 13px;
+    opacity: 0.9;
+    font-weight: 600;
+    margin-top: 4px;
 }
 @keyframes pulse {
     0%, 100% { box-shadow: 0 0 12px rgba(255, 193, 7, 0.6); }
@@ -491,7 +509,6 @@ button.copy-button:hover,
 #beginner-choice:hover::after {
     left: 100%;
 }
-
 /* === Welcome Banner === */
 .welcome-banner {
     position: fixed;
@@ -603,14 +620,19 @@ button.copy-button:hover,
 </a>
         <section id="initial-choice-view">
             <div class="title-box">
-                <h1>إحتراف ببجي يبدأ من هنا</h1>
+                <!-- ✅ عنوان مميز -->
+                <h1>احتراف ببجي يبدأ من هنا</h1>
                 <p>اختر مستواك لتجد أفضل الحساسيات</p>
             </div>
             <div class="main-choice-container">
                 <button id="pro-choice">أنا محترف</button>
                 <button id="beginner-choice">أنا مبتدئ</button>
                 <button id="open-lootbox-button">🎁 صندوق الغنائم العشوائي </button>
-                <button id="open-vip-sensitivity-button">(شاهد إعلان) مدفوعة vip حساسية</button>
+                <!-- ✅ زر الحساسية المدفوعة بسطرين -->
+                <button id="open-vip-sensitivity-button">
+                    حساسية VIP مدفوعة<br>
+                    <span class="ad-label">(شاهد إعلان)</span>
+                </button>
                 <button id="create-sensitivity-btn">✨ اصنع حساسيتك ✨</button>
                 <button id="open-admin-btn" style="display:none;">لوحة التحكم</button>
             </div>
@@ -710,7 +732,6 @@ button.copy-button:hover,
             <button id="go-back-btn">العودة للواجهة الرئيسية</button>
         </section>
     </main>
-
     <!-- Welcome Banner Modal -->
     <div id="welcome-banner" class="welcome-banner hidden">
         <div class="welcome-content">
@@ -719,7 +740,6 @@ button.copy-button:hover,
             <button id="close-welcome">ابدأ الآن</button>
         </div>
     </div>
-
     <div id="particles-js"></div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
@@ -787,21 +807,17 @@ button.copy-button:hover,
         } else {
             initAdsGram();
         }
-
         // === عرض نافذة الترحيب عند أول دخول ===
         function showWelcomeBanner() {
             const hasSeen = localStorage.getItem('welcome_shown');
             const banner = document.getElementById('welcome-banner');
             const closeBtn = document.getElementById('close-welcome');
-
             if (!hasSeen && banner && closeBtn) {
                 banner.classList.remove('hidden');
                 localStorage.setItem('welcome_shown', 'true');
-
                 closeBtn.onclick = () => {
                     banner.classList.add('hidden');
                 };
-
                 banner.onclick = (e) => {
                     if (e.target === banner) {
                         banner.classList.add('hidden');
@@ -809,7 +825,6 @@ button.copy-button:hover,
                 };
             }
         }
-
         document.addEventListener('DOMContentLoaded', () => {
             if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
                 const adminBtn = document.getElementById('open-admin-btn');
@@ -817,7 +832,6 @@ button.copy-button:hover,
                     adminBtn.style.display = 'block';
                 }
             }
-
             // ✅ ربط جميع أزرار العودة
             const backButtons = [
                 document.getElementById('back-to-main-pro'),
@@ -825,13 +839,11 @@ button.copy-button:hover,
                 document.getElementById('hide-lootbox-button'),
                 document.getElementById('go-back-btn')
             ];
-
             backButtons.forEach(btn => {
                 if (btn) {
                     btn.addEventListener('click', () => showView(initialChoiceView));
                 }
             });
-
             // ✅ ربط زر العودة الديناميكي باستخدام التفويض (event delegation)
             document.addEventListener('click', (e) => {
                 if (e.target && e.target.id === 'back-to-main-custom') {
@@ -840,11 +852,9 @@ button.copy-button:hover,
                     showView(initialChoiceView);
                 }
             });
-
             // عرض النافذة الترحيبية
             showWelcomeBanner();
         });
-
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
             proSensitivitiesView.classList.add('hidden');
@@ -903,7 +913,7 @@ button.copy-button:hover,
             if (!adController) {
                 Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات.');
                 openVipSensitivityButton.disabled = false;
-                openVipSensitivityButton.textContent = '(شاهد إعلان) مدفوعة vip حساسية';
+                openVipSensitivityButton.textContent = 'حساسية VIP مدفوعة';
                 return;
             }
             adController.show()
@@ -925,7 +935,10 @@ button.copy-button:hover,
                 })
                 .finally(() => {
                     openVipSensitivityButton.disabled = false;
-                    openVipSensitivityButton.textContent = '(شاهد إعلان) مدفوعة vip حساسية';
+                    openVipSensitivityButton.innerHTML = `
+                        حساسية VIP مدفوعة<br>
+                        <span class="ad-label">(شاهد إعلان)</span>
+                    `;
                 });
         };
         copyVipCodeBtn.onclick = function() {
@@ -1102,7 +1115,6 @@ button.copy-button:hover,
         proChoiceButton.addEventListener('click', () => showView(proSensitivitiesView));
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
-        // ❌ تم إزالة التكرار: ربط أزرار العودة موجود الآن في DOMContentLoaded
         addSensitivityForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const initData = window.Telegram.WebApp.initData;
