@@ -151,7 +151,7 @@ button:disabled {
     box-shadow: none;
 }
 
-/* أنماط خاصة لأزرار العودة إلى الواجهة الرئيسية */
+/* أنماط خاصة لأزرار العودة */
 button.copy-button,
 #hide-lootbox-button,
 #go-back-btn {
@@ -483,6 +483,58 @@ button.copy-button:hover,
 #beginner-choice:hover::after {
     left: 100%;
 }
+
+/* === Welcome Banner Modal === */
+.welcome-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+}
+.welcome-content {
+    background: linear-gradient(135deg, #0c2a3a, #1a4a5f);
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 350px;
+    width: 90%;
+    box-shadow: 0 0 20px rgba(0, 180, 220, 0.7);
+    border: 2px solid #00b4d8;
+}
+.welcome-content h2 {
+    color: #ffd700;
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.6);
+}
+.welcome-content p {
+    color: #cceeff;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+.welcome-content button {
+    background: linear-gradient(135deg, #00b4d8, #00e6e6);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.welcome-content button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(0, 230, 230, 0.8);
+}
 </style>
 </head>
 <body>
@@ -612,6 +664,16 @@ button.copy-button:hover,
             <button id="go-back-btn">العودة للواجهة الرئيسية</button>
         </section>
     </main>
+
+    <!-- Welcome Banner Modal -->
+    <div id="welcome-banner" class="welcome-banner hidden">
+        <div class="welcome-content">
+            <h2>🏆 أنت لست لاعبًا عاديًّا... أنت بطل قادم!</h2>
+            <p>انضم إلى <strong>+100,000 لاعب</strong> حول العالم</p>
+            <button id="close-welcome">ابدأ الآن</button>
+        </div>
+    </div>
+
     <div id="particles-js"></div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
@@ -679,6 +741,29 @@ button.copy-button:hover,
         } else {
             initAdsGram();
         }
+
+        // === عرض نافذة الترحيب عند أول دخول ===
+        function showWelcomeBanner() {
+            const hasSeen = localStorage.getItem('welcome_shown');
+            const banner = document.getElementById('welcome-banner');
+            const closeBtn = document.getElementById('close-welcome');
+
+            if (!hasSeen && banner && closeBtn) {
+                banner.classList.remove('hidden');
+                localStorage.setItem('welcome_shown', 'true');
+
+                closeBtn.onclick = () => {
+                    banner.classList.add('hidden');
+                };
+
+                banner.onclick = (e) => {
+                    if (e.target === banner) {
+                        banner.classList.add('hidden');
+                    }
+                };
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
                 const adminBtn = document.getElementById('open-admin-btn');
@@ -686,21 +771,10 @@ button.copy-button:hover,
                     adminBtn.style.display = 'block';
                 }
             }
-
-            // === ربط جميع أزرار العودة ===
-            const backButtons = [
-                document.getElementById('back-to-main-pro'),
-                document.getElementById('back-to-main-beginner'),
-                document.getElementById('hide-lootbox-button'),
-                document.getElementById('go-back-btn')
-            ];
-
-            backButtons.forEach(btn => {
-                if (btn) {
-                    btn.addEventListener('click', () => showView(initialChoiceView));
-                }
-            });
+            // عرض النافذة الترحيبية
+            showWelcomeBanner();
         });
+
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
             proSensitivitiesView.classList.add('hidden');
@@ -967,11 +1041,8 @@ button.copy-button:hover,
         proChoiceButton.addEventListener('click', () => showView(proSensitivitiesView));
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
-
-        // ❌ تم إزالة السطرين التاليين لأن التكرار غير ضروري بعد التعديل الشامل
-        // hideLootboxButton.addEventListener('click', () => showView(initialChoiceView));
-        // goBackBtn.addEventListener('click', () => showView(initialChoiceView));
-
+        hideLootboxButton.addEventListener('click', () => showView(initialChoiceView));
+        goBackBtn.addEventListener('click', () => showView(initialChoiceView));
         addSensitivityForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const initData = window.Telegram.WebApp.initData;
@@ -1238,7 +1309,7 @@ button.copy-button:hover,
         };
         // زر لوحة التحكم
         document.getElementById('open-admin-btn')?.addEventListener('click', () => showView(adminPanel));
-
+        document.getElementById('go-back-btn')?.addEventListener('click', () => showView(initialChoiceView));
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
