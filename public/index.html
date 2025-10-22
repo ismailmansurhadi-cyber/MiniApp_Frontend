@@ -21,7 +21,7 @@
     <!-- خط عربي عصري -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-/* الخلفية والأنماط العامة */
+/* نفس الأنماط السابقة — لم نغيّر شيئًا في الـ CSS */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
@@ -70,7 +70,6 @@ main#app-container {
     text-align: center;
     font-family: 'Cairo', 'Tajawal', sans-serif;
 }
-/* ✅ عنوان مميز بتدرج لوني */
 .title-box h1 {
     font-size: 24px;
     color: transparent;
@@ -96,7 +95,6 @@ main#app-container {
     width: 100%;
     max-width: 400px;
 }
-/* ✅ خط عصري في جميع الأزرار */
 button {
     width: 100%;
     padding: 16px;
@@ -160,7 +158,6 @@ button:disabled {
     transform: none;
     box-shadow: none;
 }
-/* أنماط خاصة لأزرار العودة */
 button.copy-button,
 #hide-lootbox-button,
 #go-back-btn {
@@ -178,7 +175,6 @@ button.copy-button:hover,
     box-shadow: 0 0 15px rgba(0, 230, 230, 0.8) !important;
     transform: translateY(-2px) !important;
 }
-/* ✅ زر الحساسية المدفوعة بسطرين */
 #open-vip-sensitivity-button {
     background: linear-gradient(135deg, #ffc107, #ff9800);
     color: #000;
@@ -507,7 +503,6 @@ button.copy-button:hover,
 #beginner-choice:hover::after {
     left: 100%;
 }
-/* === Welcome Banner === */
 .welcome-banner {
     position: fixed;
     top: 0;
@@ -696,7 +691,6 @@ button.copy-button:hover,
                             <span id="invitation-link"></span>
                             <button id="copy-link-button" class="copy-button">نسخ</button>
                         </div>
-                        <!-- ✅ زر التحديث مخفي لأنه لم يعد ضروريًا -->
                         <button id="refresh-btn" style="margin-top:10px; font-size:12px; display: none;">🔄 تحديث العداد</button>
                         <div id="result-area"></div>
                         <button id="open-box-button" disabled>افتح الصندوق</button>
@@ -729,7 +723,6 @@ button.copy-button:hover,
             <button id="go-back-btn">العودة للواجهة الرئيسية</button>
         </section>
     </main>
-    <!-- Welcome Banner Modal -->
     <div id="welcome-banner" class="welcome-banner hidden">
         <div class="welcome-content">
             <h2>🏆 أنت لست لاعبًا عاديًّا... أنت بطل قادم!</h2>
@@ -804,7 +797,6 @@ button.copy-button:hover,
         } else {
             initAdsGram();
         }
-        // === عرض نافذة الترحيب عند أول دخول ===
         function showWelcomeBanner() {
             const hasSeen = localStorage.getItem('welcome_shown');
             const banner = document.getElementById('welcome-banner');
@@ -822,44 +814,33 @@ button.copy-button:hover,
                 };
             }
         }
-        // ✅ دالة محدثة لقراءة start_param من Telegram WebApp
         async function checkInvitation() {
             const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param;
             if (!startParam || !startParam.startsWith('inviter_')) return;
-
             const inviterId = startParam.split('_')[1];
             if (!/^\d+$/.test(inviterId)) return;
-
             const invitedUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
             if (!invitedUser) return;
-
             const invitedUserId = String(invitedUser.id);
             if (!invitedUserId || invitedUserId === inviterId) return;
-
             try {
                 const invitedRef = database.ref('invited/' + invitedUserId);
                 const invitedSnap = await invitedRef.once('value');
                 if (invitedSnap.exists()) return;
-
                 const inviterRef = database.ref('users/' + inviterId);
                 const inviterSnap = await inviterRef.once('value');
                 const inviterData = inviterSnap.val() || { invitations: 0, boxes: 0 };
-
                 let newInvites = inviterData.invitations + 1;
                 let newBoxes = inviterData.boxes;
                 if (newInvites >= 3) {
                     newBoxes += 1;
                     newInvites = 0;
                 }
-
                 await Promise.all([
                     inviterRef.set({ invitations: newInvites, boxes: newBoxes }),
                     invitedRef.set({ inviter: inviterId, timestamp: Date.now() })
                 ]);
-
                 console.log(`✅ دعوة مُحتسبة: ${inviterId} ← ${invitedUserId}`);
-
-                // تحديث العداد فورًا إذا كان المستخدم الحالي هو الداعي
                 if (user_id == inviterId) {
                     invitationsCount = newInvites;
                     boxesCount = newBoxes;
@@ -870,7 +851,6 @@ button.copy-button:hover,
                 console.error("❌ فشل في تسجيل الدعوة:", e);
             }
         }
-
         document.addEventListener('DOMContentLoaded', () => {
             if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
                 const adminBtn = document.getElementById('open-admin-btn');
@@ -878,8 +858,6 @@ button.copy-button:hover,
                     adminBtn.style.display = 'block';
                 }
             }
-
-            // ربط أزرار العودة
             const backButtons = [
                 document.getElementById('back-to-main-pro'),
                 document.getElementById('back-to-main-beginner'),
@@ -891,8 +869,6 @@ button.copy-button:hover,
                     btn.addEventListener('click', () => showView(initialChoiceView));
                 }
             });
-
-            // ربط زر العودة الديناميكي
             document.addEventListener('click', (e) => {
                 if (e.target && e.target.id === 'back-to-main-custom') {
                     const customView = document.getElementById('custom-sensitivity-view');
@@ -900,10 +876,8 @@ button.copy-button:hover,
                     showView(initialChoiceView);
                 }
             });
-
             showWelcomeBanner();
         });
-
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
             proSensitivitiesView.classList.add('hidden');
@@ -914,8 +888,6 @@ button.copy-button:hover,
             vipSensitivityView.classList.add('hidden');
             viewToShow.classList.remove('hidden');
         }
-
-        // === دوال النظام الأخرى (unchanged) ===
         const fetchSensitivities = async () => {
             try {
                 const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
@@ -931,7 +903,6 @@ button.copy-button:hover,
                 alert('فشل في جلب البيانات من الواجهة الخلفية.');
             }
         };
-
         const createSensitivityButtons = (data, container) => {
             container.innerHTML = '';
             data.forEach(item => {
@@ -942,7 +913,6 @@ button.copy-button:hover,
                 container.appendChild(button);
             });
         };
-
         const handleSensitivityClick = (item) => {
             displayContainer.classList.remove('hidden');
             codeOutput.textContent = item.code;
@@ -960,7 +930,6 @@ button.copy-button:hover,
                 };
             }
         };
-
         openVipSensitivityButton.onclick = function() {
             openVipSensitivityButton.disabled = true;
             openVipSensitivityButton.innerHTML = 'جارٍ تحميل الإعلان...';
@@ -998,7 +967,6 @@ button.copy-button:hover,
                     `;
                 });
         };
-
         copyVipCodeBtn.onclick = function() {
             const code = vipCodeOutput.textContent;
             if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جارٍ تحميل الإعلان...') {
@@ -1009,7 +977,6 @@ button.copy-button:hover,
                 });
             }
         };
-
         createSensitivityBtn.onclick = () => {
             const customView = document.createElement('section');
             customView.id = 'custom-sensitivity-view';
@@ -1100,7 +1067,6 @@ button.copy-button:hover,
                 }
             };
         };
-
         async function proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey) {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/custom-sensitivity`, {
@@ -1129,7 +1095,6 @@ button.copy-button:hover,
                 Telegram.WebApp.showAlert('فشل الاتصال بالخادم');
             }
         };
-
         const renderAdminList = async (data) => {
             adminList.innerHTML = '';
             data.forEach(item => {
@@ -1168,17 +1133,14 @@ button.copy-button:hover,
                 console.error('فشل تحميل الحساسيات المخصصة:', error);
             }
         };
-
         const resetForm = () => {
             addSensitivityForm.reset();
             formSubmitBtn.textContent = 'إضافة';
             editingId = null;
         };
-
         proChoiceButton.addEventListener('click', () => showView(proSensitivitiesView));
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
-
         addSensitivityForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const initData = window.Telegram.WebApp.initData;
@@ -1215,7 +1177,6 @@ button.copy-button:hover,
             fetchSensitivities();
             resetForm();
         });
-
         adminList.addEventListener('click', async (e) => {
             const target = e.target;
             if (!target.classList.contains('edit-btn') && !target.classList.contains('delete-btn')) return;
@@ -1266,8 +1227,6 @@ button.copy-button:hover,
                 }
             }
         });
-
-        // === نظام صندوق الغنائم ===
         let user_id;
         let invitationsCount = 0;
         let boxesCount = 0;
@@ -1282,7 +1241,6 @@ button.copy-button:hover,
             { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
-
         async function saveData() {
             if (!user_id || user_id === 'guest_user') return;
             try {
@@ -1295,13 +1253,11 @@ button.copy-button:hover,
                 console.error("فشل حفظ البيانات:", e);
             }
         }
-
         function updateCounters() {
             document.getElementById('invited-count').textContent = invitationsCount;
             document.getElementById('lootbox-count').textContent = boxesCount;
             document.getElementById('open-box-button').disabled = boxesCount < 1;
         }
-
         function fetchLastLooters() {
             const container = document.getElementById('winners-list-container');
             container.innerHTML = '';
@@ -1314,13 +1270,11 @@ button.copy-button:hover,
                 });
             }
         }
-
         function getUserName() {
             const user = window.Telegram.WebApp.initDataUnsafe?.user;
             if (user) return user.first_name || 'مستخدم';
             return 'مستخدم';
         }
-
         document.getElementById('save-id-button').onclick = function() {
             const pubgId = document.getElementById('player-id-input').value.trim();
             if (pubgId) {
@@ -1328,7 +1282,8 @@ button.copy-button:hover,
                 document.getElementById('player-id-input').style.display = 'none';
                 this.style.display = 'none';
                 document.getElementById('invitation-area').style.display = 'block';
-                const inviteLink = `https://t.me/AQWKBOT?start=inviter_${user_id}`;
+                // ✅ التعديل الوحيد: استخدام ?startapp= بدل ?start=
+                const inviteLink = `https://t.me/AQWKBOT?startapp=inviter_${user_id}`;
                 document.getElementById('invitation-link').textContent = inviteLink;
                 updateCounters();
                 document.getElementById('lootbox-image').classList.add('shake');
@@ -1336,7 +1291,6 @@ button.copy-button:hover,
                 alert('الرجاء إدخال ID حسابك.');
             }
         };
-
         document.getElementById('open-box-button').onclick = async function() {
             if (boxesCount > 0) {
                 if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
@@ -1368,7 +1322,6 @@ button.copy-button:hover,
                 alert('ليس لديك صناديق كافية للفتح.');
             }
         };
-
         document.getElementById('copy-link-button').onclick = function() {
             const link = document.getElementById('invitation-link').textContent;
             if (link) {
@@ -1377,19 +1330,15 @@ button.copy-button:hover,
                 });
             }
         };
-
         document.getElementById('open-admin-btn')?.addEventListener('click', () => showView(adminPanel));
-
-        // === بدء التطبيق ===
         window.Telegram.WebApp.ready();
         const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
         if (user) {
             user_id = String(user.id);
-            checkInvitation(); // ✅ الآن يعمل بشكل صحيح
+            checkInvitation(); // سيتم تشغيله تلقائيًا عند فتح الرابط
         } else {
             user_id = 'guest_' + Date.now();
         }
-
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
@@ -1409,7 +1358,6 @@ button.copy-button:hover,
             },
             "retina_detect": true
         });
-
         fetchSensitivities();
     </script>
 </body>
