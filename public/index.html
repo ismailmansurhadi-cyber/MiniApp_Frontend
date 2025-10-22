@@ -841,12 +841,6 @@ button.copy-button:hover,
                     invitedRef.set({ inviter: inviterId, timestamp: Date.now() })
                 ]);
                 console.log(`✅ دعوة مُحتسبة: ${inviterId} ← ${invitedUserId}`);
-                if (user_id == inviterId) {
-                    invitationsCount = newInvites;
-                    boxesCount = newBoxes;
-                    updateCounters();
-                    document.getElementById('lootbox-image')?.classList.add('shake');
-                }
             } catch (e) {
                 console.error("❌ فشل في تسجيل الدعوة:", e);
             }
@@ -1140,6 +1134,7 @@ button.copy-button:hover,
         };
         proChoiceButton.addEventListener('click', () => showView(proSensitivitiesView));
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
+        // ✅ تم تعديل هذا الزر ليستخدم Realtime Listener فقط (لا حاجة لتحميل يدوي)
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
         addSensitivityForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1241,18 +1236,6 @@ button.copy-button:hover,
             { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
-        async function saveData() {
-            if (!user_id || user_id === 'guest_user') return;
-            try {
-                await database.ref('users/' + user_id).set({
-                    invitations: invitationsCount,
-                    boxes: boxesCount,
-                    lastLooters: lastLooters
-                });
-            } catch (e) {
-                console.error("فشل حفظ البيانات:", e);
-            }
-        }
         function updateCounters() {
             document.getElementById('invited-count').textContent = invitationsCount;
             document.getElementById('lootbox-count').textContent = boxesCount;
@@ -1282,7 +1265,7 @@ button.copy-button:hover,
                 document.getElementById('player-id-input').style.display = 'none';
                 this.style.display = 'none';
                 document.getElementById('invitation-area').style.display = 'block';
-                // ✅ التعديل الوحيد: استخدام ?startapp= بدل ?start=
+                // ✅ التعديل الأهم: استخدام ?startapp=
                 const inviteLink = `https://t.me/AQWKBOT?startapp=inviter_${user_id}`;
                 document.getElementById('invitation-link').textContent = inviteLink;
                 updateCounters();
@@ -1310,11 +1293,14 @@ button.copy-button:hover,
                         document.getElementById('result-area').innerHTML = '';
                         document.getElementById('result-area').appendChild(prizeElement);
                         boxesCount--;
-                        saveData();
+                        // لا حاجة لـ saveData() يدويًا لأننا نستخدم listener
                         updateCounters();
                         lastLooters.unshift({ name: userName, prize: prize.name });
                         if (lastLooters.length > 5) lastLooters.pop();
-                        saveData();
+                        // تحديث lastLooters في Firebase
+                        if (user_id && !user_id.startsWith('guest_')) {
+                            database.ref('users/' + user_id).update({ lastLooters });
+                        }
                         fetchLastLooters();
                     }, 800);
                 }
@@ -1331,11 +1317,22 @@ button.copy-button:hover,
             }
         };
         document.getElementById('open-admin-btn')?.addEventListener('click', () => showView(adminPanel));
+        // === بدء التطبيق مع Realtime Listener ===
         window.Telegram.WebApp.ready();
         const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
         if (user) {
             user_id = String(user.id);
-            checkInvitation(); // سيتم تشغيله تلقائيًا عند فتح الرابط
+            // ✅ بدء مراقبة حية لبيانات المستخدم
+            const userRef = database.ref('users/' + user_id);
+            userRef.on('value', (snapshot) => {
+                const data = snapshot.val() || { invitations: 0, boxes: 0, lastLooters: [] };
+                invitationsCount = data.invitations || 0;
+                boxesCount = data.boxes || 0;
+                lastLooters = data.lastLooters || [];
+                updateCounters();
+                fetchLastLooters();
+            });
+            checkInvitation();
         } else {
             user_id = 'guest_' + Date.now();
         }
