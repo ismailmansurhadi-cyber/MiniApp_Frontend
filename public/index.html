@@ -1134,7 +1134,6 @@ button.copy-button:hover,
         };
         proChoiceButton.addEventListener('click', () => showView(proSensitivitiesView));
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
-        // ✅ تم تعديل هذا الزر ليستخدم Realtime Listener فقط (لا حاجة لتحميل يدوي)
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
         addSensitivityForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1265,7 +1264,7 @@ button.copy-button:hover,
                 document.getElementById('player-id-input').style.display = 'none';
                 this.style.display = 'none';
                 document.getElementById('invitation-area').style.display = 'block';
-                // ✅ التعديل الأهم: استخدام ?startapp=
+                // ✅ استخدام ?startapp= لفتح WebApp مباشرة
                 const inviteLink = `https://t.me/AQWKBOT?startapp=inviter_${user_id}`;
                 document.getElementById('invitation-link').textContent = inviteLink;
                 updateCounters();
@@ -1274,13 +1273,14 @@ button.copy-button:hover,
                 alert('الرجاء إدخال ID حسابك.');
             }
         };
+        // ✅ التعديل الأساسي: تحديث boxes في Firebase عند فتح الصندوق
         document.getElementById('open-box-button').onclick = async function() {
             if (boxesCount > 0) {
                 if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
                     this.disabled = true;
                     document.getElementById('result-area').innerHTML = '<p style="color: #ffd700;">يتم فتح الصندوق...</p>';
                     document.getElementById('lootbox-image').classList.remove('shake');
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         const userName = getUserName();
                         const prize = prizes[Math.floor(Math.random() * prizes.length)];
                         const prizeElement = document.createElement('div');
@@ -1292,14 +1292,16 @@ button.copy-button:hover,
                         `;
                         document.getElementById('result-area').innerHTML = '';
                         document.getElementById('result-area').appendChild(prizeElement);
+                        // ✅ التحديث الصحيح: تقليل الصناديق وحفظه في Firebase
                         boxesCount--;
-                        // لا حاجة لـ saveData() يدويًا لأننا نستخدم listener
+                        if (user_id && !user_id.startsWith('guest_')) {
+                            await database.ref('users/' + user_id).update({ boxes: boxesCount });
+                        }
                         updateCounters();
                         lastLooters.unshift({ name: userName, prize: prize.name });
                         if (lastLooters.length > 5) lastLooters.pop();
-                        // تحديث lastLooters في Firebase
                         if (user_id && !user_id.startsWith('guest_')) {
-                            database.ref('users/' + user_id).update({ lastLooters });
+                            await database.ref('users/' + user_id).update({ lastLooters });
                         }
                         fetchLastLooters();
                     }, 800);
