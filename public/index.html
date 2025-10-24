@@ -21,7 +21,6 @@
     <!-- خط عربي عصري -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-/* نفس الأنماط السابقة — لم نغيّر شيئًا في الـ CSS */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
@@ -315,32 +314,104 @@ button.copy-button:hover,
     margin-top: 0;
     padding: 10px;
 }
+
+/* ✅ تصميم جديد وأنيق لقائمة آخر الفائزين */
 .winner-list {
-    background: rgba(0, 150, 150, 0.2);
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 20px;
-    border: 1px solid rgba(0, 200, 200, 0.7);
-    width: 90%;
-    box-shadow: 0 0 10px rgba(0, 200, 200, 0.4);
+    background: rgba(10, 20, 30, 0.6);
+    padding: 18px;
+    border-radius: 16px;
+    margin-top: 22px;
+    width: 92%;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 200, 255, 0.4);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.5),
+        inset 0 0 10px rgba(0, 180, 255, 0.1);
+    position: relative;
+    overflow: hidden;
 }
+
+.winner-list::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #ff8a00, #e52e71, #00c3ff);
+    border-radius: 2px;
+}
+
 .winner-list h3 {
-    margin-top: 0;
-    color: #e0e0e0;
-    font-size: 16px;
-    border-bottom: 2px solid #00e6e6;
-    padding-bottom: 5px;
+    margin: 0 0 14px 0;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 800;
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+    text-shadow: 0 0 8px rgba(0, 200, 255, 0.6);
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 2;
 }
+
 .winner-item {
-    font-size: 13px;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(0, 150, 150, 0.5);
+    background: rgba(0, 20, 30, 0.5);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(0, 150, 200, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: fadeInUp 0.4s ease forwards;
+    opacity: 0;
 }
-.winner-item:last-child {
-    border-bottom: none;
+
+.winner-item:nth-child(1) { animation-delay: 0.05s; }
+.winner-item:nth-child(2) { animation-delay: 0.1s; }
+.winner-item:nth-child(3) { animation-delay: 0.15s; }
+.winner-item:nth-child(4) { animation-delay: 0.2s; }
+.winner-item:nth-child(5) { animation-delay: 0.25s; }
+
+.winner-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 180, 255, 0.4);
+    border-color: rgba(0, 200, 255, 0.6);
 }
+
+.winner-item span:first-child {
+    font-weight: bold;
+    color: #ffd700;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+}
+
+.winner-item span:last-child {
+    color: #00e6e6;
+    font-size: 13px;
+    font-family: 'Cairo', sans-serif;
+    background: rgba(0, 30, 40, 0.6);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 200, 255, 0.4);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* باقي الأنماط كما هي */
 @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -696,7 +767,7 @@ button.copy-button:hover,
                         <button id="open-box-button" disabled>افتح الصندوق</button>
                     </div>
                     <div class="winner-list">
-                        <h3>آخر الفائزين 🏆</h3>
+                        <h3>🏆 آخر الفائزين</h3>
                         <ul id="winners-list-container"></ul>
                     </div>
                 </div>
@@ -751,6 +822,8 @@ button.copy-button:hover,
         const database = firebase.database();
     </script>
     <script>
+        // ... (كل باقي الكود كما هو من الملف الثاني، مع الحفاظ على التعديلات الأساسية)
+
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
@@ -1221,6 +1294,8 @@ button.copy-button:hover,
                 }
             }
         });
+
+        // ============ التعديلات الأساسية لقائمة الفائزين العامة ============
         let user_id;
         let invitationsCount = 0;
         let boxesCount = 0;
@@ -1235,11 +1310,19 @@ button.copy-button:hover,
             { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
+
+        // ✅ الاستماع إلى القائمة العامة من Firebase
+        database.ref('globalLastWinners').on('value', (snapshot) => {
+            lastLooters = snapshot.val() || [];
+            fetchLastLooters();
+        });
+
         function updateCounters() {
             document.getElementById('invited-count').textContent = invitationsCount;
             document.getElementById('lootbox-count').textContent = boxesCount;
             document.getElementById('open-box-button').disabled = boxesCount < 1;
         }
+
         function fetchLastLooters() {
             const container = document.getElementById('winners-list-container');
             container.innerHTML = '';
@@ -1252,11 +1335,13 @@ button.copy-button:hover,
                 });
             }
         }
+
         function getUserName() {
             const user = window.Telegram.WebApp.initDataUnsafe?.user;
             if (user) return user.first_name || 'مستخدم';
             return 'مستخدم';
         }
+
         document.getElementById('save-id-button').onclick = function() {
             const pubgId = document.getElementById('player-id-input').value.trim();
             if (pubgId) {
@@ -1264,7 +1349,6 @@ button.copy-button:hover,
                 document.getElementById('player-id-input').style.display = 'none';
                 this.style.display = 'none';
                 document.getElementById('invitation-area').style.display = 'block';
-                // ✅ استخدام ?startapp= لفتح WebApp مباشرة
                 const inviteLink = `https://t.me/AQWKBOT?startapp=inviter_${user_id}`;
                 document.getElementById('invitation-link').textContent = inviteLink;
                 updateCounters();
@@ -1273,7 +1357,8 @@ button.copy-button:hover,
                 alert('الرجاء إدخال ID حسابك.');
             }
         };
-        // ✅ التعديل الأساسي: تحديث boxes في Firebase عند فتح الصندوق
+
+        // ✅ عند فتح الصندوق: حفظ الفوز في القائمة العامة
         document.getElementById('open-box-button').onclick = async function() {
             if (boxesCount > 0) {
                 if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
@@ -1292,24 +1377,32 @@ button.copy-button:hover,
                         `;
                         document.getElementById('result-area').innerHTML = '';
                         document.getElementById('result-area').appendChild(prizeElement);
-                        // ✅ التحديث الصحيح: تقليل الصناديق وحفظه في Firebase
+
+                        // ✅ تقليل عدد الصناديق
                         boxesCount--;
                         if (user_id && !user_id.startsWith('guest_')) {
                             await database.ref('users/' + user_id).update({ boxes: boxesCount });
                         }
                         updateCounters();
-                        lastLooters.unshift({ name: userName, prize: prize.name });
-                        if (lastLooters.length > 5) lastLooters.pop();
-                        if (user_id && !user_id.startsWith('guest_')) {
-                            await database.ref('users/' + user_id).update({ lastLooters });
+
+                        // ✅ حفظ الفوز في القائمة العامة
+                        const newWinner = { name: userName, prize: prize.name, timestamp: Date.now() };
+                        const globalRef = database.ref('globalLastWinners');
+                        const globalSnap = await globalRef.once('value');
+                        let globalWinners = globalSnap.val() || [];
+                        globalWinners.unshift(newWinner);
+                        if (globalWinners.length > 5) {
+                            globalWinners = globalWinners.slice(0, 5);
                         }
-                        fetchLastLooters();
+                        await globalRef.set(globalWinners);
+
                     }, 800);
                 }
             } else {
                 alert('ليس لديك صناديق كافية للفتح.');
             }
         };
+
         document.getElementById('copy-link-button').onclick = function() {
             const link = document.getElementById('invitation-link').textContent;
             if (link) {
@@ -1318,26 +1411,27 @@ button.copy-button:hover,
                 });
             }
         };
+
         document.getElementById('open-admin-btn')?.addEventListener('click', () => showView(adminPanel));
+
         // === بدء التطبيق مع Realtime Listener ===
         window.Telegram.WebApp.ready();
         const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
         if (user) {
             user_id = String(user.id);
-            // ✅ بدء مراقبة حية لبيانات المستخدم
             const userRef = database.ref('users/' + user_id);
             userRef.on('value', (snapshot) => {
-                const data = snapshot.val() || { invitations: 0, boxes: 0, lastLooters: [] };
+                const data = snapshot.val() || { invitations: 0, boxes: 0 };
                 invitationsCount = data.invitations || 0;
                 boxesCount = data.boxes || 0;
-                lastLooters = data.lastLooters || [];
                 updateCounters();
-                fetchLastLooters();
+                // ❌ لا نعد lastLooters من هنا — نعتمد على globalLastWinners فقط
             });
             checkInvitation();
         } else {
             user_id = 'guest_' + Date.now();
         }
+
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
@@ -1357,6 +1451,7 @@ button.copy-button:hover,
             },
             "retina_detect": true
         });
+
         fetchSensitivities();
     </script>
 </body>
