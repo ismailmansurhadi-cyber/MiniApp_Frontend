@@ -314,7 +314,6 @@ button.copy-button:hover,
     margin-top: 0;
     padding: 10px;
 }
-
 /* ✅ تصميم جديد وأنيق لقائمة آخر الفائزين */
 .winner-list {
     background: rgba(10, 20, 30, 0.6);
@@ -331,7 +330,6 @@ button.copy-button:hover,
     position: relative;
     overflow: hidden;
 }
-
 .winner-list::before {
     content: '';
     position: absolute;
@@ -342,7 +340,6 @@ button.copy-button:hover,
     background: linear-gradient(90deg, #ff8a00, #e52e71, #00c3ff);
     border-radius: 2px;
 }
-
 .winner-list h3 {
     margin: 0 0 14px 0;
     color: #ffffff;
@@ -355,7 +352,6 @@ button.copy-button:hover,
     position: relative;
     z-index: 2;
 }
-
 .winner-item {
     background: rgba(0, 20, 30, 0.5);
     border-radius: 12px;
@@ -370,26 +366,22 @@ button.copy-button:hover,
     animation: fadeInUp 0.4s ease forwards;
     opacity: 0;
 }
-
 .winner-item:nth-child(1) { animation-delay: 0.05s; }
 .winner-item:nth-child(2) { animation-delay: 0.1s; }
 .winner-item:nth-child(3) { animation-delay: 0.15s; }
 .winner-item:nth-child(4) { animation-delay: 0.2s; }
 .winner-item:nth-child(5) { animation-delay: 0.25s; }
-
 .winner-item:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 180, 255, 0.4);
     border-color: rgba(0, 200, 255, 0.6);
 }
-
 .winner-item span:first-child {
     font-weight: bold;
     color: #ffd700;
     font-size: 14px;
     font-family: 'Cairo', sans-serif;
 }
-
 .winner-item span:last-child {
     color: #00e6e6;
     font-size: 13px;
@@ -399,7 +391,6 @@ button.copy-button:hover,
     border-radius: 20px;
     border: 1px solid rgba(0, 200, 255, 0.4);
 }
-
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -410,8 +401,6 @@ button.copy-button:hover,
         transform: translateY(0);
     }
 }
-
-/* باقي الأنماط كما هي */
 @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -822,8 +811,6 @@ button.copy-button:hover,
         const database = firebase.database();
     </script>
     <script>
-        // ... (كل باقي الكود كما هو من الملف الثاني، مع الحفاظ على التعديلات الأساسية)
-
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
@@ -854,7 +841,6 @@ button.copy-button:hover,
         let allSensitivitiesData = null;
         let editingId = null;
         const ADMIN_USER_ID = '658500340';
-        const API_BASE_URL = 'https://mini-app-pubg-backend-3r6c.vercel.app';
         let adController = null;
         function initAdsGram() {
             if (window.Adsgram && !adController) {
@@ -955,20 +941,44 @@ button.copy-button:hover,
             vipSensitivityView.classList.add('hidden');
             viewToShow.classList.remove('hidden');
         }
+        // ✅ جلب الحساسيات من Firebase (بدون Vercel)
         const fetchSensitivities = async () => {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/sensitivities`);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                allSensitivitiesData = await response.json();
-                const proSensitivities = allSensitivitiesData.filter(item => item.type === 'pro');
-                const beginnerSensitivities = allSensitivitiesData.filter(item => item.type === 'beginner');
-                createSensitivityButtons(proSensitivities, proButtonsContainer);
-                createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
-                renderAdminList(allSensitivitiesData);
-            } catch (error) {
-                console.error('Failed to fetch sensitivities:', error);
-                alert('فشل في جلب البيانات من الواجهة الخلفية.');
+          try {
+            const snapshot = await database.ref('sensitivities').once('value');
+            allSensitivitiesData = [];
+            const data = snapshot.val() || {};
+
+            ['pro', 'beginner'].forEach(type => {
+              const items = data[type] || {};
+              Object.keys(items).forEach(key => {
+                allSensitivitiesData.push({ id: key, type, ...items[key] });
+              });
+            });
+
+            // VIP
+            if (data.vip && data.vip.current) {
+              allSensitivitiesData.push({
+                id: 'vip',
+                type: 'vip',
+                code: data.vip.current.code
+              });
             }
+
+            // Custom
+            const customItems = data.custom || {};
+            Object.keys(customItems).forEach(key => {
+              allSensitivitiesData.push({ id: key, type: 'custom', ...customItems[key] });
+            });
+
+            const proSensitivities = allSensitivitiesData.filter(item => item.type === 'pro');
+            const beginnerSensitivities = allSensitivitiesData.filter(item => item.type === 'beginner');
+            createSensitivityButtons(proSensitivities, proButtonsContainer);
+            createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
+            renderAdminList(allSensitivitiesData);
+          } catch (error) {
+            console.error('فشل جلب الحساسيات من Firebase:', error);
+            // لا تنبيه — فقط سجل الخطأ
+          }
         };
         const createSensitivityButtons = (data, container) => {
             container.innerHTML = '';
@@ -1135,70 +1145,102 @@ button.copy-button:hover,
             };
         };
         async function proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey) {
-            try {
-                const res = await fetch(`${API_BASE_URL}/api/custom-sensitivity`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ deviceName: device, deviceType: type, fps })
-                });
-                const data = await res.json();
-                if (res.ok) {
-                    localStorage.setItem(lastCustomTimeKey, Date.now().toString());
-                    document.getElementById('custom-result').innerHTML = `
-                        <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
-                            <p style="color:#ffd700;font-weight:bold;font-family:'Cairo',sans-serif;">🎯 حساسيتك الحصرية:</p>
-                            <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${data.code}</pre>
-                            <button onclick="navigator.clipboard.writeText('${data.code}').then(()=>Telegram.WebApp.showAlert('تم النسخ!'))" 
-                                    style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;font-family:'Cairo',sans-serif;">
-                                📋 نسخ الكود
-                            </button>
-                        </div>
-                    `;
-                    document.getElementById('custom-result').style.display = 'block';
-                } else {
-                    Telegram.WebApp.showAlert(data.error || 'خطأ في السيرفر');
-                }
-            } catch (error) {
-                Telegram.WebApp.showAlert('فشل الاتصال بالخادم');
-            }
-        };
-        const renderAdminList = async (data) => {
-            adminList.innerHTML = '';
-            data.forEach(item => {
-                const itemDiv = document.createElement('div');
-                itemDiv.classList.add('admin-list-item');
-                itemDiv.innerHTML = `
-                    <span>${item.name} (${item.type})</span>
-                    <div class="admin-actions">
-                        <button class="edit-btn" data-id="${item.id}" data-type="normal">تعديل</button>
-                        <button class="delete-btn" data-id="${item.id}" data-type="normal">حذف</button>
-                    </div>
-                `;
-                adminList.appendChild(itemDiv);
+          try {
+            // إنشاء كود الحساسية
+            const sensitivityCode = `الجهاز: ${device} | النوع: ${type} | الفريمات: ${fps} FPS`;
+
+            // حفظها في Firebase
+            const newCustomRef = database.ref('sensitivities/custom').push();
+            await newCustomRef.set({
+              code: sensitivityCode,
+              deviceName: device,
+              deviceType: type,
+              fps: fps,
+              userId: userId,
+              createdAt: Date.now()
             });
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/custom-sensitivities`);
-                const customItems = await response.json();
-                if (customItems.length > 0) {
-                    const header = document.createElement('div');
-                    header.innerHTML = '<h3 style="color:#8a2be2;margin:15px 0 8px;text-align:center;font-family:\'Cairo\',sans-serif;">حساسيات "اصنع حساسيتك"</h3>';
-                    adminList.appendChild(header);
-                    customItems.forEach(item => {
-                        const itemDiv = document.createElement('div');
-                        itemDiv.classList.add('admin-list-item');
-                        itemDiv.innerHTML = `
-                            <span>كود: ${item.code} ${item.isActive ? '✅' : '❌'}</span>
-                            <div class="admin-actions">
-                                <button class="edit-btn" data-id="${item.id}" data-type="custom">تعديل</button>
-                                <button class="delete-btn" data-id="${item.id}" data-type="custom">حذف</button>
-                            </div>
-                        `;
-                        adminList.appendChild(itemDiv);
-                    });
-                }
-            } catch (error) {
-                console.error('فشل تحميل الحساسيات المخصصة:', error);
-            }
+
+            // تحديث الواجهة
+            localStorage.setItem(lastCustomTimeKey, Date.now().toString());
+            document.getElementById('custom-result').innerHTML = `
+              <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
+                <p style="color:#ffd700;font-weight:bold;font-family:'Cairo',sans-serif;">🎯 حساسيتك الحصرية:</p>
+                <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${sensitivityCode}</pre>
+                <button onclick="navigator.clipboard.writeText('${sensitivityCode}').then(()=>Telegram.WebApp.showAlert('تم النسخ!'))" 
+                        style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;font-family:'Cairo',sans-serif;">
+                  📋 نسخ الكود
+                </button>
+              </div>
+            `;
+            document.getElementById('custom-result').style.display = 'block';
+
+            // تحديث قائمة الحساسيات
+            fetchSensitivities();
+          } catch (error) {
+            Telegram.WebApp.showAlert('فشل حفظ الحساسية. يرجى المحاولة لاحقًا.');
+            console.error('خطأ في حفظ الحساسية المخصصة:', error);
+          }
+        };
+        const renderAdminList = async () => {
+          adminList.innerHTML = '';
+          
+          // جلب الحساسيات العادية
+          const types = ['pro', 'beginner'];
+          for (const type of types) {
+            const snapshot = await database.ref(`sensitivities/${type}`).once('value');
+            const items = snapshot.val() || {};
+            Object.keys(items).forEach(id => {
+              const item = items[id];
+              const itemDiv = document.createElement('div');
+              itemDiv.classList.add('admin-list-item');
+              itemDiv.innerHTML = `
+                <span>${item.name} (${type})</span>
+                <div class="admin-actions">
+                  <button class="edit-btn" data-id="${id}" data-type="${type}">تعديل</button>
+                  <button class="delete-btn" data-id="${id}" data-type="${type}">حذف</button>
+                </div>
+              `;
+              adminList.appendChild(itemDiv);
+            });
+          }
+
+          // جلب الحساسية المدفوعة (VIP)
+          const vipSnap = await database.ref('sensitivities/vip/current').once('value');
+          const vipData = vipSnap.val();
+          if (vipData) {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('admin-list-item');
+            itemDiv.innerHTML = `
+              <span>VIP (محدثة يومياً)</span>
+              <div class="admin-actions">
+                <button class="edit-btn" data-id="vip" data-type="vip">تعديل</button>
+                <button class="delete-btn" data-id="vip" data-type="vip">حذف</button>
+              </div>
+            `;
+            adminList.appendChild(itemDiv);
+          }
+
+          // جلب الحساسيات المخصصة
+          const customSnap = await database.ref('sensitivities/custom').once('value');
+          const customItems = customSnap.val() || {};
+          if (Object.keys(customItems).length > 0) {
+            const header = document.createElement('div');
+            header.innerHTML = '<h3 style="color:#8a2be2;margin:15px 0 8px;text-align:center;font-family:\'Cairo\',sans-serif;">حساسيات "اصنع حساسيتك"</h3>';
+            adminList.appendChild(header);
+            Object.keys(customItems).forEach(id => {
+              const item = customItems[id];
+              const itemDiv = document.createElement('div');
+              itemDiv.classList.add('admin-list-item');
+              itemDiv.innerHTML = `
+                <span>كود: ${item.code} ${item.isActive ? '✅' : '❌'}</span>
+                <div class="admin-actions">
+                  <button class="edit-btn" data-id="${id}" data-type="custom">تعديل</button>
+                  <button class="delete-btn" data-id="${id}" data-type="custom">حذف</button>
+                </div>
+              `;
+              adminList.appendChild(itemDiv);
+            });
+          }
         };
         const resetForm = () => {
             addSensitivityForm.reset();
@@ -1209,93 +1251,100 @@ button.copy-button:hover,
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
         addSensitivityForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const initData = window.Telegram.WebApp.initData;
-            const type = adminTypeSelect.value;
+          e.preventDefault();
+          
+          const name = adminNameInput.value.trim();
+          const code = adminCodeInput.value.trim();
+          const imageUrl = adminImageInput.value.trim();
+          const type = adminTypeSelect.value;
+
+          if (!name || !code || (type !== 'custom' && !imageUrl)) {
+            Telegram.WebApp.showAlert('يرجى ملء جميع الحقول المطلوبة.');
+            return;
+          }
+
+          try {
             if (type === 'custom') {
-                const payload = {
-                    code: adminCodeInput.value,
-                    initData: initData
-                };
-                await fetch(`${API_BASE_URL}/api/custom-sensitivities`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+              // إضافة حساسية مخصصة
+              const newRef = database.ref('sensitivities/custom').push();
+              await newRef.set({ code, isActive: true });
+            } else if (type === 'vip') {
+              // تعديل VIP
+              await database.ref('sensitivities/vip/current').set({ code, updatedAt: Date.now() });
             } else {
-                const payload = {
-                    name: adminNameInput.value,
-                    code: adminCodeInput.value,
-                    imageUrl: adminImageInput.value,
-                    type: type,
-                    userId: window.Telegram.WebApp.initDataUnsafe.user.id,
-                    initData: initData
-                };
-                const url = editingId ? 
-                    `${API_BASE_URL}/api/sensitivities/${editingId}` : 
-                    `${API_BASE_URL}/api/sensitivities`;
-                const method = editingId ? 'PUT' : 'POST';
-                await fetch(url, {
-                    method: method,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+              // إضافة/تعديل حساسية عادية
+              if (editingId) {
+                await database.ref(`sensitivities/${type}/${editingId}`).update({ name, code, imageUrl });
+              } else {
+                const newRef = database.ref(`sensitivities/${type}`).push();
+                await newRef.set({ name, code, imageUrl });
+              }
             }
-            fetchSensitivities();
+
+            Telegram.WebApp.showAlert(editingId ? 'تم التعديل بنجاح!' : 'تم الإضافة بنجاح!');
             resetForm();
+            fetchSensitivities(); // تحديث القائمة فورًا
+          } catch (error) {
+            console.error('خطأ في الحفظ:', error);
+            Telegram.WebApp.showAlert('فشل في الحفظ. يرجى المحاولة لاحقًا.');
+          }
         });
         adminList.addEventListener('click', async (e) => {
-            const target = e.target;
-            if (!target.classList.contains('edit-btn') && !target.classList.contains('delete-btn')) return;
-            const id = target.getAttribute('data-id');
-            const type = target.getAttribute('data-type');
-            if (target.classList.contains('edit-btn')) {
-                if (type === 'custom') {
-                    const response = await fetch(`${API_BASE_URL}/api/custom-sensitivities`);
-                    const items = await response.json();
-                    const item = items.find(i => i.id === id);
-                    if (item) {
-                        adminCodeInput.value = item.code;
-                        adminTypeSelect.value = 'custom';
-                        formSubmitBtn.textContent = 'تعديل';
-                        editingId = id;
-                    }
-                } else {
-                    const itemToEdit = allSensitivitiesData.find(item => item.id === id);
-                    if (itemToEdit) {
-                        adminNameInput.value = itemToEdit.name;
-                        adminCodeInput.value = itemToEdit.code;
-                        adminImageInput.value = itemToEdit.imageUrl;
-                        adminTypeSelect.value = itemToEdit.type;
-                        formSubmitBtn.textContent = 'تعديل';
-                        editingId = id;
-                    }
-                }
-            } else if (target.classList.contains('delete-btn')) {
-                if (confirm('هل أنت متأكد؟')) {
-                    const initData = window.Telegram.WebApp.initData;
-                    const url = type === 'custom' ?
-                        `${API_BASE_URL}/api/custom-sensitivities/${id}` :
-                        `${API_BASE_URL}/api/sensitivities/${id}`;
-                    try {
-                        const res = await fetch(url, {
-                            method: 'DELETE',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ initData })
-                        });
-                        if (res.ok) {
-                            fetchSensitivities();
-                        } else {
-                            Telegram.WebApp.showAlert('فشل الحذف');
-                        }
-                    } catch (error) {
-                        Telegram.WebApp.showAlert('خطأ في الاتصال');
-                    }
-                }
-            }
-        });
+          const target = e.target;
+          if (!target.classList.contains('edit-btn') && !target.classList.contains('delete-btn')) return;
 
-        // ============ التعديلات الأساسية لقائمة الفائزين العامة ============
+          const id = target.getAttribute('data-id');
+          const type = target.getAttribute('data-type');
+
+          if (target.classList.contains('edit-btn')) {
+            // تعديل: ملء النموذج بالبيانات الحالية
+            if (type === 'custom') {
+              const snapshot = await database.ref(`sensitivities/custom/${id}`).once('value');
+              const data = snapshot.val();
+              if (data) {
+                adminCodeInput.value = data.code;
+                adminTypeSelect.value = 'custom';
+                formSubmitBtn.textContent = 'تعديل';
+                editingId = id;
+              }
+            } else if (type === 'vip') {
+              const snapshot = await database.ref('sensitivities/vip/current').once('value');
+              const data = snapshot.val();
+              if (data) {
+                adminCodeInput.value = data.code;
+                adminTypeSelect.value = 'vip';
+                formSubmitBtn.textContent = 'تعديل';
+                editingId = 'vip';
+              }
+            } else {
+              const snapshot = await database.ref(`sensitivities/${type}/${id}`).once('value');
+              const data = snapshot.val();
+              if (data) {
+                adminNameInput.value = data.name;
+                adminCodeInput.value = data.code;
+                adminImageInput.value = data.imageUrl;
+                adminTypeSelect.value = type;
+                formSubmitBtn.textContent = 'تعديل';
+                editingId = id;
+              }
+            }
+          } else if (target.classList.contains('delete-btn')) {
+            if (confirm('هل أنت متأكد من الحذف؟')) {
+              try {
+                if (type === 'vip') {
+                  await database.ref('sensitivities/vip/current').remove();
+                } else {
+                  await database.ref(`sensitivities/${type}/${id}`).remove();
+                }
+                Telegram.WebApp.showAlert('تم الحذف بنجاح!');
+                fetchSensitivities();
+              } catch (error) {
+                Telegram.WebApp.showAlert('فشل الحذف.');
+              }
+            }
+          }
+        });
+        // ============ قائمة الفائزين العامة ============
         let user_id;
         let invitationsCount = 0;
         let boxesCount = 0;
@@ -1310,19 +1359,16 @@ button.copy-button:hover,
             { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
-
         // ✅ الاستماع إلى القائمة العامة من Firebase
         database.ref('globalLastWinners').on('value', (snapshot) => {
             lastLooters = snapshot.val() || [];
             fetchLastLooters();
         });
-
         function updateCounters() {
             document.getElementById('invited-count').textContent = invitationsCount;
             document.getElementById('lootbox-count').textContent = boxesCount;
             document.getElementById('open-box-button').disabled = boxesCount < 1;
         }
-
         function fetchLastLooters() {
             const container = document.getElementById('winners-list-container');
             container.innerHTML = '';
@@ -1335,13 +1381,11 @@ button.copy-button:hover,
                 });
             }
         }
-
         function getUserName() {
             const user = window.Telegram.WebApp.initDataUnsafe?.user;
             if (user) return user.first_name || 'مستخدم';
             return 'مستخدم';
         }
-
         document.getElementById('save-id-button').onclick = function() {
             const pubgId = document.getElementById('player-id-input').value.trim();
             if (pubgId) {
@@ -1357,52 +1401,55 @@ button.copy-button:hover,
                 alert('الرجاء إدخال ID حسابك.');
             }
         };
-
         // ✅ عند فتح الصندوق: حفظ الفوز في القائمة العامة
-        document.getElementById('open-box-button').onclick = async function() {
-            if (boxesCount > 0) {
-                if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
-                    this.disabled = true;
-                    document.getElementById('result-area').innerHTML = '<p style="color: #ffd700;">يتم فتح الصندوق...</p>';
-                    document.getElementById('lootbox-image').classList.remove('shake');
-                    setTimeout(async () => {
-                        const userName = getUserName();
-                        const prize = prizes[Math.floor(Math.random() * prizes.length)];
-                        const prizeElement = document.createElement('div');
-                        prizeElement.style.setProperty('text-align', 'center');
-                        prizeElement.style.setProperty('margin-top', '15px');
-                        prizeElement.innerHTML = `
-                            <img src="${prize.imageUrl}" alt="${prize.name}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
-                            <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;font-family:'Cairo',sans-serif;">لقد ربحت: ${prize.name}</p>
-                        `;
-                        document.getElementById('result-area').innerHTML = '';
-                        document.getElementById('result-area').appendChild(prizeElement);
-
-                        // ✅ تقليل عدد الصناديق
-                        boxesCount--;
-                        if (user_id && !user_id.startsWith('guest_')) {
-                            await database.ref('users/' + user_id).update({ boxes: boxesCount });
-                        }
-                        updateCounters();
-
-                        // ✅ حفظ الفوز في القائمة العامة
-                        const newWinner = { name: userName, prize: prize.name, timestamp: Date.now() };
-                        const globalRef = database.ref('globalLastWinners');
-                        const globalSnap = await globalRef.once('value');
-                        let globalWinners = globalSnap.val() || [];
+        document.getElementById('open-box-button').onclick = function() {
+            if (boxesCount <= 0) {
+                alert('ليس لديك صناديق كافية للفتح.');
+                return;
+            }
+            if (!confirm('هل أنت متأكد من فتح الصندوق؟')) return;
+            const button = this;
+            button.disabled = true;
+            document.getElementById('result-area').innerHTML = '<p style="color: #ffd700;">يتم فتح الصندوق...</p>';
+            document.getElementById('lootbox-image').classList.remove('shake');
+            setTimeout(() => {
+                const userName = getUserName();
+                const prize = prizes[Math.floor(Math.random() * prizes.length)];
+                const prizeElement = document.createElement('div');
+                prizeElement.style.textAlign = 'center';
+                prizeElement.style.marginTop = '15px';
+                prizeElement.innerHTML = `
+                    <img src="${prize.imageUrl}" alt="${prize.name}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
+                    <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px; font-family:'Cairo',sans-serif;">لقد ربحت: ${prize.name}</p>
+                `;
+                document.getElementById('result-area').innerHTML = '';
+                document.getElementById('result-area').appendChild(prizeElement);
+                // تقليل عدد الصناديق
+                boxesCount--;
+                if (user_id && !user_id.startsWith('guest_')) {
+                    database.ref('users/' + user_id).update({ boxes: boxesCount });
+                }
+                updateCounters();
+                // ✅ حفظ الفائز في القائمة العامة باستخدام .then()
+                const newWinner = { name: userName, prize: prize.name, timestamp: Date.now() };
+                const globalRef = database.ref('globalLastWinners');
+                globalRef.once('value')
+                    .then(snapshot => {
+                        let globalWinners = snapshot.val() || [];
                         globalWinners.unshift(newWinner);
                         if (globalWinners.length > 5) {
                             globalWinners = globalWinners.slice(0, 5);
                         }
-                        await globalRef.set(globalWinners);
-
-                    }, 800);
-                }
-            } else {
-                alert('ليس لديك صناديق كافية للفتح.');
-            }
+                        return globalRef.set(globalWinners);
+                    })
+                    .catch(err => {
+                        console.error("فشل حفظ الفائز:", err);
+                    })
+                    .finally(() => {
+                        button.disabled = false;
+                    });
+            }, 800);
         };
-
         document.getElementById('copy-link-button').onclick = function() {
             const link = document.getElementById('invitation-link').textContent;
             if (link) {
@@ -1411,9 +1458,7 @@ button.copy-button:hover,
                 });
             }
         };
-
         document.getElementById('open-admin-btn')?.addEventListener('click', () => showView(adminPanel));
-
         // === بدء التطبيق مع Realtime Listener ===
         window.Telegram.WebApp.ready();
         const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
@@ -1425,13 +1470,11 @@ button.copy-button:hover,
                 invitationsCount = data.invitations || 0;
                 boxesCount = data.boxes || 0;
                 updateCounters();
-                // ❌ لا نعد lastLooters من هنا — نعتمد على globalLastWinners فقط
             });
             checkInvitation();
         } else {
             user_id = 'guest_' + Date.now();
         }
-
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
@@ -1451,7 +1494,6 @@ button.copy-button:hover,
             },
             "retina_detect": true
         });
-
         fetchSensitivities();
     </script>
 </body>
