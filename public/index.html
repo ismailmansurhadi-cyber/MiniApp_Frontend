@@ -411,6 +411,7 @@ button.copy-button:hover,
     }
 }
 
+/* باقي الأنماط كما هي */
 @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -821,6 +822,8 @@ button.copy-button:hover,
         const database = firebase.database();
     </script>
     <script>
+        // ... (كل باقي الكود كما هو من الملف الثاني، مع الحفاظ على التعديلات الأساسية)
+
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
@@ -1292,7 +1295,7 @@ button.copy-button:hover,
             }
         });
 
-        // ============ الحل النهائي لمشكلة قائمة الفائزين ============
+        // ============ التعديلات الأساسية لقائمة الفائزين العامة ============
         let user_id;
         let invitationsCount = 0;
         let boxesCount = 0;
@@ -1355,62 +1358,49 @@ button.copy-button:hover,
             }
         };
 
-        // ✅ الحل النهائي: استخدام .then() لضمان حفظ الفائز في Firebase
-        document.getElementById('open-box-button').onclick = function() {
-            if (boxesCount <= 0) {
-                alert('ليس لديك صناديق كافية للفتح.');
-                return;
-            }
+        // ✅ عند فتح الصندوق: حفظ الفوز في القائمة العامة
+        document.getElementById('open-box-button').onclick = async function() {
+            if (boxesCount > 0) {
+                if (confirm('هل أنت متأكد من فتح الصندوق؟')) {
+                    this.disabled = true;
+                    document.getElementById('result-area').innerHTML = '<p style="color: #ffd700;">يتم فتح الصندوق...</p>';
+                    document.getElementById('lootbox-image').classList.remove('shake');
+                    setTimeout(async () => {
+                        const userName = getUserName();
+                        const prize = prizes[Math.floor(Math.random() * prizes.length)];
+                        const prizeElement = document.createElement('div');
+                        prizeElement.style.setProperty('text-align', 'center');
+                        prizeElement.style.setProperty('margin-top', '15px');
+                        prizeElement.innerHTML = `
+                            <img src="${prize.imageUrl}" alt="${prize.name}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
+                            <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;font-family:'Cairo',sans-serif;">لقد ربحت: ${prize.name}</p>
+                        `;
+                        document.getElementById('result-area').innerHTML = '';
+                        document.getElementById('result-area').appendChild(prizeElement);
 
-            if (!confirm('هل أنت متأكد من فتح الصندوق؟')) return;
+                        // ✅ تقليل عدد الصناديق
+                        boxesCount--;
+                        if (user_id && !user_id.startsWith('guest_')) {
+                            await database.ref('users/' + user_id).update({ boxes: boxesCount });
+                        }
+                        updateCounters();
 
-            const button = this;
-            button.disabled = true;
-            document.getElementById('result-area').innerHTML = '<p style="color: #ffd700;">يتم فتح الصندوق...</p>';
-            document.getElementById('lootbox-image').classList.remove('shake');
-
-            setTimeout(() => {
-                const userName = getUserName();
-                const prize = prizes[Math.floor(Math.random() * prizes.length)];
-
-                const prizeElement = document.createElement('div');
-                prizeElement.style.textAlign = 'center';
-                prizeElement.style.marginTop = '15px';
-                prizeElement.innerHTML = `
-                    <img src="${prize.imageUrl}" alt="${prize.name}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
-                    <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px; font-family:'Cairo',sans-serif;">لقد ربحت: ${prize.name}</p>
-                `;
-                document.getElementById('result-area').innerHTML = '';
-                document.getElementById('result-area').appendChild(prizeElement);
-
-                // تقليل عدد الصناديق
-                boxesCount--;
-                if (user_id && !user_id.startsWith('guest_')) {
-                    database.ref('users/' + user_id).update({ boxes: boxesCount });
-                }
-                updateCounters();
-
-                // ✅ حفظ الفائز في القائمة العامة باستخدام .then()
-                const newWinner = { name: userName, prize: prize.name, timestamp: Date.now() };
-                const globalRef = database.ref('globalLastWinners');
-
-                globalRef.once('value')
-                    .then(snapshot => {
-                        let globalWinners = snapshot.val() || [];
+                        // ✅ حفظ الفوز في القائمة العامة
+                        const newWinner = { name: userName, prize: prize.name, timestamp: Date.now() };
+                        const globalRef = database.ref('globalLastWinners');
+                        const globalSnap = await globalRef.once('value');
+                        let globalWinners = globalSnap.val() || [];
                         globalWinners.unshift(newWinner);
                         if (globalWinners.length > 5) {
                             globalWinners = globalWinners.slice(0, 5);
                         }
-                        return globalRef.set(globalWinners);
-                    })
-                    .catch(err => {
-                        console.error("فشل حفظ الفائز:", err);
-                    })
-                    .finally(() => {
-                        button.disabled = false;
-                    });
+                        await globalRef.set(globalWinners);
 
-            }, 800);
+                    }, 800);
+                }
+            } else {
+                alert('ليس لديك صناديق كافية للفتح.');
+            }
         };
 
         document.getElementById('copy-link-button').onclick = function() {
@@ -1435,6 +1425,7 @@ button.copy-button:hover,
                 invitationsCount = data.invitations || 0;
                 boxesCount = data.boxes || 0;
                 updateCounters();
+                // ❌ لا نعد lastLooters من هنا — نعتمد على globalLastWinners فقط
             });
             checkInvitation();
         } else {
