@@ -1146,41 +1146,44 @@ button.copy-button:hover,
             };
         };
         // ✅ الدالة المعدّلة: لا يتم إرسال بيانات المستخدم، بل جلب كود عشوائي من Firebase
-        async function proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey) {
-          try {
-            // ✅ جلب الأكواد الجاهزة من Firebase (لا يتم إرسال بيانات المستخدم)
-            const snapshot = await database.ref(`customSensitivities/${type}/fps${fps}`).once('value');
-            const codes = snapshot.val();
+       async function proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey) {
+  try {
+    // ✅ جلب جميع الأكواد العشوائية من Firebase (بدون النظر إلى مدخلات المستخدم)
+    const snapshot = await database.ref('randomCustomSensitivities').once('value');
+    const sensitivities = snapshot.val();
 
-            if (!codes || !Array.isArray(codes) || codes.length === 0) {
-              Telegram.WebApp.showAlert('لا توجد حساسية مخصصة لهذا الإعداد بعد.');
-              return;
-            }
+    if (!sensitivities || Object.keys(sensitivities).length === 0) {
+      Telegram.WebApp.showAlert('لا توجد حساسيات مخصصة بعد. سيتم إضافتها قريبًا.');
+      return;
+    }
 
-            // ✅ اختيار كود عشوائي من القائمة
-            const randomCode = codes[Math.floor(Math.random() * codes.length)];
+    // ✅ اختيار كود عشوائي من القائمة
+    const keys = Object.keys(sensitivities);
+    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    const randomCode = sensitivities[randomKey];
 
-            // ✅ عرض الكود (بدون حفظ أي شيء من المستخدم)
-            document.getElementById('custom-result').innerHTML = `
-              <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
-                <p style="color:#ffd700;font-weight:bold;font-family:'Cairo',sans-serif;">🎯 حساسيتك المخصصة:</p>
-                <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${randomCode}</pre>
-                <button onclick="navigator.clipboard.writeText('${randomCode}').then(()=>Telegram.WebApp.showAlert('تم النسخ!'))" 
-                        style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;font-family:'Cairo',sans-serif;">
-                  📋 نسخ الكود
-                </button>
-              </div>
-            `;
-            document.getElementById('custom-result').style.display = 'block';
+    // ✅ عرض الكود
+    document.getElementById('custom-result').innerHTML = `
+      <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
+        <p style="color:#ffd700;font-weight:bold;font-family:'Cairo',sans-serif;">🎯 حساسيتك المخصصة:</p>
+        <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${randomCode}</pre>
+        <button onclick="navigator.clipboard.writeText('${randomCode}').then(()=>Telegram.WebApp.showAlert('تم النسخ!'))" 
+                style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;font-family:'Cairo',sans-serif;">
+          📋 نسخ الكود
+        </button>
+      </div>
+    `;
+    document.getElementById('custom-result').style.display = 'block';
 
-            // ✅ تسجيل أن المستخدم استخدم الخدمة اليوم (لمنع التكرار دون إعلان)
-            localStorage.setItem(lastCustomTimeKey, Date.now().toString());
+    // ✅ تسجيل أن المستخدم استخدم الخدمة اليوم
+    localStorage.setItem(lastCustomTimeKey, Date.now().toString());
 
-          } catch (error) {
-            Telegram.WebApp.showAlert('فشل تحميل الحساسية.');
-            console.error('خطأ:', error);
-          }
-        };
+  } catch (error) {
+    Telegram.WebApp.showAlert('فشل تحميل الحساسية. يرجى المحاولة لاحقًا.');
+    console.error('خطأ:', error);
+  }
+}
+        
         const renderAdminList = async () => {
           adminList.innerHTML = '';
           
