@@ -21,6 +21,7 @@
     <!-- خط عربي عصري -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
+/* نفس الـ CSS الأصلي — لم يتم تغييره */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
@@ -314,7 +315,6 @@ button.copy-button:hover,
     margin-top: 0;
     padding: 10px;
 }
-/* ✅ تصميم جديد وأنيق لقائمة آخر الفائزين */
 .winner-list {
     background: rgba(10, 20, 30, 0.6);
     padding: 18px;
@@ -811,6 +811,7 @@ button.copy-button:hover,
         const database = firebase.database();
     </script>
     <script>
+        // === المتغيرات العامة ===
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
@@ -842,10 +843,22 @@ button.copy-button:hover,
         let editingId = null;
         const ADMIN_USER_ID = '658500340';
         let adController = null;
+        let user_id;
+        let invitationsCount = 0;
+        let boxesCount = 0;
+        const INVITE_GOAL = 3;
+        const prizes = [
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
+            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
+            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
+            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
+        ];
+        let lastLooters = [];
 
         // ============ CACHING لتحسين الأداء ============
-        const CACHE_DURATION = 60 * 60 * 1000; // 1 ساعة
-
         function initAdsGram() {
             if (window.Adsgram && !adController) {
                 try {
@@ -855,11 +868,13 @@ button.copy-button:hover,
                 }
             }
         }
+
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", initAdsGram);
         } else {
             initAdsGram();
         }
+
         function showWelcomeBanner() {
             const hasSeen = localStorage.getItem('welcome_shown');
             const banner = document.getElementById('welcome-banner');
@@ -877,6 +892,70 @@ button.copy-button:hover,
                 };
             }
         }
+
+        // ✅ جلب بيانات المستخدم من Firebase (مرة واحدة فقط)
+        async function loadUserData() {
+            const cacheKey = 'user_data_' + user_id;
+            const cached = localStorage.getItem(cacheKey);
+            const now = Date.now();
+
+            if (cached) {
+                const { data, timestamp } = JSON.parse(cached);
+                if (now - timestamp < 120_000) { // 2 دقائق
+                    invitationsCount = data.invitations || 0;
+                    boxesCount = data.boxes || 0;
+                    updateCounters();
+                    return;
+                }
+            }
+
+            try {
+                const snapshot = await database.ref('users/' + user_id).once('value');
+                const data = snapshot.val() || { invitations: 0, boxes: 0 };
+                invitationsCount = data.invitations || 0;
+                boxesCount = data.boxes || 0;
+                updateCounters();
+                localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: now }));
+            } catch (e) {
+                console.error("فشل جلب بيانات المستخدم:", e);
+            }
+        }
+
+        // ✅ جلب قائمة الفائزين (باستخدام التخزين المؤقت)
+        async function fetchLastLooters() {
+            const cacheKey = 'last_winners_cache';
+            const cached = localStorage.getItem(cacheKey);
+            const now = Date.now();
+
+            if (cached) {
+                const { data, timestamp } = JSON.parse(cached);
+                if (now - timestamp < 30_000) { // 30 ثانية
+                    renderWinnersList(data);
+                    return;
+                }
+            }
+
+            try {
+                const snapshot = await database.ref('globalLastWinners').once('value');
+                const data = snapshot.val() || [];
+                renderWinnersList(data);
+                localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: now }));
+            } catch (e) {
+                console.error("فشل جلب قائمة الفائزين:", e);
+            }
+        }
+
+        function renderWinnersList(winners) {
+            const container = document.getElementById('winners-list-container');
+            container.innerHTML = '';
+            winners.slice(0, 5).forEach(winner => {
+                const li = document.createElement('li');
+                li.className = 'winner-item';
+                li.innerHTML = `<span>${winner.name}</span><span>ربح ${winner.prize}</span>`;
+                container.appendChild(li);
+            });
+        }
+
         async function checkInvitation() {
             const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param;
             if (!startParam || !startParam.startsWith('inviter_')) return;
@@ -908,6 +987,19 @@ button.copy-button:hover,
                 console.error("❌ فشل في تسجيل الدعوة:", e);
             }
         }
+
+        function updateCounters() {
+            document.getElementById('invited-count').textContent = invitationsCount;
+            document.getElementById('lootbox-count').textContent = boxesCount;
+            document.getElementById('open-box-button').disabled = boxesCount < 1;
+        }
+
+        function getUserName() {
+            const user = window.Telegram.WebApp.initDataUnsafe?.user;
+            if (user) return user.first_name || 'مستخدم';
+            return 'مستخدم';
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
                 const adminBtn = document.getElementById('open-admin-btn');
@@ -935,6 +1027,7 @@ button.copy-button:hover,
             });
             showWelcomeBanner();
         });
+
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
             proSensitivitiesView.classList.add('hidden');
@@ -952,14 +1045,12 @@ button.copy-button:hover,
             const snapshot = await database.ref('sensitivities').once('value');
             allSensitivitiesData = [];
             const data = snapshot.val() || {};
-
             ['pro', 'beginner'].forEach(type => {
               const items = data[type] || {};
               Object.keys(items).forEach(key => {
                 allSensitivitiesData.push({ id: key, type, ...items[key] });
               });
             });
-
             if (data.vip && data.vip.current) {
               allSensitivitiesData.push({
                 id: 'vip',
@@ -967,7 +1058,6 @@ button.copy-button:hover,
                 code: data.vip.current.code
               });
             }
-
             const proSensitivities = allSensitivitiesData.filter(item => item.type === 'pro');
             const beginnerSensitivities = allSensitivitiesData.filter(item => item.type === 'beginner');
             createSensitivityButtons(proSensitivities, proButtonsContainer);
@@ -988,6 +1078,7 @@ button.copy-button:hover,
                 container.appendChild(button);
             });
         };
+
         const handleSensitivityClick = (item) => {
             displayContainer.classList.remove('hidden');
             codeOutput.textContent = item.code;
@@ -1005,6 +1096,7 @@ button.copy-button:hover,
                 };
             }
         };
+
         openVipSensitivityButton.onclick = function() {
             openVipSensitivityButton.disabled = true;
             openVipSensitivityButton.innerHTML = 'جارٍ تحميل الإعلان...';
@@ -1042,6 +1134,7 @@ button.copy-button:hover,
                     `;
                 });
         };
+
         copyVipCodeBtn.onclick = function() {
             const code = vipCodeOutput.textContent;
             if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جارٍ تحميل الإعلان...') {
@@ -1052,6 +1145,7 @@ button.copy-button:hover,
                 });
             }
         };
+
         createSensitivityBtn.onclick = () => {
             const customView = document.createElement('section');
             customView.id = 'custom-sensitivity-view';
@@ -1087,19 +1181,15 @@ button.copy-button:hover,
                 const device = document.getElementById('device-name').value.trim();
                 const type = document.getElementById('device-type').value;
                 const fps = document.getElementById('fps').value;
-
-                // ✅ التحقق من أن الحقول غير فارغة
                 if (!device || !type || !fps) {
                     Telegram.WebApp.showAlert('املأ جميع الحقول.');
                     return;
                 }
-
                 const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'guest';
                 const lastCustomTimeKey = `last_custom_sensitivity_${userId}`;
                 const lastTime = localStorage.getItem(lastCustomTimeKey);
                 const now = Date.now();
                 const ONE_DAY = 24 * 60 * 60 * 1000;
-
                 if (lastTime && (now - parseInt(lastTime)) < ONE_DAY) {
                     document.getElementById('custom-result').innerHTML = `
                         <div style="background:rgba(20,5,30,0.9);border:2px solid #ff5500;border-radius:12px;padding:20px;text-align:center;color:#ffd700;font-weight:bold;">
@@ -1147,24 +1237,17 @@ button.copy-button:hover,
             };
         };
 
-        // ✅ الدالة المعدّلة: لا تستخدم مدخلات المستخدم، بل تختار كودًا عشوائيًّا من customPool
         async function proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey) {
           try {
-            // ✅ جلب الأكواد من sensitivities/customPool
             const snapshot = await database.ref('sensitivities/customPool').once('value');
             const codes = snapshot.val();
-
             if (!codes || Object.keys(codes).length === 0) {
               Telegram.WebApp.showAlert('لا توجد حساسيات مخصصة بعد.');
               return;
             }
-
-            // ✅ اختيار كود عشوائي
             const keys = Object.keys(codes);
             const randomKey = keys[Math.floor(Math.random() * keys.length)];
             const randomCode = codes[randomKey];
-
-            // ✅ عرض الكود
             document.getElementById('custom-result').innerHTML = `
               <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
                 <p style="color:#ffd700;font-weight:bold;font-family:'Cairo',sans-serif;">🎯 حساسيتك المخصصة:</p>
@@ -1176,17 +1259,13 @@ button.copy-button:hover,
               </div>
             `;
             document.getElementById('custom-result').style.display = 'block';
-
-            // ✅ تسجيل أن المستخدم استخدم الخدمة اليوم
             localStorage.setItem(lastCustomTimeKey, Date.now().toString());
-
           } catch (error) {
             Telegram.WebApp.showAlert('فشل تحميل الحساسية.');
             console.error('خطأ:', error);
           }
         };
 
-        // ✅ لوحة التحكم — تعمل مع Firebase
         const renderAdminList = async () => {
           adminList.innerHTML = '';
           const types = ['pro', 'beginner'];
@@ -1207,7 +1286,6 @@ button.copy-button:hover,
               adminList.appendChild(itemDiv);
             });
           }
-
           const vipSnap = await database.ref('sensitivities/vip/current').once('value');
           const vipData = vipSnap.val();
           if (vipData) {
@@ -1222,8 +1300,6 @@ button.copy-button:hover,
             `;
             adminList.appendChild(itemDiv);
           }
-
-          // عرض customPool في لوحة التحكم
           const customSnap = await database.ref('sensitivities/customPool').once('value');
           const customItems = customSnap.val() || {};
           if (Object.keys(customItems).length > 0) {
@@ -1258,15 +1334,12 @@ button.copy-button:hover,
           const code = adminCodeInput.value.trim();
           const imageUrl = adminImageInput.value.trim();
           const type = adminTypeSelect.value;
-
           if (!name || !code || (type !== 'custom' && !imageUrl)) {
             Telegram.WebApp.showAlert('يرجى ملء جميع الحقول المطلوبة.');
             return;
           }
-
           try {
             if (type === 'custom') {
-              // ✅ إضافة إلى customPool
               const newRef = database.ref('sensitivities/customPool').push();
               await newRef.set(code);
             } else if (type === 'vip') {
@@ -1279,7 +1352,6 @@ button.copy-button:hover,
                 await newRef.set({ name, code, imageUrl });
               }
             }
-
             Telegram.WebApp.showAlert(editingId ? 'تم التعديل بنجاح!' : 'تم الإضافة بنجاح!');
             resetForm();
             fetchSensitivities();
@@ -1292,10 +1364,8 @@ button.copy-button:hover,
         adminList.addEventListener('click', async (e) => {
           const target = e.target;
           if (!target.classList.contains('edit-btn') && !target.classList.contains('delete-btn')) return;
-
           const id = target.getAttribute('data-id');
           const type = target.getAttribute('data-type');
-
           if (target.classList.contains('edit-btn')) {
             if (type === 'customPool') {
               const snapshot = await database.ref(`sensitivities/customPool/${id}`).once('value');
@@ -1350,53 +1420,7 @@ button.copy-button:hover,
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
 
-        // ============ قائمة الفائزين العامة ============
-        let user_id;
-        let invitationsCount = 0;
-        let boxesCount = 0;
-        const INVITE_GOAL = 3;
-        const prizes = [
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
-            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
-            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
-            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
-        ];
-        let lastLooters = [];
-
-        // ✅ الاستماع إلى القائمة العامة من Firebase
-        database.ref('globalLastWinners').on('value', (snapshot) => {
-            lastLooters = snapshot.val() || [];
-            fetchLastLooters();
-        });
-
-        function updateCounters() {
-            document.getElementById('invited-count').textContent = invitationsCount;
-            document.getElementById('lootbox-count').textContent = boxesCount;
-            document.getElementById('open-box-button').disabled = boxesCount < 1;
-        }
-
-        function fetchLastLooters() {
-            const container = document.getElementById('winners-list-container');
-            container.innerHTML = '';
-            if (lastLooters.length > 0) {
-                lastLooters.forEach(winner => {
-                    const li = document.createElement('li');
-                    li.className = 'winner-item';
-                    li.innerHTML = `<span>${winner.name}</span><span>ربح ${winner.prize}</span>`;
-                    container.appendChild(li);
-                });
-            }
-        }
-
-        function getUserName() {
-            const user = window.Telegram.WebApp.initDataUnsafe?.user;
-            if (user) return user.first_name || 'مستخدم';
-            return 'مستخدم';
-        }
-
+        // ============ صندوق الغنائم ============
         document.getElementById('save-id-button').onclick = function() {
             const pubgId = document.getElementById('player-id-input').value.trim();
             if (pubgId) {
@@ -1413,26 +1437,21 @@ button.copy-button:hover,
             }
         };
 
-        // ✅ فتح الصندوق — مع حماية من الضغط المتكرر
         let isBoxOpening = false;
         document.getElementById('open-box-button').onclick = function() {
             if (isBoxOpening || boxesCount <= 0) {
                 if (boxesCount <= 0) alert('ليس لديك صناديق كافية للفتح.');
                 return;
             }
-
             if (!confirm('هل أنت متأكد من فتح الصندوق؟')) return;
-
             isBoxOpening = true;
             const button = this;
             button.disabled = true;
             document.getElementById('result-area').innerHTML = '<p style="color: #ffd700;">يتم فتح الصندوق...</p>';
             document.getElementById('lootbox-image').classList.remove('shake');
-
             setTimeout(async () => {
                 const userName = getUserName();
                 const prize = prizes[Math.floor(Math.random() * prizes.length)];
-
                 const prizeElement = document.createElement('div');
                 prizeElement.style.textAlign = 'center';
                 prizeElement.style.marginTop = '15px';
@@ -1442,15 +1461,11 @@ button.copy-button:hover,
                 `;
                 document.getElementById('result-area').innerHTML = '';
                 document.getElementById('result-area').appendChild(prizeElement);
-
-                // تقليل الصناديق
                 boxesCount--;
                 if (user_id && !user_id.startsWith('guest_')) {
                     await database.ref('users/' + user_id).update({ boxes: boxesCount });
                 }
                 updateCounters();
-
-                // حفظ الفائز في القائمة العامة
                 const newWinner = { name: userName, prize: prize.name, timestamp: Date.now() };
                 const globalRef = database.ref('globalLastWinners');
                 const snapshot = await globalRef.once('value');
@@ -1458,7 +1473,6 @@ button.copy-button:hover,
                 globalWinners.unshift(newWinner);
                 if (globalWinners.length > 5) globalWinners = globalWinners.slice(0, 5);
                 await globalRef.set(globalWinners);
-
                 isBoxOpening = false;
                 button.disabled = false;
             }, 800);
@@ -1480,13 +1494,8 @@ button.copy-button:hover,
         const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
         if (user) {
             user_id = String(user.id);
-            const userRef = database.ref('users/' + user_id);
-            userRef.on('value', (snapshot) => {
-                const data = snapshot.val() || { invitations: 0, boxes: 0 };
-                invitationsCount = data.invitations || 0;
-                boxesCount = data.boxes || 0;
-                updateCounters();
-            });
+            // ✅ لا نستخدم on('value') هنا — نستخدم loadUserData()
+            loadUserData();
             checkInvitation();
         } else {
             user_id = 'guest_' + Date.now();
@@ -1512,8 +1521,11 @@ button.copy-button:hover,
             "retina_detect": true
         });
 
-        // ✅ بدء التحميل الأولي
-        fetchSensitivities();
+        // ✅ بدء التحميل الأولي مع تأخير عشوائي لتقليل التزاحم
+        setTimeout(() => {
+            fetchSensitivities();
+            fetchLastLooters(); // جلب الفائزين عند التحميل
+        }, Math.random() * 2000);
     </script>
 </body>
 </html>
