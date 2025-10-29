@@ -1521,11 +1521,14 @@ button.copy-button:hover,
             "retina_detect": true
         });
 
-        // ✅ بدء التحميل الأولي مع تأخير عشوائي لتقليل التزاحم
+        // ✅ تحميل مسبق للبيانات الأساسية (لتسريع الاستجابة الأولى)
         setTimeout(() => {
-            fetchSensitivities();
-            fetchLastLooters(); // جلب الفائزين عند التحميل
-        }, Math.random() * 2000);
+            fetchSensitivities();      // يُحمّل الحساسيات
+            fetchLastLooters();        // يُحمّل آخر الفائزين
+            if (user_id && !user_id.startsWith('guest_')) {
+                 loadUserData();        // يُحمّل بيانات المستخدم (الدعوات والصناديق)
+            }
+        }, Math.random() * 1500); // بين 0–1.5 ثانية
     </script>
 </body>
 </html>
