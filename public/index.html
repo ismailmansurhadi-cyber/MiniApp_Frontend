@@ -21,7 +21,6 @@
     <!-- خط عربي عصري -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-/* نفس الأنماط السابقة — لم نغيّر شيئًا في الـ CSS */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
@@ -59,28 +58,29 @@ main#app-container {
 }
 .title-box {
     background: linear-gradient(135deg, #0c2a3a, #1a4a5f);
-    padding: 16px;
+    padding: 10px 16px; /* تقليل padding العلوي والسفلي */
     border-radius: 12px;
-    box-shadow: 0 0 14px rgba(0, 180, 220, 0.6), 0 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 12px rgba(0, 180, 220, 0.5), 0 3px 8px rgba(0, 0, 0, 0.4);
     border: 1.5px solid #00b4d8;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     width: 100%;
-    max-width: 400px;
+    max-width: 320px; /* تقليل العرض الأقصى */
     box-sizing: border-box;
     text-align: center;
     font-family: 'Cairo', 'Tajawal', sans-serif;
 }
 .title-box h1 {
-    font-size: 24px;
+    font-size: 20px; /* تقليل حجم الخط قليلاً */
     color: transparent;
     background: linear-gradient(90deg, #00d8ff, #00ffaa, #ffd700);
     -webkit-background-clip: text;
     background-clip: text;
-    margin-bottom: 6px;
-    text-shadow: 0 0 8px rgba(0, 216, 255, 0.5);
+    margin: 0; /* إزالة الهامش السفلي */
+    text-shadow: 0 0 6px rgba(0, 216, 255, 0.5);
     font-weight: 800;
     font-family: 'Cairo', sans-serif;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.3px;
+    line-height: 1.2; /* لضمان ظهوره في سطر واحد */
 }
 .title-box p {
     font-size: 13px;
@@ -947,18 +947,9 @@ button.copy-button:hover,
             viewToShow.classList.remove('hidden');
         }
 
-        // ✅ دالة جلب الحساسيات مع CACHING
+        // ✅ جلب الحساسيات من Firebase (بدون Vercel)
         const fetchSensitivities = async () => {
           try {
-            const cached = localStorage.getItem('sensitivities_cache');
-            const lastFetched = localStorage.getItem('sensitivities_fetched');
-
-            if (cached && lastFetched && (Date.now() - parseInt(lastFetched)) < CACHE_DURATION) {
-              allSensitivitiesData = JSON.parse(cached);
-              renderSensitivities();
-              return;
-            }
-
             const snapshot = await database.ref('sensitivities').once('value');
             allSensitivitiesData = [];
             const data = snapshot.val() || {};
@@ -978,34 +969,15 @@ button.copy-button:hover,
               });
             }
 
-            const customItems = data.custom || {};
-            Object.keys(customItems).forEach(key => {
-              allSensitivitiesData.push({ id: key, type: 'custom', ...customItems[key] });
-            });
-
-            // حفظ في localStorage
-            localStorage.setItem('sensitivities_cache', JSON.stringify(allSensitivitiesData));
-            localStorage.setItem('sensitivities_fetched', Date.now().toString());
-
-            renderSensitivities();
+            const proSensitivities = allSensitivitiesData.filter(item => item.type === 'pro');
+            const beginnerSensitivities = allSensitivitiesData.filter(item => item.type === 'beginner');
+            createSensitivityButtons(proSensitivities, proButtonsContainer);
+            createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
+            renderAdminList(allSensitivitiesData);
           } catch (error) {
-            console.error('فشل جلب الحساسيات:', error);
-            // محاولة استخدام الذاكرة المؤقتة حتى لو انتهت صلاحيتها
-            const cached = localStorage.getItem('sensitivities_cache');
-            if (cached) {
-              allSensitivitiesData = JSON.parse(cached);
-              renderSensitivities();
-            }
+            console.error('فشل جلب الحساسيات من Firebase:', error);
           }
         };
-
-        function renderSensitivities() {
-          const proSensitivities = allSensitivitiesData.filter(item => item.type === 'pro');
-          const beginnerSensitivities = allSensitivitiesData.filter(item => item.type === 'beginner');
-          createSensitivityButtons(proSensitivities, proButtonsContainer);
-          createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
-          renderAdminList(allSensitivitiesData);
-        }
 
         const createSensitivityButtons = (data, container) => {
             container.innerHTML = '';
@@ -1116,12 +1088,19 @@ button.copy-button:hover,
                 const device = document.getElementById('device-name').value.trim();
                 const type = document.getElementById('device-type').value;
                 const fps = document.getElementById('fps').value;
-                // ✅ لا نتحقق من صحة المدخلات — نعطي كودًا عشوائيًّا دائمًا
+
+                // ✅ التحقق من أن الحقول غير فارغة
+                if (!device || !type || !fps) {
+                    Telegram.WebApp.showAlert('املأ جميع الحقول.');
+                    return;
+                }
+
                 const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'guest';
                 const lastCustomTimeKey = `last_custom_sensitivity_${userId}`;
                 const lastTime = localStorage.getItem(lastCustomTimeKey);
                 const now = Date.now();
                 const ONE_DAY = 24 * 60 * 60 * 1000;
+
                 if (lastTime && (now - parseInt(lastTime)) < ONE_DAY) {
                     document.getElementById('custom-result').innerHTML = `
                         <div style="background:rgba(20,5,30,0.9);border:2px solid #ff5500;border-radius:12px;padding:20px;text-align:center;color:#ffd700;font-weight:bold;">
@@ -1172,7 +1151,7 @@ button.copy-button:hover,
         // ✅ الدالة المعدّلة: لا تستخدم مدخلات المستخدم، بل تختار كودًا عشوائيًّا من customPool
         async function proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey) {
           try {
-            // ✅ جلب الأكواد من customPool (وليس من مدخلات المستخدم)
+            // ✅ جلب الأكواد من sensitivities/customPool
             const snapshot = await database.ref('sensitivities/customPool').once('value');
             const codes = snapshot.val();
 
