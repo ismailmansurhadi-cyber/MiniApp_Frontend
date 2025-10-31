@@ -18,12 +18,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎁 Lootbox</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- خطوط متعددة اللغات: Cairo للعربية، Roboto للإنجليزية والروسية -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+    <!-- خطوط متعددة اللغات: Cairo للعربية، Inter للإنجليزية والروسية -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 /* تطبيق الخطوط على جميع العناصر النصية */
 body {
-    font-family: 'Cairo', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Cairo', 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
@@ -112,13 +112,12 @@ button {
     overflow: hidden;
     box-sizing: border-box;
 }
-/* ✅ ضمان استخدام خط Cairo للأزرار عند اللغة العربية */
+/* ضمان استخدام خط Cairo للأزرار عند اللغة العربية */
 html[lang="ar"] button,
 html[lang="ar"] input[type="button"],
 html[lang="ar"] input[type="submit"] {
     font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }
-
 button::before {
     content: '';
     position: absolute;
@@ -962,7 +961,7 @@ button.copy-button:hover,
           return TEXTS[userLang][key] || TEXTS.ar[key] || key;
         }
 
-        // تطبيق الترجمة
+        // تطبيق الترجمة — ✅ تم إضافة سطر ترجمة زر "نسخ الكود"
         function applyTranslations() {
           document.getElementById('main-title').textContent = t('main_title');
           document.getElementById('main-subtitle').textContent = t('main_subtitle');
@@ -987,6 +986,8 @@ button.copy-button:hover,
           document.getElementById('your-link-text').textContent = t('your_link');
           document.getElementById('open-box-button').textContent = t('open_box');
           document.getElementById('winners-title').textContent = t('winners_title');
+          // ✅ ترجمة زر "نسخ الكود" في عرض الحساسية
+          document.getElementById('copy-code-btn').textContent = t('copy_code');
           // البنر الترحيبي
           document.getElementById('welcome-title').textContent = t('welcome_title');
           document.getElementById('welcome-desc').innerHTML = t('welcome_desc');
