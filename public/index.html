@@ -16,19 +16,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎁 Lootbox</title>
-    <!-- خطوط مخصصة مع font-display: swap لتحسين السرعة -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap&font-display=swap" rel="stylesheet">
+    <title>صندوق الغنائم</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- خط عربي عصري -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-/* تطبيق الخطوط حسب اللغة */
-:root {
-    --font-family: 'Amiri', serif;
-}
-.lang-en, .lang-ru {
-    --font-family: 'Inter', sans-serif;
-}
+/* نفس الـ CSS الأصلي — لم يتم تغييره */
 body {
-    font-family: var(--font-family);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
@@ -40,12 +35,6 @@ body {
     flex-direction: column;
     position: relative;
     overflow-x: hidden;
-    direction: rtl;
-    text-align: right;
-}
-.lang-en, .lang-ru {
-    direction: ltr;
-    text-align: left;
 }
 .hidden {
     display: none;
@@ -57,7 +46,6 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
-    display: none; /* سيتم عرضه لاحقًا */
 }
 main#app-container {
     width: 100%;
@@ -80,6 +68,7 @@ main#app-container {
     max-width: 400px;
     box-sizing: border-box;
     text-align: center;
+    font-family: 'Cairo', 'Tajawal', sans-serif;
 }
 .title-box h1 {
     font-size: 24px;
@@ -90,6 +79,7 @@ main#app-container {
     margin-bottom: 6px;
     text-shadow: 0 0 8px rgba(0, 216, 255, 0.5);
     font-weight: 800;
+    font-family: 'Cairo', sans-serif;
     letter-spacing: -0.5px;
 }
 .title-box p {
@@ -123,7 +113,7 @@ button {
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
-    font-family: var(--font-family);
+    font-family: 'Cairo', 'Tajawal', sans-serif;
 }
 button::before {
     content: '';
@@ -271,7 +261,6 @@ button.copy-button:hover,
     border-color: #00e6e6;
     color: #fff;
     transition: border-color 0.3s ease;
-    font-family: var(--font-family);
 }
 #lootbox-area input:focus {
     border-color: #00ff00;
@@ -290,7 +279,7 @@ button.copy-button:hover,
     color: #fff;
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    font-family: var(--font-family);
+    font-family: 'Cairo', 'Tajawal', sans-serif;
 }
 #lootbox-area button:hover {
     background-color: #1565c0;
@@ -320,7 +309,6 @@ button.copy-button:hover,
     font-size: 12px;
     color: #e0e0e0;
     word-break: break-all;
-    font-family: var(--font-family);
 }
 #copy-link-button {
     width: 70%;
@@ -358,11 +346,11 @@ button.copy-button:hover,
     font-size: 18px;
     font-weight: 800;
     text-align: center;
+    font-family: 'Cairo', sans-serif;
     text-shadow: 0 0 8px rgba(0, 200, 255, 0.6);
     letter-spacing: 0.5px;
     position: relative;
     z-index: 2;
-    font-family: var(--font-family);
 }
 .winner-item {
     background: rgba(0, 20, 30, 0.5);
@@ -377,7 +365,6 @@ button.copy-button:hover,
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     animation: fadeInUp 0.4s ease forwards;
     opacity: 0;
-    font-family: var(--font-family);
 }
 .winner-item:nth-child(1) { animation-delay: 0.05s; }
 .winner-item:nth-child(2) { animation-delay: 0.1s; }
@@ -393,10 +380,12 @@ button.copy-button:hover,
     font-weight: bold;
     color: #ffd700;
     font-size: 14px;
+    font-family: 'Cairo', sans-serif;
 }
 .winner-item span:last-child {
     color: #00e6e6;
     font-size: 13px;
+    font-family: 'Cairo', sans-serif;
     background: rgba(0, 30, 40, 0.6);
     padding: 4px 10px;
     border-radius: 20px;
@@ -481,6 +470,7 @@ button.copy-button:hover,
 }
 .sensitivity-display {
     text-align: center !important;
+    direction: rtl !important;
 }
 #display-container.hidden {
     display: none !important;
@@ -496,6 +486,7 @@ button.copy-button:hover,
     margin: 0 auto !important;
     padding: 20px !important;
     box-sizing: border-box !important;
+    direction: ltr !important;
 }
 #display-image {
     max-width: 100% !important;
@@ -519,6 +510,7 @@ button.copy-button:hover,
     padding: 12px !important;
     font-size: 16px !important;
     border-radius: 8px !important;
+    font-family: 'Cairo', 'Tajawal', sans-serif;
 }
 #pro-choice::before,
 #beginner-choice::before {
@@ -616,6 +608,7 @@ button.copy-button:hover,
     100% { opacity: 1; }
 }
 .welcome-content h2 {
+    font-family: 'Cairo', sans-serif;
     font-weight: 800;
     font-size: 22px;
     margin-bottom: 14px;
@@ -627,6 +620,7 @@ button.copy-button:hover,
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 .welcome-content p {
+    font-family: 'Tajawal', 'Cairo', sans-serif;
     font-weight: 600;
     color: #e0f7ff;
     font-size: 16px;
@@ -639,6 +633,7 @@ button.copy-button:hover,
     font-weight: 800;
 }
 .welcome-content button {
+    font-family: 'Cairo', sans-serif;
     background: linear-gradient(135deg, #00c3ff, #0077ff);
     color: white;
     border: none;
@@ -678,8 +673,8 @@ button.copy-button:hover,
 </a>
         <section id="initial-choice-view">
             <div class="title-box">
-                <h1 id="main-title">احتراف ببجي يبدأ من هنا</h1>
-                <p id="main-subtitle">اختر مستواك لتجد أفضل الحساسيات</p>
+                <h1>احتراف ببجي يبدأ من هنا</h1>
+                <p>اختر مستواك لتجد أفضل الحساسيات</p>
             </div>
             <div class="main-choice-container">
                 <button id="pro-choice">أنا محترف</button>
@@ -694,14 +689,14 @@ button.copy-button:hover,
             </div>
         </section>
         <section id="pro-sensitivities-view" class="sensitivities-view hidden">
-            <h2 id="pro-title">حساسيات المحترفين</h2>
+            <h2>حساسيات المحترفين</h2>
             <div id="pro-buttons-container" class="button-container"></div>
             <div style="text-align: center; margin-top: 20px;">
                 <button id="back-to-main-pro" class="copy-button">العودة إلى الواجهة الرئيسية</button>
             </div>
         </section>
         <section id="beginner-sensitivities-view" class="sensitivities-view hidden">
-            <h2 id="beginner-title">حساسيات المبتدئين</h2>
+            <h2>حساسيات المبتدئين</h2>
             <div id="beginner-buttons-container" class="button-container"></div>
             <div style="text-align: center; margin-top: 20px;">
                 <button id="back-to-main-beginner" class="copy-button">العودة إلى الواجهة الرئيسية</button>
@@ -726,8 +721,8 @@ button.copy-button:hover,
             border: 1px solid #ff00aa;
         ">يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة</p>
         <div id="display-container-vip" class="sensitivity-display" style="width: 100%; max-width: 300px; background-color: #ff00aa; padding: 15px; border-radius: 8px; text-align: center; box-sizing: border-box;">
-            <div id="code-output-vip" dir="ltr" style="font-family: monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all;"></div>
-            <button id="copy-code-btn-vip" style="margin-top: 15px; padding: 10px; background: #4a7c8e; color: white; border: 2px solid #00ffff; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%;">
+            <div id="code-output-vip" dir="rtl" style="font-family: monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all;"></div>
+            <button id="copy-code-btn-vip" style="margin-top: 15px; padding: 10px; background: #4a7c8e; color: white; border: 2px solid #00ffff; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; font-family: 'Cairo', sans-serif;">
                 نسخ الكود
             </button>
         </div>
@@ -736,7 +731,7 @@ button.copy-button:hover,
         <section id="lootbox-view" class="sensitivities-view hidden">
             <div class="container">
                 <div id="lootbox-area">
-                    <h1 id="lootbox-title">صندوق الغنائم 🎁</h1>
+                    <h1>صندوق الغنائم 🎁</h1>
                     <p id="description-text">للمتابعة ID ادخل.</p>
                     <input type="text" id="player-id-input" placeholder=" حسابك ID ادخل">
                     <button id="save-id-button">ببجي ID حفظ</button>
@@ -751,7 +746,7 @@ button.copy-button:hover,
                             <img id="lootbox-image" src="https://up6.cc/2025/08/175831095492441.png" alt="صندوق الغنائم">
                         </div>
                         <br>
-                        <h2 id="your-link-text">رابط دعوتك 🔗</h2>
+                        <h2>رابط دعوتك 🔗</h2>
                         <div id="invitation-link-container">
                             <span id="invitation-link"></span>
                             <button id="copy-link-button" class="copy-button">نسخ</button>
@@ -761,7 +756,7 @@ button.copy-button:hover,
                         <button id="open-box-button" disabled>افتح الصندوق</button>
                     </div>
                     <div class="winner-list">
-                        <h3 id="winners-title">🏆 آخر الفائزين</h3>
+                        <h3>🏆 آخر الفائزين</h3>
                         <ul id="winners-list-container"></ul>
                     </div>
                 </div>
@@ -773,9 +768,7 @@ button.copy-button:hover,
         <section id="admin-panel" class="admin-panel hidden">
             <h2>لوحة تحكم المالك</h2>
             <form id="add-sensitivity-form">
-                <input type="text" id="name_ar" placeholder="الاسم (عربي)" required>
-                <input type="text" id="name_en" placeholder="Name (English)" required>
-                <input type="text" id="name_ru" placeholder="Название (Русский)" required>
+                <input type="text" id="admin-name-input" placeholder="اسم الحساسية" required>
                 <textarea id="admin-code-input" placeholder="كود الحساسية" required></textarea>
                 <input type="text" id="admin-image-input" placeholder="رابط الصورة" required>
                 <select id="admin-type-select">
@@ -792,14 +785,14 @@ button.copy-button:hover,
     </main>
     <div id="welcome-banner" class="welcome-banner hidden">
         <div class="welcome-content">
-            <h2 id="welcome-title">🏆 أنت لست لاعبًا عاديًّا... أنت بطل قادم!</h2>
-            <p id="welcome-desc">انضم إلى <strong>+100,000 لاعب</strong> حول العالم</p>
+            <h2>🏆 أنت لست لاعبًا عاديًّا... أنت بطل قادم!</h2>
+            <p>انضم إلى <strong>+100,000 لاعب</strong> حول العالم</p>
             <button id="close-welcome">ابدأ الآن</button>
         </div>
     </div>
     <div id="particles-js"></div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- particles.js سيتم تحميله لاحقًا -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
@@ -818,208 +811,6 @@ button.copy-button:hover,
         const database = firebase.database();
     </script>
     <script>
-        // ============ نظام الترجمة الكامل ============
-        const TEXTS = {
-          ar: {
-            main_title: "احتراف ببجي يبدأ من هنا",
-            main_subtitle: "اختر مستواك لتجد أفضل الحساسيات",
-            pro: "أنا محترف",
-            beginner: "أنا مبتدئ",
-            lootbox: "🎁 صندوق الغنائم العشوائي",
-            vip: "حساسية VIP مدفوعة",
-            create: "✨ اصنع حساسيتك ✨",
-            back: "العودة إلى الواجهة الرئيسية",
-            enter_id: "للمتابعة ID ادخل.",
-            save_id: "ببجي ID حفظ",
-            invite_goal: "قم بدعوة 3 مستخدمين لفتح الصندوق.",
-            invited_count: "لديك <span id='invited-count'>0</span> من 3 دعوات. لديك <span id='lootbox-count'>0</span> صندوق.",
-            copy_link: "نسخ",
-            your_link: "رابط دعوتك 🔗",
-            open_box: "افتح الصندوق",
-            confirm_open: "هل أنت متأكد من فتح الصندوق؟",
-            opening: "يتم فتح الصندوق...",
-            create_title: "🎯 اصنع حساسيتك",
-            device_name: "📱 اسم جهازك",
-            device_type: "🎮 نوع الجهاز",
-            fps: "📊 الفريمات (30-120)",
-            get_sensitivity: "🚀 احصل على حساسيتك",
-            daily_limit: "يمكنك في اليوم صنع حساسية واحدة مجانًا.<br>إذا أردت صناعة حساسية مخصصة أخرى، شاهد الإعلان أولًا.",
-            watch_ad: "👀 شاهد الإعلان",
-            your_custom: "🎯 حساسيتك المخصصة:",
-            copy_code: "📋 نسخ الكود",
-            welcome_title: "🏆 أنت لست لاعبًا عاديًّا... أنت بطل قادم!",
-            welcome_desc: "انضم إلى <strong>+100,000 لاعب</strong> حول العالم",
-            start_now: "ابدأ الآن",
-            ad_label: "(شاهد إعلان)",
-            refresh: "🔄 تحديث العداد",
-            fill_fields: "املأ جميع الحقول.",
-            copied: "تم نسخ الكود بنجاح!",
-            error_copy: "حدث خطأ أثناء نسخ الكود.",
-            no_custom: "لا توجد حساسيات مخصصة بعد.",
-            success_add: "تم الإضافة بنجاح!",
-            success_edit: "تم التعديل بنجاح!",
-            delete_confirm: "هل أنت متأكد من الحذف؟",
-            deleted: "تم الحذف بنجاح!",
-            prize_60uc: "60 UC",
-            prize_golden: "الصندوق الذهبي",
-            prize_luck: "حظ اوفر في المرة القادمة",
-            pro_title: "حساسيات المحترفين",
-            beginner_title: "حساسيات المبتدئين",
-            winners_title: "🏆 آخر الفائزين",
-            you_won: "لقد ربحت"
-          },
-          en: {
-            main_title: "PUBG Mastery Starts Here",
-            main_subtitle: "Choose your level to get the best sensitivities",
-            pro: "I'm Pro",
-            beginner: "I'm Beginner",
-            lootbox: "🎁 Random Lootbox",
-            vip: "Paid VIP Sensitivity",
-            create: "✨ Create Your Sensitivity ✨",
-            back: "Back to Main",
-            enter_id: "Enter your ID to continue.",
-            save_id: "Save PUBG ID",
-            invite_goal: "Invite 3 users to unlock the lootbox.",
-            invited_count: "You have <span id='invited-count'>0</span> of 3 invites. You have <span id='lootbox-count'>0</span> boxes.",
-            copy_link: "Copy",
-            your_link: "Your invite link 🔗",
-            open_box: "Open Box",
-            confirm_open: "Are you sure you want to open the box?",
-            opening: "Opening the box...",
-            create_title: "🎯 Create Your Sensitivity",
-            device_name: "📱 Your Device Name",
-            device_type: "🎮 Device Type",
-            fps: "📊 FPS (30-120)",
-            get_sensitivity: "🚀 Get Your Sensitivity",
-            daily_limit: "You can create one free sensitivity per day.<br>To create another, watch an ad first.",
-            watch_ad: "👀 Watch Ad",
-            your_custom: "🎯 Your Custom Sensitivity:",
-            copy_code: "📋 Copy Code",
-            welcome_title: "🏆 You're not an ordinary player... You're a rising champion!",
-            welcome_desc: "Join <strong>+100,000 players</strong> worldwide",
-            start_now: "Start Now",
-            ad_label: "(Watch Ad)",
-            refresh: "🔄 Refresh Counter",
-            fill_fields: "Please fill all fields.",
-            copied: "Code copied successfully!",
-            error_copy: "Error copying code.",
-            no_custom: "No custom sensitivities available yet.",
-            success_add: "Added successfully!",
-            success_edit: "Edited successfully!",
-            delete_confirm: "Are you sure you want to delete?",
-            deleted: "Deleted successfully!",
-            prize_60uc: "60 UC",
-            prize_golden: "Golden Box",
-            prize_luck: "Better luck next time",
-            pro_title: "Pro Sensitivities",
-            beginner_title: "Beginner Sensitivities",
-            winners_title: "🏆 Latest Winners",
-            you_won: "You won"
-          },
-          ru: {
-            main_title: "Мастерство в PUBG начинается здесь",
-            main_subtitle: "Выберите свой уровень, чтобы получить лучшие настройки",
-            pro: "Я профи",
-            beginner: "Я новичок",
-            lootbox: "🎁 Случайный лутбокс",
-            vip: "Платная VIP-чувствительность",
-            create: "✨ Создать свою чувствительность ✨",
-            back: "Назад на главную",
-            enter_id: "Введите свой ID для продолжения.",
-            save_id: "Сохранить ID PUBG",
-            invite_goal: "Пригласите 3 пользователей, чтобы открыть лутбокс.",
-            invited_count: "У вас <span id='invited-count'>0</span> из 3 приглашений. У вас <span id='lootbox-count'>0</span> ящиков.",
-            copy_link: "Копировать",
-            your_link: "Ваша ссылка для приглашения 🔗",
-            open_box: "Открыть ящик",
-            confirm_open: "Вы уверены, что хотите открыть ящик?",
-            opening: "Открытие ящика...",
-            create_title: "🎯 Создать свою чувствительность",
-            device_name: "📱 Название вашего устройства",
-            device_type: "🎮 Тип устройства",
-            fps: "📊 Частота кадров (30-120)",
-            get_sensitivity: "🚀 Получить настройки",
-            daily_limit: "Вы можете создать одну бесплатную чувствительность в день.<br>Чтобы создать еще одну, сначала посмотрите рекламу.",
-            watch_ad: "👀 Посмотреть рекламу",
-            your_custom: "🎯 Ваши настройки:",
-            copy_code: "📋 Скопировать код",
-            welcome_title: "🏆 Вы не обычный игрок... Вы будущий чемпион!",
-            welcome_desc: "Присоединяйтесь к <strong>+100 000 игрокам</strong> по всему миру",
-            start_now: "Начать сейчас",
-            ad_label: "(Смотреть рекламу)",
-            refresh: "🔄 Обновить счетчик",
-            fill_fields: "Пожалуйста, заполните все поля.",
-            copied: "Код успешно скопирован!",
-            error_copy: "Ошибка при копировании кода.",
-            no_custom: "Пользовательские настройки пока недоступны.",
-            success_add: "Успешно добавлено!",
-            success_edit: "Успешно изменено!",
-            delete_confirm: "Вы уверены, что хотите удалить?",
-            deleted: "Успешно удалено!",
-            prize_60uc: "60 UC",
-            prize_golden: "Золотой ящик",
-            prize_luck: "Повезет в следующий раз",
-            pro_title: "Чувствительность для профи",
-            beginner_title: "Чувствительность для новичков",
-            winners_title: "🏆 Последние победители",
-            you_won: "Вы выиграли"
-          }
-        };
-
-        // اكتشاف لغة المستخدم من Telegram
-        const detectedLang = window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code || 'ar';
-        const userLang = ['ar', 'en', 'ru'].includes(detectedLang) ? detectedLang : 'ar';
-
-        // دالة الترجمة
-        function t(key) {
-          return TEXTS[userLang][key] || TEXTS.ar[key] || key;
-        }
-
-        // تطبيق الترجمة والاتجاه والخط
-        function applyTranslations() {
-          document.getElementById('main-title').textContent = t('main_title');
-          document.getElementById('main-subtitle').textContent = t('main_subtitle');
-          document.getElementById('pro-choice').textContent = t('pro');
-          document.getElementById('beginner-choice').textContent = t('beginner');
-          document.getElementById('open-lootbox-button').textContent = t('lootbox');
-          document.getElementById('open-vip-sensitivity-button').innerHTML = `
-            ${t('vip')}<br>
-            <span class="ad-label">(${t('ad_label')})</span>
-          `;
-          document.getElementById('create-sensitivity-btn').textContent = t('create');
-          document.getElementById('back-to-main-pro').textContent = t('back');
-          document.getElementById('back-to-main-beginner').textContent = t('back');
-          document.getElementById('go-back-btn').textContent = t('back');
-          document.getElementById('hide-lootbox-button').textContent = t('back');
-          // صندوق الغنائم
-          document.getElementById('lootbox-title').textContent = t('lootbox');
-          document.getElementById('description-text').textContent = t('enter_id');
-          document.getElementById('save-id-button').textContent = t('save_id');
-          document.getElementById('invitation-counter').innerHTML = t('invited_count');
-          document.getElementById('copy-link-button').textContent = t('copy_link');
-          document.getElementById('your-link-text').textContent = t('your_link');
-          document.getElementById('open-box-button').textContent = t('open_box');
-          document.getElementById('winners-title').textContent = t('winners_title');
-          // البنر الترحيبي
-          document.getElementById('welcome-title').textContent = t('welcome_title');
-          document.getElementById('welcome-desc').innerHTML = t('welcome_desc');
-          document.getElementById('close-welcome').textContent = t('start_now');
-          // عناوين الحساسيات
-          document.getElementById('pro-title').textContent = t('pro_title');
-          document.getElementById('beginner-title').textContent = t('beginner_title');
-
-          // تطبيق الاتجاه واللغة والخط
-          const html = document.documentElement;
-          html.lang = userLang;
-          if (userLang === 'ar') {
-            document.body.className = '';
-            html.style.setProperty('--font-family', "'Amiri', serif");
-          } else {
-            document.body.className = `lang-${userLang}`;
-            html.style.setProperty('--font-family', "'Inter', sans-serif");
-          }
-        }
-
         // === المتغيرات العامة ===
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
@@ -1042,9 +833,7 @@ button.copy-button:hover,
         const codeOutput = document.getElementById('code-output');
         const displayImage = document.getElementById('display-image');
         const addSensitivityForm = document.getElementById('add-sensitivity-form');
-        const adminNameInputAr = document.getElementById('name_ar');
-        const adminNameInputEn = document.getElementById('name_en');
-        const adminNameInputRu = document.getElementById('name_ru');
+        const adminNameInput = document.getElementById('admin-name-input');
         const adminCodeInput = document.getElementById('admin-code-input');
         const adminImageInput = document.getElementById('admin-image-input');
         const adminTypeSelect = document.getElementById('admin-type-select');
@@ -1059,13 +848,13 @@ button.copy-button:hover,
         let boxesCount = 0;
         const INVITE_GOAL = 3;
         const prizes = [
-            { name: t('prize_60uc'), imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: t('prize_60uc'), imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: t('prize_60uc'), imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: t('prize_golden'), imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
-            { name: t('prize_luck'), imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
-            { name: t('prize_luck'), imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
-            { name: t('prize_golden'), imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
+            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
+            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
+            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
 
@@ -1079,6 +868,7 @@ button.copy-button:hover,
                 }
             }
         }
+
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", initAdsGram);
         } else {
@@ -1094,34 +884,31 @@ button.copy-button:hover,
                 localStorage.setItem('welcome_shown', 'true');
                 closeBtn.onclick = () => {
                     banner.classList.add('hidden');
-                    // ✅ عرض الواجهة الرئيسية فورًا
-                    showView(initialChoiceView);
                 };
                 banner.onclick = (e) => {
                     if (e.target === banner) {
                         banner.classList.add('hidden');
-                        showView(initialChoiceView);
                     }
                 };
-            } else {
-                // إذا رأى البنر من قبل، اعرض الواجهة مباشرة
-                showView(initialChoiceView);
             }
         }
 
+        // ✅ جلب بيانات المستخدم من Firebase (مرة واحدة فقط)
         async function loadUserData() {
             const cacheKey = 'user_data_' + user_id;
             const cached = localStorage.getItem(cacheKey);
             const now = Date.now();
+
             if (cached) {
                 const { data, timestamp } = JSON.parse(cached);
-                if (now - timestamp < 120_000) {
+                if (now - timestamp < 120_000) { // 2 دقائق
                     invitationsCount = data.invitations || 0;
                     boxesCount = data.boxes || 0;
                     updateCounters();
                     return;
                 }
             }
+
             try {
                 const snapshot = await database.ref('users/' + user_id).once('value');
                 const data = snapshot.val() || { invitations: 0, boxes: 0 };
@@ -1134,17 +921,20 @@ button.copy-button:hover,
             }
         }
 
+        // ✅ جلب قائمة الفائزين (باستخدام التخزين المؤقت)
         async function fetchLastLooters() {
             const cacheKey = 'last_winners_cache';
             const cached = localStorage.getItem(cacheKey);
             const now = Date.now();
+
             if (cached) {
                 const { data, timestamp } = JSON.parse(cached);
-                if (now - timestamp < 30_000) {
+                if (now - timestamp < 30_000) { // 30 ثانية
                     renderWinnersList(data);
                     return;
                 }
             }
+
             try {
                 const snapshot = await database.ref('globalLastWinners').once('value');
                 const data = snapshot.val() || [];
@@ -1161,7 +951,7 @@ button.copy-button:hover,
             winners.slice(0, 5).forEach(winner => {
                 const li = document.createElement('li');
                 li.className = 'winner-item';
-                li.innerHTML = `<span>${winner.name}</span><span>${t('you_won')}: ${winner.prize}</span>`;
+                li.innerHTML = `<span>${winner.name}</span><span>ربح ${winner.prize}</span>`;
                 container.appendChild(li);
             });
         }
@@ -1206,40 +996,8 @@ button.copy-button:hover,
 
         function getUserName() {
             const user = window.Telegram.WebApp.initDataUnsafe?.user;
-            if (user) return user.first_name || (userLang === 'ar' ? 'مستخدم' : userLang === 'en' ? 'User' : 'Пользователь');
-            return userLang === 'ar' ? 'مستخدم' : userLang === 'en' ? 'User' : 'Пользователь';
-        }
-
-        // ⚡️ تحميل particles.js بعد ظهور الواجهة
-        function loadParticlesJS() {
-            if (typeof particlesJS !== 'undefined') return;
-            const script = document.createElement('script');
-            script.src = "https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js";
-            script.onload = () => {
-                if (document.getElementById('particles-js')) {
-                    document.getElementById('particles-js').style.display = 'block';
-                    particlesJS('particles-js', {
-                        "particles": {
-                            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                            "color": { "value": "#ffffff" },
-                            "shape": { "type": "circle" },
-                            "opacity": { "value": 0.5 },
-                            "size": { "value": 5, "random": true },
-                            "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
-                            "move": { "enable": true, "speed": 6 }
-                        },
-                        "interactivity": {
-                            "detect_on": "canvas",
-                            "events": {
-                                "onhover": { "enable": true, "mode": "grab" },
-                                "onclick": { "enable": true, "mode": "push" }
-                            }
-                        },
-                        "retina_detect": true
-                    });
-                }
-            };
-            document.head.appendChild(script);
+            if (user) return user.first_name || 'مستخدم';
+            return 'مستخدم';
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1267,7 +1025,6 @@ button.copy-button:hover,
                     showView(initialChoiceView);
                 }
             });
-            applyTranslations();
             showWelcomeBanner();
         });
 
@@ -1280,13 +1037,9 @@ button.copy-button:hover,
             adminPanel.classList.add('hidden');
             vipSensitivityView.classList.add('hidden');
             viewToShow.classList.remove('hidden');
-
-            // ⚡️ تحميل particles.js فقط عند عرض الواجهة الرئيسية
-            if (viewToShow === initialChoiceView) {
-                setTimeout(loadParticlesJS, 300);
-            }
         }
 
+        // ✅ جلب الحساسيات من Firebase (بدون Vercel)
         const fetchSensitivities = async () => {
           try {
             const snapshot = await database.ref('sensitivities').once('value');
@@ -1320,8 +1073,7 @@ button.copy-button:hover,
             data.forEach(item => {
                 const button = document.createElement('button');
                 button.classList.add('sensitivity-btn');
-                const name = item[`name_${userLang}`] || item.name_ar || item.name || (userLang === 'ar' ? 'بدون اسم' : userLang === 'en' ? 'No name' : 'Без названия');
-                button.textContent = name;
+                button.textContent = item.name;
                 button.addEventListener('click', () => handleSensitivityClick(item));
                 container.appendChild(button);
             });
@@ -1337,24 +1089,23 @@ button.copy-button:hover,
                 copyBtn.onclick = async () => {
                     try {
                         await navigator.clipboard.writeText(item.code);
-                        Telegram.WebApp.showAlert(t('copied'));
+                        Telegram.WebApp.showAlert('تم نسخ الكود بنجاح!');
                     } catch (err) {
-                        Telegram.WebApp.showAlert(t('error_copy'));
+                        Telegram.WebApp.showAlert('حدث خطأ أثناء نسخ الكود.');
                     }
                 };
-                copyBtn.textContent = t('copy_code');
             }
         };
 
         openVipSensitivityButton.onclick = function() {
             openVipSensitivityButton.disabled = true;
-            openVipSensitivityButton.innerHTML = t('opening');
+            openVipSensitivityButton.innerHTML = 'جارٍ تحميل الإعلان...';
             if (!adController) {
                 Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات.');
                 openVipSensitivityButton.disabled = false;
                 openVipSensitivityButton.innerHTML = `
-                    ${t('vip')}<br>
-                    <span class="ad-label">(${t('ad_label')})</span>
+                    حساسية VIP مدفوعة<br>
+                    <span class="ad-label">(شاهد إعلان)</span>
                 `;
                 return;
             }
@@ -1365,7 +1116,6 @@ button.copy-button:hover,
                         if (vipData) {
                             showView(vipSensitivityView);
                             vipCodeOutput.textContent = vipData.code;
-                            copyVipCodeBtn.textContent = t('copy_code');
                             Telegram.WebApp.showAlert('🎉 تم عرض الكود بنجاح!');
                         }
                     } else {
@@ -1379,17 +1129,17 @@ button.copy-button:hover,
                 .finally(() => {
                     openVipSensitivityButton.disabled = false;
                     openVipSensitivityButton.innerHTML = `
-                        ${t('vip')}<br>
-                        <span class="ad-label">(${t('ad_label')})</span>
+                        حساسية VIP مدفوعة<br>
+                        <span class="ad-label">(شاهد إعلان)</span>
                     `;
                 });
         };
 
         copyVipCodeBtn.onclick = function() {
             const code = vipCodeOutput.textContent;
-            if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== t('opening')) {
+            if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جارٍ تحميل الإعلان...') {
                 navigator.clipboard.writeText(code).then(() => {
-                    Telegram.WebApp.showAlert(t('copied'));
+                    Telegram.WebApp.showAlert('تم نسخ الكود بنجاح!');
                 }).catch(err => {
                     console.error('فشل في نسخ الكود:', err);
                 });
@@ -1407,19 +1157,19 @@ button.copy-button:hover,
             customView.style.padding = '20px';
             customView.innerHTML = `
                 <div class="display-container" style="width:100%;max-width:400px;background:rgba(30,10,40,0.7);border:2px solid #ff00ff;border-radius:16px;padding:25px;box-shadow:0 0 20px rgba(138,43,226,0.6);text-align:center;">
-                    <h2 style="color:#e0b0ff;font-size:22px;margin:0 0 20px;">${t('create_title')}</h2>
-                    <input type="text" id="device-name" placeholder="${t('device_name')}" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:var(--font-family);">
-                    <select id="device-type" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:var(--font-family);">
-                        <option value="">${t('device_type')}</option>
-                        <option value="mobile">${userLang === 'ar' ? 'موبايل' : userLang === 'en' ? 'Mobile' : 'Мобильный'}</option>
-                        <option value="tablet">${userLang === 'ar' ? 'آيباد/تابلت' : userLang === 'en' ? 'Tablet' : 'Планшет'}</option>
-                        <option value="emulator">${userLang === 'ar' ? 'محاكي' : userLang === 'en' ? 'Emulator' : 'Эмулятор'}</option>
+                    <h2 style="color:#e0b0ff;font-size:22px;margin:0 0 20px;font-family:'Cairo',sans-serif;">🎯 اصنع حساسيتك</h2>
+                    <input type="text" id="device-name" placeholder="📱 اسم جهازك" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:'Cairo',sans-serif;">
+                    <select id="device-type" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:'Cairo',sans-serif;">
+                        <option value="">🎮 نوع الجهاز</option>
+                        <option value="mobile">موبايل</option>
+                        <option value="tablet">آيباد/تابلت</option>
+                        <option value="emulator">محاكي</option>
                     </select>
-                    <input type="number" id="fps" placeholder="${t('fps')}" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:var(--font-family);">
-                    <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;font-family:var(--font-family);">${t('get_sensitivity')}</button>
+                    <input type="number" id="fps" placeholder="📊 الفريمات (30-120)" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:'Cairo',sans-serif;">
+                    <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;font-family:'Cairo',sans-serif;">🚀 احصل على حساسيتك</button>
                     <div id="custom-result" style="margin-top:20px;display:none;"></div>
                     <div style="text-align: center; margin-top: 20px;">
-                        <button id="back-to-main-custom" class="copy-button">${t('back')}</button>
+                        <button id="back-to-main-custom" class="copy-button">العودة إلى الواجهة الرئيسية</button>
                     </div>
                 </div>
             `;
@@ -1432,7 +1182,7 @@ button.copy-button:hover,
                 const type = document.getElementById('device-type').value;
                 const fps = document.getElementById('fps').value;
                 if (!device || !type || !fps) {
-                    Telegram.WebApp.showAlert(t('fill_fields'));
+                    Telegram.WebApp.showAlert('املأ جميع الحقول.');
                     return;
                 }
                 const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'guest';
@@ -1443,7 +1193,10 @@ button.copy-button:hover,
                 if (lastTime && (now - parseInt(lastTime)) < ONE_DAY) {
                     document.getElementById('custom-result').innerHTML = `
                         <div style="background:rgba(20,5,30,0.9);border:2px solid #ff5500;border-radius:12px;padding:20px;text-align:center;color:#ffd700;font-weight:bold;">
-                            <p style="font-size:15px;margin:0 0 15px;line-height:1.4;">${t('daily_limit')}</p>
+                            <p style="font-size:15px;margin:0 0 15px;line-height:1.4;font-family:'Cairo',sans-serif;">
+                                يمكنك في اليوم صنع حساسية واحدة مجانًا.<br>
+                                إذا أردت صناعة حساسية مخصصة أخرى، شاهد الإعلان أولًا.
+                            </p>
                             <button id="watch-ad-btn" style="
                                 background:linear-gradient(135deg, #ff8c00, #ff5500);
                                 color:white;
@@ -1455,7 +1208,8 @@ button.copy-button:hover,
                                 cursor:pointer;
                                 box-shadow:0 0 12px rgba(255,85,0,0.7);
                                 transition: transform 0.2s;
-                            ">${t('watch_ad')}</button>
+                                font-family:'Cairo',sans-serif;
+                            ">👀 شاهد الإعلان</button>
                         </div>
                     `;
                     document.getElementById('custom-result').style.display = 'block';
@@ -1488,7 +1242,7 @@ button.copy-button:hover,
             const snapshot = await database.ref('sensitivities/customPool').once('value');
             const codes = snapshot.val();
             if (!codes || Object.keys(codes).length === 0) {
-              Telegram.WebApp.showAlert(t('no_custom'));
+              Telegram.WebApp.showAlert('لا توجد حساسيات مخصصة بعد.');
               return;
             }
             const keys = Object.keys(codes);
@@ -1496,11 +1250,11 @@ button.copy-button:hover,
             const randomCode = codes[randomKey];
             document.getElementById('custom-result').innerHTML = `
               <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
-                <p style="color:#ffd700;font-weight:bold;">${t('your_custom')}</p>
+                <p style="color:#ffd700;font-weight:bold;font-family:'Cairo',sans-serif;">🎯 حساسيتك المخصصة:</p>
                 <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${randomCode}</pre>
-                <button onclick="navigator.clipboard.writeText('${randomCode}').then(()=>Telegram.WebApp.showAlert('${t('copied')}'))" 
-                        style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;font-family:var(--font-family);">
-                  ${t('copy_code')}
+                <button onclick="navigator.clipboard.writeText('${randomCode}').then(()=>Telegram.WebApp.showAlert('تم النسخ!'))" 
+                        style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;font-family:'Cairo',sans-serif;">
+                  📋 نسخ الكود
                 </button>
               </div>
             `;
@@ -1523,7 +1277,7 @@ button.copy-button:hover,
               const itemDiv = document.createElement('div');
               itemDiv.classList.add('admin-list-item');
               itemDiv.innerHTML = `
-                <span>${item.name_ar || item.name || 'بدون اسم'} (${type})</span>
+                <span>${item.name} (${type})</span>
                 <div class="admin-actions">
                   <button class="edit-btn" data-id="${id}" data-type="${type}">تعديل</button>
                   <button class="delete-btn" data-id="${id}" data-type="${type}">حذف</button>
@@ -1550,7 +1304,7 @@ button.copy-button:hover,
           const customItems = customSnap.val() || {};
           if (Object.keys(customItems).length > 0) {
             const header = document.createElement('div');
-            header.innerHTML = '<h3 style="color:#8a2be2;margin:15px 0 8px;text-align:center;">أكواد "اصنع حساسيتك"</h3>';
+            header.innerHTML = '<h3 style="color:#8a2be2;margin:15px 0 8px;text-align:center;font-family:\'Cairo\',sans-serif;">أكواد "اصنع حساسيتك"</h3>';
             adminList.appendChild(header);
             Object.keys(customItems).forEach(id => {
               const item = customItems[id];
@@ -1570,20 +1324,18 @@ button.copy-button:hover,
 
         const resetForm = () => {
             addSensitivityForm.reset();
-            formSubmitBtn.textContent = userLang === 'ar' ? 'إضافة' : userLang === 'en' ? 'Add' : 'Добавить';
+            formSubmitBtn.textContent = 'إضافة';
             editingId = null;
         };
 
         addSensitivityForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          const name_ar = adminNameInputAr.value.trim();
-          const name_en = adminNameInputEn.value.trim();
-          const name_ru = adminNameInputRu.value.trim();
+          const name = adminNameInput.value.trim();
           const code = adminCodeInput.value.trim();
           const imageUrl = adminImageInput.value.trim();
           const type = adminTypeSelect.value;
-          if (!name_ar || !name_en || !name_ru || !code || (type !== 'custom' && !imageUrl)) {
-            Telegram.WebApp.showAlert(t('fill_fields'));
+          if (!name || !code || (type !== 'custom' && !imageUrl)) {
+            Telegram.WebApp.showAlert('يرجى ملء جميع الحقول المطلوبة.');
             return;
           }
           try {
@@ -1594,13 +1346,13 @@ button.copy-button:hover,
               await database.ref('sensitivities/vip/current').set({ code, updatedAt: Date.now() });
             } else {
               if (editingId) {
-                await database.ref(`sensitivities/${type}/${editingId}`).update({ name_ar, name_en, name_ru, code, imageUrl });
+                await database.ref(`sensitivities/${type}/${editingId}`).update({ name, code, imageUrl });
               } else {
                 const newRef = database.ref(`sensitivities/${type}`).push();
-                await newRef.set({ name_ar, name_en, name_ru, code, imageUrl });
+                await newRef.set({ name, code, imageUrl });
               }
             }
-            Telegram.WebApp.showAlert(editingId ? t('success_edit') : t('success_add'));
+            Telegram.WebApp.showAlert(editingId ? 'تم التعديل بنجاح!' : 'تم الإضافة بنجاح!');
             resetForm();
             fetchSensitivities();
           } catch (error) {
@@ -1621,7 +1373,7 @@ button.copy-button:hover,
               if (data) {
                 adminCodeInput.value = data;
                 adminTypeSelect.value = 'custom';
-                formSubmitBtn.textContent = userLang === 'ar' ? 'تعديل' : userLang === 'en' ? 'Edit' : 'Редактировать';
+                formSubmitBtn.textContent = 'تعديل';
                 editingId = id;
               }
             } else if (type === 'vip') {
@@ -1630,25 +1382,23 @@ button.copy-button:hover,
               if (data) {
                 adminCodeInput.value = data.code;
                 adminTypeSelect.value = 'vip';
-                formSubmitBtn.textContent = userLang === 'ar' ? 'تعديل' : userLang === 'en' ? 'Edit' : 'Редактировать';
+                formSubmitBtn.textContent = 'تعديل';
                 editingId = 'vip';
               }
             } else {
               const snapshot = await database.ref(`sensitivities/${type}/${id}`).once('value');
               const data = snapshot.val();
               if (data) {
-                adminNameInputAr.value = data.name_ar || '';
-                adminNameInputEn.value = data.name_en || '';
-                adminNameInputRu.value = data.name_ru || '';
+                adminNameInput.value = data.name;
                 adminCodeInput.value = data.code;
                 adminImageInput.value = data.imageUrl;
                 adminTypeSelect.value = type;
-                formSubmitBtn.textContent = userLang === 'ar' ? 'تعديل' : userLang === 'en' ? 'Edit' : 'Редактировать';
+                formSubmitBtn.textContent = 'تعديل';
                 editingId = id;
               }
             }
           } else if (target.classList.contains('delete-btn')) {
-            if (confirm(t('delete_confirm'))) {
+            if (confirm('هل أنت متأكد من الحذف؟')) {
               try {
                 if (type === 'customPool') {
                   await database.ref(`sensitivities/customPool/${id}`).remove();
@@ -1657,7 +1407,7 @@ button.copy-button:hover,
                 } else {
                   await database.ref(`sensitivities/${type}/${id}`).remove();
                 }
-                Telegram.WebApp.showAlert(t('deleted'));
+                Telegram.WebApp.showAlert('تم الحذف بنجاح!');
                 fetchSensitivities();
               } catch (error) {
                 Telegram.WebApp.showAlert('فشل الحذف.');
@@ -1669,10 +1419,12 @@ button.copy-button:hover,
         proChoiceButton.addEventListener('click', () => showView(proSensitivitiesView));
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
+
+        // ============ صندوق الغنائم ============
         document.getElementById('save-id-button').onclick = function() {
             const pubgId = document.getElementById('player-id-input').value.trim();
             if (pubgId) {
-                document.getElementById('description-text').textContent = t('invite_goal');
+                document.getElementById('description-text').textContent = 'قم بدعوة 3 مستخدمين لفتح الصندوق.';
                 document.getElementById('player-id-input').style.display = 'none';
                 this.style.display = 'none';
                 document.getElementById('invitation-area').style.display = 'block';
@@ -1681,7 +1433,7 @@ button.copy-button:hover,
                 updateCounters();
                 document.getElementById('lootbox-image').classList.add('shake');
             } else {
-                alert(t('fill_fields'));
+                alert('الرجاء إدخال ID حسابك.');
             }
         };
 
@@ -1691,11 +1443,11 @@ button.copy-button:hover,
                 if (boxesCount <= 0) alert('ليس لديك صناديق كافية للفتح.');
                 return;
             }
-            if (!confirm(t('confirm_open'))) return;
+            if (!confirm('هل أنت متأكد من فتح الصندوق؟')) return;
             isBoxOpening = true;
             const button = this;
             button.disabled = true;
-            document.getElementById('result-area').innerHTML = `<p style="color: #ffd700;">${t('opening')}</p>`;
+            document.getElementById('result-area').innerHTML = '<p style="color: #ffd700;">يتم فتح الصندوق...</p>';
             document.getElementById('lootbox-image').classList.remove('shake');
             setTimeout(async () => {
                 const userName = getUserName();
@@ -1705,7 +1457,7 @@ button.copy-button:hover,
                 prizeElement.style.marginTop = '15px';
                 prizeElement.innerHTML = `
                     <img src="${prize.imageUrl}" alt="${prize.name}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
-                    <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;">${t('you_won')}: ${prize.name}</p>
+                    <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px; font-family:'Cairo',sans-serif;">لقد ربحت: ${prize.name}</p>
                 `;
                 document.getElementById('result-area').innerHTML = '';
                 document.getElementById('result-area').appendChild(prizeElement);
@@ -1721,7 +1473,6 @@ button.copy-button:hover,
                 globalWinners.unshift(newWinner);
                 if (globalWinners.length > 5) globalWinners = globalWinners.slice(0, 5);
                 await globalRef.set(globalWinners);
-                fetchLastLooters();
                 isBoxOpening = false;
                 button.disabled = false;
             }, 800);
@@ -1731,26 +1482,53 @@ button.copy-button:hover,
             const link = document.getElementById('invitation-link').textContent;
             if (link) {
                 navigator.clipboard.writeText(link).then(() => {
-                    Telegram.WebApp.showAlert(t('copied'));
+                    Telegram.WebApp.showAlert('تم نسخ رابط الدعوة بنجاح!');
                 });
             }
         };
 
         document.getElementById('open-admin-btn')?.addEventListener('click', () => showView(adminPanel));
 
+        // === بدء التطبيق ===
         window.Telegram.WebApp.ready();
         const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
         if (user) {
             user_id = String(user.id);
+            // ✅ لا نستخدم on('value') هنا — نستخدم loadUserData()
             loadUserData();
             checkInvitation();
         } else {
             user_id = 'guest_' + Date.now();
         }
 
-        // ⚡️ لا تستخدم setTimeout لتحميل البيانات — ابدأ فورًا
-        fetchSensitivities();
-        fetchLastLooters();
+        particlesJS('particles-js', {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5 },
+                "size": { "value": 5, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
+                "move": { "enable": true, "speed": 6 }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "grab" },
+                    "onclick": { "enable": true, "mode": "push" }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // ✅ تحميل مسبق للبيانات الأساسية (لتسريع الاستجابة الأولى)
+        setTimeout(() => {
+            fetchSensitivities();      // يُحمّل الحساسيات
+            fetchLastLooters();        // يُحمّل آخر الفائزين
+            if (user_id && !user_id.startsWith('guest_')) {
+                 loadUserData();        // يُحمّل بيانات المستخدم (الدعوات والصناديق)
+            }
+        }, Math.random() * 1500); // بين 0–1.5 ثانية
     </script>
 </body>
 </html>
