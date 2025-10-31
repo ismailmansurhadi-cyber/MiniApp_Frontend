@@ -37,6 +37,11 @@ body {
     overflow-x: hidden;
 }
 
+/* ✅ تطبيق خط Cairo على جميع العناصر عند اللغة العربية */
+html[lang="ar"] * {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
 /* تطبيق Orbitron للأزرار والعناوين عند اللغة الإنجليزية أو الروسية */
 html[lang="en"] button,
 html[lang="ru"] button,
