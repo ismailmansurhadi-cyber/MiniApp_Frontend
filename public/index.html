@@ -17,8 +17,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎁 Lootbox</title>
-    <!-- خطوط مخصصة: Amiri للعربية، Inter للإنجليزية والروسية -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- خطوط مخصصة مع font-display: swap لتحسين السرعة -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap&font-display=swap" rel="stylesheet">
 <style>
 /* تطبيق الخطوط حسب اللغة */
 :root {
@@ -57,6 +57,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
+    display: none; /* سيتم عرضه لاحقًا */
 }
 main#app-container {
     width: 100%;
@@ -798,7 +799,7 @@ button.copy-button:hover,
     </div>
     <div id="particles-js"></div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <!-- particles.js سيتم تحميله لاحقًا -->
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
@@ -1093,12 +1094,18 @@ button.copy-button:hover,
                 localStorage.setItem('welcome_shown', 'true');
                 closeBtn.onclick = () => {
                     banner.classList.add('hidden');
+                    // ✅ عرض الواجهة الرئيسية فورًا
+                    showView(initialChoiceView);
                 };
                 banner.onclick = (e) => {
                     if (e.target === banner) {
                         banner.classList.add('hidden');
+                        showView(initialChoiceView);
                     }
                 };
+            } else {
+                // إذا رأى البنر من قبل، اعرض الواجهة مباشرة
+                showView(initialChoiceView);
             }
         }
 
@@ -1203,6 +1210,38 @@ button.copy-button:hover,
             return userLang === 'ar' ? 'مستخدم' : userLang === 'en' ? 'User' : 'Пользователь';
         }
 
+        // ⚡️ تحميل particles.js بعد ظهور الواجهة
+        function loadParticlesJS() {
+            if (typeof particlesJS !== 'undefined') return;
+            const script = document.createElement('script');
+            script.src = "https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js";
+            script.onload = () => {
+                if (document.getElementById('particles-js')) {
+                    document.getElementById('particles-js').style.display = 'block';
+                    particlesJS('particles-js', {
+                        "particles": {
+                            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                            "color": { "value": "#ffffff" },
+                            "shape": { "type": "circle" },
+                            "opacity": { "value": 0.5 },
+                            "size": { "value": 5, "random": true },
+                            "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
+                            "move": { "enable": true, "speed": 6 }
+                        },
+                        "interactivity": {
+                            "detect_on": "canvas",
+                            "events": {
+                                "onhover": { "enable": true, "mode": "grab" },
+                                "onclick": { "enable": true, "mode": "push" }
+                            }
+                        },
+                        "retina_detect": true
+                    });
+                }
+            };
+            document.head.appendChild(script);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
                 const adminBtn = document.getElementById('open-admin-btn');
@@ -1228,8 +1267,8 @@ button.copy-button:hover,
                     showView(initialChoiceView);
                 }
             });
-            showWelcomeBanner();
             applyTranslations();
+            showWelcomeBanner();
         });
 
         function showView(viewToShow) {
@@ -1241,6 +1280,11 @@ button.copy-button:hover,
             adminPanel.classList.add('hidden');
             vipSensitivityView.classList.add('hidden');
             viewToShow.classList.remove('hidden');
+
+            // ⚡️ تحميل particles.js فقط عند عرض الواجهة الرئيسية
+            if (viewToShow === initialChoiceView) {
+                setTimeout(loadParticlesJS, 300);
+            }
         }
 
         const fetchSensitivities = async () => {
@@ -1276,7 +1320,6 @@ button.copy-button:hover,
             data.forEach(item => {
                 const button = document.createElement('button');
                 button.classList.add('sensitivity-btn');
-                // ✅ عرض الاسم بلغة المستخدم
                 const name = item[`name_${userLang}`] || item.name_ar || item.name || (userLang === 'ar' ? 'بدون اسم' : userLang === 'en' ? 'No name' : 'Без названия');
                 button.textContent = name;
                 button.addEventListener('click', () => handleSensitivityClick(item));
@@ -1705,30 +1748,9 @@ button.copy-button:hover,
             user_id = 'guest_' + Date.now();
         }
 
-        particlesJS('particles-js', {
-            "particles": {
-                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#ffffff" },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5 },
-                "size": { "value": 5, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
-                "move": { "enable": true, "speed": 6 }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": { "enable": true, "mode": "grab" },
-                    "onclick": { "enable": true, "mode": "push" }
-                }
-            },
-            "retina_detect": true
-        });
-
-        setTimeout(() => {
-            fetchSensitivities();
-            fetchLastLooters();
-        }, Math.random() * 2000);
+        // ⚡️ لا تستخدم setTimeout لتحميل البيانات — ابدأ فورًا
+        fetchSensitivities();
+        fetchLastLooters();
     </script>
 </body>
 </html>
