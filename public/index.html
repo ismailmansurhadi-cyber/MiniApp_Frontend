@@ -17,13 +17,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎁 Lootbox</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- خطوط متعددة اللغات: Cairo للعربية، Roboto للإنجليزية والروسية -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+    <!-- خطوط مخصصة: Amiri للعربية، Inter للإنجليزية والروسية -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* تطبيق الخطوط على جميع العناصر النصية */
+/* تطبيق الخطوط حسب اللغة */
+:root {
+    --font-family: 'Amiri', serif;
+}
+.lang-en, .lang-ru {
+    --font-family: 'Inter', sans-serif;
+}
 body {
-    font-family: 'Cairo', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--font-family);
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
@@ -35,6 +40,12 @@ body {
     flex-direction: column;
     position: relative;
     overflow-x: hidden;
+    direction: rtl;
+    text-align: right;
+}
+.lang-en, .lang-ru {
+    direction: ltr;
+    text-align: left;
 }
 .hidden {
     display: none;
@@ -111,6 +122,7 @@ button {
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
+    font-family: var(--font-family);
 }
 button::before {
     content: '';
@@ -258,6 +270,7 @@ button.copy-button:hover,
     border-color: #00e6e6;
     color: #fff;
     transition: border-color 0.3s ease;
+    font-family: var(--font-family);
 }
 #lootbox-area input:focus {
     border-color: #00ff00;
@@ -276,6 +289,7 @@ button.copy-button:hover,
     color: #fff;
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    font-family: var(--font-family);
 }
 #lootbox-area button:hover {
     background-color: #1565c0;
@@ -305,6 +319,7 @@ button.copy-button:hover,
     font-size: 12px;
     color: #e0e0e0;
     word-break: break-all;
+    font-family: var(--font-family);
 }
 #copy-link-button {
     width: 70%;
@@ -346,6 +361,7 @@ button.copy-button:hover,
     letter-spacing: 0.5px;
     position: relative;
     z-index: 2;
+    font-family: var(--font-family);
 }
 .winner-item {
     background: rgba(0, 20, 30, 0.5);
@@ -360,6 +376,7 @@ button.copy-button:hover,
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     animation: fadeInUp 0.4s ease forwards;
     opacity: 0;
+    font-family: var(--font-family);
 }
 .winner-item:nth-child(1) { animation-delay: 0.05s; }
 .winner-item:nth-child(2) { animation-delay: 0.1s; }
@@ -708,7 +725,7 @@ button.copy-button:hover,
             border: 1px solid #ff00aa;
         ">يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة</p>
         <div id="display-container-vip" class="sensitivity-display" style="width: 100%; max-width: 300px; background-color: #ff00aa; padding: 15px; border-radius: 8px; text-align: center; box-sizing: border-box;">
-            <div id="code-output-vip" dir="rtl" style="font-family: monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all;"></div>
+            <div id="code-output-vip" dir="ltr" style="font-family: monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all;"></div>
             <button id="copy-code-btn-vip" style="margin-top: 15px; padding: 10px; background: #4a7c8e; color: white; border: 2px solid #00ffff; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%;">
                 نسخ الكود
             </button>
@@ -847,7 +864,8 @@ button.copy-button:hover,
             prize_luck: "حظ اوفر في المرة القادمة",
             pro_title: "حساسيات المحترفين",
             beginner_title: "حساسيات المبتدئين",
-            winners_title: "🏆 آخر الفائزين"
+            winners_title: "🏆 آخر الفائزين",
+            you_won: "لقد ربحت"
           },
           en: {
             main_title: "PUBG Mastery Starts Here",
@@ -894,7 +912,8 @@ button.copy-button:hover,
             prize_luck: "Better luck next time",
             pro_title: "Pro Sensitivities",
             beginner_title: "Beginner Sensitivities",
-            winners_title: "🏆 Latest Winners"
+            winners_title: "🏆 Latest Winners",
+            you_won: "You won"
           },
           ru: {
             main_title: "Мастерство в PUBG начинается здесь",
@@ -941,11 +960,12 @@ button.copy-button:hover,
             prize_luck: "Повезет в следующий раз",
             pro_title: "Чувствительность для профи",
             beginner_title: "Чувствительность для новичков",
-            winners_title: "🏆 Последние победители"
+            winners_title: "🏆 Последние победители",
+            you_won: "Вы выиграли"
           }
         };
 
-        // اكتشاف لغة المستخدم
+        // اكتشاف لغة المستخدم من Telegram
         const detectedLang = window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code || 'ar';
         const userLang = ['ar', 'en', 'ru'].includes(detectedLang) ? detectedLang : 'ar';
 
@@ -954,7 +974,7 @@ button.copy-button:hover,
           return TEXTS[userLang][key] || TEXTS.ar[key] || key;
         }
 
-        // تطبيق الترجمة
+        // تطبيق الترجمة والاتجاه والخط
         function applyTranslations() {
           document.getElementById('main-title').textContent = t('main_title');
           document.getElementById('main-subtitle').textContent = t('main_subtitle');
@@ -970,7 +990,6 @@ button.copy-button:hover,
           document.getElementById('back-to-main-beginner').textContent = t('back');
           document.getElementById('go-back-btn').textContent = t('back');
           document.getElementById('hide-lootbox-button').textContent = t('back');
-
           // صندوق الغنائم
           document.getElementById('lootbox-title').textContent = t('lootbox');
           document.getElementById('description-text').textContent = t('enter_id');
@@ -980,19 +999,24 @@ button.copy-button:hover,
           document.getElementById('your-link-text').textContent = t('your_link');
           document.getElementById('open-box-button').textContent = t('open_box');
           document.getElementById('winners-title').textContent = t('winners_title');
-
           // البنر الترحيبي
           document.getElementById('welcome-title').textContent = t('welcome_title');
           document.getElementById('welcome-desc').innerHTML = t('welcome_desc');
           document.getElementById('close-welcome').textContent = t('start_now');
-
           // عناوين الحساسيات
           document.getElementById('pro-title').textContent = t('pro_title');
           document.getElementById('beginner-title').textContent = t('beginner_title');
 
-          // اتجاه النص
-          document.body.dir = userLang === 'ar' ? 'rtl' : 'ltr';
-          document.documentElement.lang = userLang;
+          // تطبيق الاتجاه واللغة والخط
+          const html = document.documentElement;
+          html.lang = userLang;
+          if (userLang === 'ar') {
+            document.body.className = '';
+            html.style.setProperty('--font-family', "'Amiri', serif");
+          } else {
+            document.body.className = `lang-${userLang}`;
+            html.style.setProperty('--font-family', "'Inter', sans-serif");
+          }
         }
 
         // === المتغيرات العامة ===
@@ -1034,13 +1058,13 @@ button.copy-button:hover,
         let boxesCount = 0;
         const INVITE_GOAL = 3;
         const prizes = [
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
-            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
-            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
-            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
+            { name: t('prize_60uc'), imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: t('prize_60uc'), imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: t('prize_60uc'), imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: t('prize_golden'), imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
+            { name: t('prize_luck'), imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
+            { name: t('prize_luck'), imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
+            { name: t('prize_golden'), imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
 
@@ -1054,7 +1078,6 @@ button.copy-button:hover,
                 }
             }
         }
-
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", initAdsGram);
         } else {
@@ -1131,7 +1154,7 @@ button.copy-button:hover,
             winners.slice(0, 5).forEach(winner => {
                 const li = document.createElement('li');
                 li.className = 'winner-item';
-                li.innerHTML = `<span>${winner.name}</span><span>ربح ${winner.prize}</span>`;
+                li.innerHTML = `<span>${winner.name}</span><span>${t('you_won')}: ${winner.prize}</span>`;
                 container.appendChild(li);
             });
         }
@@ -1176,8 +1199,8 @@ button.copy-button:hover,
 
         function getUserName() {
             const user = window.Telegram.WebApp.initDataUnsafe?.user;
-            if (user) return user.first_name || 'مستخدم';
-            return 'مستخدم';
+            if (user) return user.first_name || (userLang === 'ar' ? 'مستخدم' : userLang === 'en' ? 'User' : 'Пользователь');
+            return userLang === 'ar' ? 'مستخدم' : userLang === 'en' ? 'User' : 'Пользователь';
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1254,7 +1277,7 @@ button.copy-button:hover,
                 const button = document.createElement('button');
                 button.classList.add('sensitivity-btn');
                 // ✅ عرض الاسم بلغة المستخدم
-                const name = item[`name_${userLang}`] || item.name_ar || item.name || 'بدون اسم';
+                const name = item[`name_${userLang}`] || item.name_ar || item.name || (userLang === 'ar' ? 'بدون اسم' : userLang === 'en' ? 'No name' : 'Без названия');
                 button.textContent = name;
                 button.addEventListener('click', () => handleSensitivityClick(item));
                 container.appendChild(button);
@@ -1276,6 +1299,7 @@ button.copy-button:hover,
                         Telegram.WebApp.showAlert(t('error_copy'));
                     }
                 };
+                copyBtn.textContent = t('copy_code');
             }
         };
 
@@ -1298,6 +1322,7 @@ button.copy-button:hover,
                         if (vipData) {
                             showView(vipSensitivityView);
                             vipCodeOutput.textContent = vipData.code;
+                            copyVipCodeBtn.textContent = t('copy_code');
                             Telegram.WebApp.showAlert('🎉 تم عرض الكود بنجاح!');
                         }
                     } else {
@@ -1340,15 +1365,15 @@ button.copy-button:hover,
             customView.innerHTML = `
                 <div class="display-container" style="width:100%;max-width:400px;background:rgba(30,10,40,0.7);border:2px solid #ff00ff;border-radius:16px;padding:25px;box-shadow:0 0 20px rgba(138,43,226,0.6);text-align:center;">
                     <h2 style="color:#e0b0ff;font-size:22px;margin:0 0 20px;">${t('create_title')}</h2>
-                    <input type="text" id="device-name" placeholder="${t('device_name')}" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
-                    <select id="device-type" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
+                    <input type="text" id="device-name" placeholder="${t('device_name')}" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:var(--font-family);">
+                    <select id="device-type" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:var(--font-family);">
                         <option value="">${t('device_type')}</option>
                         <option value="mobile">${userLang === 'ar' ? 'موبايل' : userLang === 'en' ? 'Mobile' : 'Мобильный'}</option>
                         <option value="tablet">${userLang === 'ar' ? 'آيباد/تابلت' : userLang === 'en' ? 'Tablet' : 'Планшет'}</option>
                         <option value="emulator">${userLang === 'ar' ? 'محاكي' : userLang === 'en' ? 'Emulator' : 'Эмулятор'}</option>
                     </select>
-                    <input type="number" id="fps" placeholder="${t('fps')}" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
-                    <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;">${t('get_sensitivity')}</button>
+                    <input type="number" id="fps" placeholder="${t('fps')}" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;font-family:var(--font-family);">
+                    <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;font-family:var(--font-family);">${t('get_sensitivity')}</button>
                     <div id="custom-result" style="margin-top:20px;display:none;"></div>
                     <div style="text-align: center; margin-top: 20px;">
                         <button id="back-to-main-custom" class="copy-button">${t('back')}</button>
@@ -1431,7 +1456,7 @@ button.copy-button:hover,
                 <p style="color:#ffd700;font-weight:bold;">${t('your_custom')}</p>
                 <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${randomCode}</pre>
                 <button onclick="navigator.clipboard.writeText('${randomCode}').then(()=>Telegram.WebApp.showAlert('${t('copied')}'))" 
-                        style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;">
+                        style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;font-family:var(--font-family);">
                   ${t('copy_code')}
                 </button>
               </div>
@@ -1502,7 +1527,7 @@ button.copy-button:hover,
 
         const resetForm = () => {
             addSensitivityForm.reset();
-            formSubmitBtn.textContent = 'إضافة';
+            formSubmitBtn.textContent = userLang === 'ar' ? 'إضافة' : userLang === 'en' ? 'Add' : 'Добавить';
             editingId = null;
         };
 
@@ -1553,7 +1578,7 @@ button.copy-button:hover,
               if (data) {
                 adminCodeInput.value = data;
                 adminTypeSelect.value = 'custom';
-                formSubmitBtn.textContent = 'تعديل';
+                formSubmitBtn.textContent = userLang === 'ar' ? 'تعديل' : userLang === 'en' ? 'Edit' : 'Редактировать';
                 editingId = id;
               }
             } else if (type === 'vip') {
@@ -1562,7 +1587,7 @@ button.copy-button:hover,
               if (data) {
                 adminCodeInput.value = data.code;
                 adminTypeSelect.value = 'vip';
-                formSubmitBtn.textContent = 'تعديل';
+                formSubmitBtn.textContent = userLang === 'ar' ? 'تعديل' : userLang === 'en' ? 'Edit' : 'Редактировать';
                 editingId = 'vip';
               }
             } else {
@@ -1575,7 +1600,7 @@ button.copy-button:hover,
                 adminCodeInput.value = data.code;
                 adminImageInput.value = data.imageUrl;
                 adminTypeSelect.value = type;
-                formSubmitBtn.textContent = 'تعديل';
+                formSubmitBtn.textContent = userLang === 'ar' ? 'تعديل' : userLang === 'en' ? 'Edit' : 'Редактировать';
                 editingId = id;
               }
             }
@@ -1601,7 +1626,6 @@ button.copy-button:hover,
         proChoiceButton.addEventListener('click', () => showView(proSensitivitiesView));
         beginnerChoiceButton.addEventListener('click', () => showView(beginnerSensitivitiesView));
         openLootboxButton.addEventListener('click', () => showView(lootboxView));
-
         document.getElementById('save-id-button').onclick = function() {
             const pubgId = document.getElementById('player-id-input').value.trim();
             if (pubgId) {
@@ -1638,7 +1662,7 @@ button.copy-button:hover,
                 prizeElement.style.marginTop = '15px';
                 prizeElement.innerHTML = `
                     <img src="${prize.imageUrl}" alt="${prize.name}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
-                    <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;">${t('you_won') || 'لقد ربحت'}: ${prize.name}</p>
+                    <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;">${t('you_won')}: ${prize.name}</p>
                 `;
                 document.getElementById('result-area').innerHTML = '';
                 document.getElementById('result-area').appendChild(prizeElement);
@@ -1647,7 +1671,6 @@ button.copy-button:hover,
                     await database.ref('users/' + user_id).update({ boxes: boxesCount });
                 }
                 updateCounters();
-
                 const newWinner = { name: userName, prize: prize.name, timestamp: Date.now() };
                 const globalRef = database.ref('globalLastWinners');
                 const snapshot = await globalRef.once('value');
@@ -1655,9 +1678,7 @@ button.copy-button:hover,
                 globalWinners.unshift(newWinner);
                 if (globalWinners.length > 5) globalWinners = globalWinners.slice(0, 5);
                 await globalRef.set(globalWinners);
-
                 fetchLastLooters();
-
                 isBoxOpening = false;
                 button.disabled = false;
             }, 800);
