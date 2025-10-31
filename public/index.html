@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W1RTXYRFZF"></script>
 <script>
@@ -16,601 +16,652 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صندوق الغنائم</title>
-    <!-- خط عربي -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
-    <!-- خط لاتيني/سيريلي -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --font-ar: 'Cairo', sans-serif;
-            --font-latin: 'Inter', sans-serif;
-        }
-        body.ar {
-            font-family: var(--font-ar);
-            direction: rtl;
-        }
-        body.en, body.ru {
-            font-family: var(--font-latin);
-            direction: ltr;
-        }
-        /* === باقي الـ CSS كما في الأصل مع الحفاظ على Cairo للعربية === */
-        body {
-            background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #ffffff;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            flex-direction: column;
-            position: relative;
-            overflow-x: hidden;
-        }
-        .hidden {
-            display: none;
-        }
-        #particles-js {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        main#app-container {
-            width: 100%;
-            max-width: 450px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-            padding: 20px;
-        }
-        .title-box {
-            background: linear-gradient(135deg, #0c2a3a, #1a4a5f);
-            padding: 16px;
-            border-radius: 12px;
-            box-shadow: 0 0 14px rgba(0, 180, 220, 0.6), 0 4px 10px rgba(0, 0, 0, 0.4);
-            border: 1.5px solid #00b4d8;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-            text-align: center;
-        }
-        .title-box h1 {
-            font-size: 24px;
-            color: transparent;
-            background: linear-gradient(90deg, #00d8ff, #00ffaa, #ffd700);
-            -webkit-background-clip: text;
-            background-clip: text;
-            margin-bottom: 6px;
-            text-shadow: 0 0 8px rgba(0, 216, 255, 0.5);
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-        .title-box p {
-            font-size: 13px;
-            color: #cceeff;
-            margin-top: 3px;
-            font-weight: 500;
-        }
-        .main-choice-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            width: 100%;
-            max-width: 400px;
-        }
-        button {
-            width: 100%;
-            padding: 16px;
-            margin: 0;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-            border: 2px solid transparent;
-            background: rgba(10, 30, 40, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 4px 12px rgba(0, 255, 255, 0.3), 0 0 8px rgba(0, 255, 255, 0.5);
-            transition: all 0.25s ease;
-            position: relative;
-            overflow: hidden;
-            box-sizing: border-box;
-        }
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 20%),
-                        radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 20%);
-            opacity: 0.3;
-            animation: floatGlow 4s infinite ease-in-out;
-        }
-        @keyframes floatGlow {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        button::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
-            transition: left 0.6s ease;
-        }
-        button:hover::after {
-            left: 100%;
-        }
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0, 255, 255, 0.4), 0 0 12px rgba(0, 255, 255, 0.7);
-        }
-        button:active {
-            transform: translateY(0);
-        }
-        button:disabled {
-            background: rgba(30, 40, 50, 0.6);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        button.copy-button,
-        #hide-lootbox-button,
-        #go-back-btn {
-            background: transparent !important;
-            color: #00e6e6 !important;
-            border: 2px solid #00e6e6 !important;
-            box-shadow: 0 0 10px rgba(0, 230, 230, 0.5) !important;
-            font-weight: bold !important;
-            backdrop-filter: blur(4px) !important;
-        }
-        button.copy-button:hover,
-        #hide-lootbox-button:hover,
-        #go-back-btn:hover {
-            background: rgba(0, 230, 230, 0.1) !important;
-            box-shadow: 0 0 15px rgba(0, 230, 230, 0.8) !important;
-            transform: translateY(-2px) !important;
-        }
-        #open-vip-sensitivity-button {
-            background: linear-gradient(135deg, #ffc107, #ff9800);
-            color: #000;
-            border: 2px solid #ff9800;
-            box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
-            animation: pulse 2s infinite;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 12px 16px;
-            line-height: 1.3;
-            text-align: center;
-        }
-        #open-vip-sensitivity-button .ad-label {
-            font-size: 13px;
-            opacity: 0.9;
-            font-weight: 600;
-            margin-top: 4px;
-        }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 12px rgba(255, 193, 7, 0.6); }
-            50% { box-shadow: 0 0 20px rgba(255, 193, 7, 0.9); }
-        }
-        #open-vip-sensitivity-button:hover {
-            background: linear-gradient(135deg, #ff9800, #f57c00);
-            transform: translateY(-3px);
-            box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
-        }
-        #create-sensitivity-btn {
-            background: linear-gradient(135deg, #8a2be2, #4b0082);
-            color: white;
-            border: 2px solid #ff00ff;
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
-            animation: rainbow 3s infinite;
-        }
-        @keyframes rainbow {
-            0% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
-            25% { box-shadow: 0 0 15px rgba(255, 0, 255, 0.8); }
-            50% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); }
-            75% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.8); }
-            100% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
-        }
-        #create-sensitivity-btn:hover {
-            background: linear-gradient(135deg, #9b3be3, #5a1093);
-            transform: translateY(-3px);
-            box-shadow: 0 0 20px rgba(138, 43, 226, 1);
-        }
-        #lootbox-view .container {
-            background: none;
-            padding: 0;
-            box-shadow: none;
-            border: none;
-            max-width: 320px;
-            margin: 20px auto;
-            box-sizing: border-box;
-        }
-        #lootbox-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            position: relative;
-        }
-        #lootbox-area h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #00e6e6;
-        }
-        #lootbox-area p, #lootbox-area h2 {
-            font-size: 14px;
-            color: #e0e0e0;
-            margin-top: 5px;
-        }
-        #lootbox-area input {
-            width: 90%;
-            margin: 10px 0;
-            padding: 12px;
-            border: 1px solid #555;
-            background-color: #33363b;
-            font-size: 14px;
-            border-radius: 8px;
-            text-align: center;
-            border-color: #00e6e6;
-            color: #fff;
-            transition: border-color 0.3s ease;
-        }
-        #lootbox-area input:focus {
-            border-color: #00ff00;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-        }
-        #lootbox-area button {
-            width: 90%;
-            margin: 10px auto;
-            padding: 12px;
-            font-size: 15px;
-            border-radius: 8px;
-            background-color: #1a73e8;
-            border: 2px solid #00ff00;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 4px 6px rgba(0, 0, 0, 0.3);
-            color: #fff;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-        }
-        #lootbox-area button:hover {
-            background-color: #1565c0;
-            transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.9), 0 6px 8px rgba(0, 0, 0, 0.4);
-        }
-        #lootbox-area button:disabled {
-            background-color: #5b6e9a;
-            border-color: #5b6e9a;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        #invitation-link-container {
-            background: rgba(0, 150, 150, 0.2);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(0, 200, 200, 0.7);
-            margin-top: 15px;
-            width: 90%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        #invitation-link-container span {
-            font-size: 12px;
-            color: #e0e0e0;
-            word-break: break-all;
-        }
-        #copy-link-button {
-            width: 70%;
-            margin-top: 0;
-            padding: 10px;
-        }
-        .winner-list {
-            background: rgba(10, 20, 30, 0.6);
-            padding: 18px;
-            border-radius: 16px;
-            margin-top: 22px;
-            width: 92%;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 200, 255, 0.4);
-            box-shadow: 
-                0 4px 20px rgba(0, 0, 0, 0.5),
-                inset 0 0 10px rgba(0, 180, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .winner-list::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #ff8a00, #e52e71, #00c3ff);
-            border-radius: 2px;
-        }
-        .winner-list h3 {
-            margin: 0 0 14px 0;
-            color: #ffffff;
-            font-size: 18px;
-            font-weight: 800;
-            text-align: center;
-            text-shadow: 0 0 8px rgba(0, 200, 255, 0.6);
-            letter-spacing: 0.5px;
-            position: relative;
-            z-index: 2;
-        }
-        .winner-item {
-            background: rgba(0, 20, 30, 0.5);
-            border-radius: 12px;
-            padding: 12px 14px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(0, 150, 200, 0.3);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            animation: fadeInUp 0.4s ease forwards;
-            opacity: 0;
-        }
-        .winner-item:nth-child(1) { animation-delay: 0.05s; }
-        .winner-item:nth-child(2) { animation-delay: 0.1s; }
-        .winner-item:nth-child(3) { animation-delay: 0.15s; }
-        .winner-item:nth-child(4) { animation-delay: 0.2s; }
-        .winner-item:nth-child(5) { animation-delay: 0.25s; }
-        .winner-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 180, 255, 0.4);
-            border-color: rgba(0, 200, 255, 0.6);
-        }
-        .winner-item span:first-child {
-            font-weight: bold;
-            color: #ffd700;
-            font-size: 14px;
-        }
-        .winner-item span:last-child {
-            color: #00e6e6;
-            font-size: 13px;
-            background: rgba(0, 30, 40, 0.6);
-            padding: 4px 10px;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 200, 255, 0.4);
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
-        }
-        #lootbox-image.shake {
-            animation: shake 0.5s infinite;
-        }
-        #lootbox-image {
-            width: 180px;
-            height: auto;
-            margin: 20px 0;
-            position: relative;
-            z-index: 1;
-        }
-        .scattered-item {
-            position: absolute;
-            width: auto;
-            z-index: 0;
-            opacity: 0.8;
-        }
-        #gun-image {
-            width: 120px;
-            top: 10px;
-            right: 50px;
-            transform: rotate(20deg);
-        }
-        #uc-coin-top-left {
-            width: 40px;
-            top: 220px;
-            left: 40px;
-        }
-        #uc-coin-middle-right {
-            width: 35px;
-            top: 300px;
-            right: 60px;
-            transform: rotate(15deg);
-        }
-        #uc-coin-bottom-left {
-            width: 30px;
-            bottom: 200px;
-            left: 70px;
-            transform: rotate(-10deg);
-        }
-        #parachute-image {
-            width: 100px;
-            top: 220px;
-            right: 20px;
-            transform: rotate(-15deg);
-        }
-        .sensitivities-view .display-container,
-        #custom-sensitivity-view .display-container {
-            margin: 0 auto !important;
-            text-align: center !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
-        .sensitivity-display {
-            text-align: center !important;
-        }
-        #display-container.hidden {
-            display: none !important;
-        }
-        #display-container {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
-            width: 100% !important;
-            max-width: 400px !important;
-            margin: 0 auto !important;
-            padding: 20px !important;
-            box-sizing: border-box !important;
-            direction: ltr !important;
-        }
-        #display-image {
-            max-width: 100% !important;
-            height: auto !important;
-            margin-bottom: 15px !important;
-            border-radius: 8px !important;
-            display: block !important;
-        }
-        #code-output {
-            font-family: monospace !important;
-            white-space: pre-wrap !important;
-            word-break: break-all !important;
-            color: #e0e0e0 !important;
-            margin-bottom: 15px !important;
-            direction: ltr !important;
-            text-align: left !important;
-        }
-        #copy-code-btn {
-            width: 100% !important;
-            max-width: 300px !important;
-            padding: 12px !important;
-            font-size: 16px !important;
-            border-radius: 8px !important;
-        }
-        .welcome-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            backdrop-filter: blur(8px);
-        }
-        .welcome-content {
-            background: linear-gradient(145deg, #0f1b2a, #1a2d47);
-            padding: 32px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 360px;
-            width: 92%;
-            box-shadow: 
-                0 10px 30px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(100, 200, 255, 0.2),
-                inset 0 0 20px rgba(0, 180, 255, 0.1);
-            border: 1px solid rgba(100, 200, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        .welcome-content::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #ff8a00, #e52e71, #00c3ff);
-            z-index: -1;
-            border-radius: 22px;
-            animation: borderGlow 3s infinite alternate;
-        }
-        @keyframes borderGlow {
-            0% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-        .welcome-content h2 {
-            font-weight: 800;
-            font-size: 22px;
-            margin-bottom: 14px;
-            background: linear-gradient(90deg, #ffd700, #ff8a00, #00c3ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1.3;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        }
-        .welcome-content p {
-            font-weight: 600;
-            color: #e0f7ff;
-            font-size: 16px;
-            line-height: 1.5;
-            margin-bottom: 24px;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        }
-        .welcome-content p strong {
-            color: #ffd700;
-            font-weight: 800;
-        }
-        .welcome-content button {
-            background: linear-gradient(135deg, #00c3ff, #0077ff);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 14px;
-            font-size: 17px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 119, 255, 0.4);
-            letter-spacing: 0.5px;
-        }
-        .welcome-content button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 119, 255, 0.6);
-            background: linear-gradient(135deg, #00d0ff, #0088ff);
-        }
-    </style>
+    <title>🎁 Lootbox</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- خطوط متعددة اللغات: Cairo للعربية، Roboto للإنجليزية والروسية -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* تطبيق الخطوط على جميع العناصر النصية */
+body {
+    font-family: 'Cairo', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
+}
+.hidden {
+    display: none;
+}
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+main#app-container {
+    width: 100%;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+}
+.title-box {
+    background: linear-gradient(135deg, #0c2a3a, #1a4a5f);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 0 14px rgba(0, 180, 220, 0.6), 0 4px 10px rgba(0, 0, 0, 0.4);
+    border: 1.5px solid #00b4d8;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    text-align: center;
+}
+.title-box h1 {
+    font-size: 24px;
+    color: transparent;
+    background: linear-gradient(90deg, #00d8ff, #00ffaa, #ffd700);
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 6px;
+    text-shadow: 0 0 8px rgba(0, 216, 255, 0.5);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+.title-box p {
+    font-size: 13px;
+    color: #cceeff;
+    margin-top: 3px;
+    font-weight: 500;
+}
+.main-choice-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 400px;
+}
+button {
+    width: 100%;
+    padding: 16px;
+    margin: 0;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    border: 2px solid transparent;
+    background: rgba(10, 30, 40, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 255, 255, 0.3), 0 0 8px rgba(0, 255, 255, 0.5);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 20%);
+    opacity: 0.3;
+    animation: floatGlow 4s infinite ease-in-out;
+}
+@keyframes floatGlow {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+button:hover::after {
+    left: 100%;
+}
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 255, 255, 0.4), 0 0 12px rgba(0, 255, 255, 0.7);
+}
+button:active {
+    transform: translateY(0);
+}
+button:disabled {
+    background: rgba(30, 40, 50, 0.6);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+button.copy-button,
+#hide-lootbox-button,
+#go-back-btn {
+    background: transparent !important;
+    color: #00e6e6 !important;
+    border: 2px solid #00e6e6 !important;
+    box-shadow: 0 0 10px rgba(0, 230, 230, 0.5) !important;
+    font-weight: bold !important;
+    backdrop-filter: blur(4px) !important;
+}
+button.copy-button:hover,
+#hide-lootbox-button:hover,
+#go-back-btn:hover {
+    background: rgba(0, 230, 230, 0.1) !important;
+    box-shadow: 0 0 15px rgba(0, 230, 230, 0.8) !important;
+    transform: translateY(-2px) !important;
+}
+#open-vip-sensitivity-button {
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    color: #000;
+    border: 2px solid #ff9800;
+    box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
+    animation: pulse 2s infinite;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 16px;
+    line-height: 1.3;
+    text-align: center;
+}
+#open-vip-sensitivity-button .ad-label {
+    font-size: 13px;
+    opacity: 0.9;
+    font-weight: 600;
+    margin-top: 4px;
+}
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 12px rgba(255, 193, 7, 0.6); }
+    50% { box-shadow: 0 0 20px rgba(255, 193, 7, 0.9); }
+}
+#open-vip-sensitivity-button:hover {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    transform: translateY(-3px);
+    box-shadow: 0 0 18px rgba(255, 152, 0, 0.8);
+}
+#create-sensitivity-btn {
+    background: linear-gradient(135deg, #8a2be2, #4b0082);
+    color: white;
+    border: 2px solid #ff00ff;
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
+    animation: rainbow 3s infinite;
+}
+@keyframes rainbow {
+    0% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
+    25% { box-shadow: 0 0 15px rgba(255, 0, 255, 0.8); }
+    50% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); }
+    75% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.8); }
+    100% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
+}
+#create-sensitivity-btn:hover {
+    background: linear-gradient(135deg, #9b3be3, #5a1093);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 1);
+}
+#lootbox-view .container {
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    max-width: 320px;
+    margin: 20px auto;
+    box-sizing: border-box;
+}
+#lootbox-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+#lootbox-area h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #00e6e6;
+}
+#lootbox-area p, #lootbox-area h2 {
+    font-size: 14px;
+    color: #e0e0e0;
+    margin-top: 5px;
+}
+#lootbox-area input {
+    width: 90%;
+    margin: 10px 0;
+    padding: 12px;
+    border: 1px solid #555;
+    background-color: #33363b;
+    font-size: 14px;
+    border-radius: 8px;
+    text-align: center;
+    border-color: #00e6e6;
+    color: #fff;
+    transition: border-color 0.3s ease;
+}
+#lootbox-area input:focus {
+    border-color: #00ff00;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+#lootbox-area button {
+    width: 90%;
+    margin: 10px auto;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 8px;
+    background-color: #1a73e8;
+    border: 2px solid #00ff00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+#lootbox-area button:hover {
+    background-color: #1565c0;
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.9), 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+#lootbox-area button:disabled {
+    background-color: #5b6e9a;
+    border-color: #5b6e9a;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+#invitation-link-container {
+    background: rgba(0, 150, 150, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 200, 200, 0.7);
+    margin-top: 15px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+#invitation-link-container span {
+    font-size: 12px;
+    color: #e0e0e0;
+    word-break: break-all;
+}
+#copy-link-button {
+    width: 70%;
+    margin-top: 0;
+    padding: 10px;
+}
+.winner-list {
+    background: rgba(10, 20, 30, 0.6);
+    padding: 18px;
+    border-radius: 16px;
+    margin-top: 22px;
+    width: 92%;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 200, 255, 0.4);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.5),
+        inset 0 0 10px rgba(0, 180, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+.winner-list::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #ff8a00, #e52e71, #00c3ff);
+    border-radius: 2px;
+}
+.winner-list h3 {
+    margin: 0 0 14px 0;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 800;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(0, 200, 255, 0.6);
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 2;
+}
+.winner-item {
+    background: rgba(0, 20, 30, 0.5);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(0, 150, 200, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: fadeInUp 0.4s ease forwards;
+    opacity: 0;
+}
+.winner-item:nth-child(1) { animation-delay: 0.05s; }
+.winner-item:nth-child(2) { animation-delay: 0.1s; }
+.winner-item:nth-child(3) { animation-delay: 0.15s; }
+.winner-item:nth-child(4) { animation-delay: 0.2s; }
+.winner-item:nth-child(5) { animation-delay: 0.25s; }
+.winner-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 180, 255, 0.4);
+    border-color: rgba(0, 200, 255, 0.6);
+}
+.winner-item span:first-child {
+    font-weight: bold;
+    color: #ffd700;
+    font-size: 14px;
+}
+.winner-item span:last-child {
+    color: #00e6e6;
+    font-size: 13px;
+    background: rgba(0, 30, 40, 0.6);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 200, 255, 0.4);
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+#lootbox-image.shake {
+    animation: shake 0.5s infinite;
+}
+#lootbox-image {
+    width: 180px;
+    height: auto;
+    margin: 20px 0;
+    position: relative;
+    z-index: 1;
+}
+.scattered-item {
+    position: absolute;
+    width: auto;
+    z-index: 0;
+    opacity: 0.8;
+}
+#gun-image {
+    width: 120px;
+    top: 10px;
+    right: 50px;
+    transform: rotate(20deg);
+}
+#uc-coin-top-left {
+    width: 40px;
+    top: 220px;
+    left: 40px;
+}
+#uc-coin-middle-right {
+    width: 35px;
+    top: 300px;
+    right: 60px;
+    transform: rotate(15deg);
+}
+#uc-coin-bottom-left {
+    width: 30px;
+    bottom: 200px;
+    left: 70px;
+    transform: rotate(-10deg);
+}
+#parachute-image {
+    width: 100px;
+    top: 220px;
+    right: 20px;
+    transform: rotate(-15deg);
+}
+.sensitivities-view .display-container,
+#custom-sensitivity-view .display-container {
+    margin: 0 auto !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.sensitivity-display {
+    text-align: center !important;
+}
+#display-container.hidden {
+    display: none !important;
+}
+#display-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+}
+#display-image {
+    max-width: 100% !important;
+    height: auto !important;
+    margin-bottom: 15px !important;
+    border-radius: 8px !important;
+    display: block !important;
+}
+#code-output {
+    font-family: monospace !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    color: #e0e0e0 !important;
+    margin-bottom: 15px !important;
+    direction: ltr !important;
+    text-align: left !important;
+}
+#copy-code-btn {
+    width: 100% !important;
+    max-width: 300px !important;
+    padding: 12px !important;
+    font-size: 16px !important;
+    border-radius: 8px !important;
+}
+#pro-choice::before,
+#beginner-choice::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(0,255,255,0.1), transparent);
+    opacity: 0.3;
+    z-index: 1;
+    animation: glowPulse 4s infinite ease-in-out;
+}
+@keyframes glowPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+#pro-choice:hover::before,
+#beginner-choice:hover::before {
+    opacity: 0.6;
+    animation: none;
+}
+#app-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.05) 0%, transparent 20%);
+    pointer-events: none;
+    z-index: -1;
+}
+#pro-choice::after,
+#beginner-choice::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+    z-index: 1;
+}
+#pro-choice:hover::after,
+#beginner-choice:hover::after {
+    left: 100%;
+}
+.welcome-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(8px);
+}
+.welcome-content {
+    background: linear-gradient(145deg, #0f1b2a, #1a2d47);
+    padding: 32px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 360px;
+    width: 92%;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(100, 200, 255, 0.2),
+        inset 0 0 20px rgba(0, 180, 255, 0.1);
+    border: 1px solid rgba(100, 200, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+.welcome-content::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ff8a00, #e52e71, #00c3ff);
+    z-index: -1;
+    border-radius: 22px;
+    animation: borderGlow 3s infinite alternate;
+}
+@keyframes borderGlow {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+.welcome-content h2 {
+    font-weight: 800;
+    font-size: 22px;
+    margin-bottom: 14px;
+    background: linear-gradient(90deg, #ffd700, #ff8a00, #00c3ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.3;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.welcome-content p {
+    font-weight: 600;
+    color: #e0f7ff;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.welcome-content p strong {
+    color: #ffd700;
+    font-weight: 800;
+}
+.welcome-content button {
+    background: linear-gradient(135deg, #00c3ff, #0077ff);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 119, 255, 0.4);
+    letter-spacing: 0.5px;
+}
+.welcome-content button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 119, 255, 0.6);
+    background: linear-gradient(135deg, #00d0ff, #0088ff);
+}
+</style>
 </head>
-<body class="ar">
+<body>
     <main id="app-container">
-        <a href="https://t.me/berlin_of_iraq" target="_blank" style="position: absolute; top: 20px; right: 20px; z-index: 1000; width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; text-decoration: none; box-shadow: 0 3px 8px rgba(0,0,0,0.4);">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="قناة" style="width: 28px; height: 28px;">
-        </a>
+        <a href="https://t.me/berlin_of_iraq" target="_blank" style="
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="قناة" style="width: 28px; height: 28px;">
+</a>
         <section id="initial-choice-view">
             <div class="title-box">
-                <h1 id="welcome-title">احتراف ببجي يبدأ من هنا</h1>
-                <p id="welcome-subtitle">اختر مستواك لتجد أفضل الحساسيات</p>
+                <h1 id="main-title">احتراف ببجي يبدأ من هنا</h1>
+                <p id="main-subtitle">اختر مستواك لتجد أفضل الحساسيات</p>
             </div>
             <div class="main-choice-container">
                 <button id="pro-choice">أنا محترف</button>
@@ -657,7 +708,7 @@
             border: 1px solid #ff00aa;
         ">يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة</p>
         <div id="display-container-vip" class="sensitivity-display" style="width: 100%; max-width: 300px; background-color: #ff00aa; padding: 15px; border-radius: 8px; text-align: center; box-sizing: border-box;">
-            <div id="code-output-vip" dir="ltr" style="font-family: monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all;"></div>
+            <div id="code-output-vip" dir="rtl" style="font-family: monospace; font-size: 16px; color: #e0e0e0; white-space: pre-wrap; word-break: break-all;"></div>
             <button id="copy-code-btn-vip" style="margin-top: 15px; padding: 10px; background: #4a7c8e; color: white; border: 2px solid #00ffff; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%;">
                 نسخ الكود
             </button>
@@ -673,7 +724,6 @@
                     <button id="save-id-button">ببجي ID حفظ</button>
                     <div id="invitation-area" style="display: none;">
                         <p id="invitation-counter">لديك <span id="invited-count">0</span> من 3 دعوات. لديك <span id="lootbox-count">0</span> صندوق.</p>
-                        <!-- الصور كما هي -->
                         <img id="gun-image" class="scattered-item" src="https://up6.cc/2025/08/17583186663551.png" alt="بندقية"> 
                         <img id="uc-coin-top-left" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC"> 
                         <img id="uc-coin-middle-right" class="scattered-item" src="https://up6.cc/2025/08/175831857474031.png" alt="عملة UC"> 
@@ -683,7 +733,7 @@
                             <img id="lootbox-image" src="https://up6.cc/2025/08/175831095492441.png" alt="صندوق الغنائم">
                         </div>
                         <br>
-                        <h2 id="invite-link-title">رابط دعوتك 🔗</h2>
+                        <h2 id="your-link-text">رابط دعوتك 🔗</h2>
                         <div id="invitation-link-container">
                             <span id="invitation-link"></span>
                             <button id="copy-link-button" class="copy-button">نسخ</button>
@@ -705,9 +755,9 @@
         <section id="admin-panel" class="admin-panel hidden">
             <h2>لوحة تحكم المالك</h2>
             <form id="add-sensitivity-form">
-                <input type="text" id="admin-name-input-ar" placeholder="اسم الحساسية (عربي)" required>
-                <input type="text" id="admin-name-input-en" placeholder="Name (English)" required>
-                <input type="text" id="admin-name-input-ru" placeholder="Название (Русский)" required>
+                <input type="text" id="name_ar" placeholder="الاسم (عربي)" required>
+                <input type="text" id="name_en" placeholder="Name (English)" required>
+                <input type="text" id="name_ru" placeholder="Название (Русский)" required>
                 <textarea id="admin-code-input" placeholder="كود الحساسية" required></textarea>
                 <input type="text" id="admin-image-input" placeholder="رابط الصورة" required>
                 <select id="admin-type-select">
@@ -724,13 +774,12 @@
     </main>
     <div id="welcome-banner" class="welcome-banner hidden">
         <div class="welcome-content">
-            <h2 id="welcome-banner-title">🏆 أنت لست لاعبًا عاديًّا... أنت بطل قادم!</h2>
-            <p id="welcome-banner-desc">انضم إلى <strong>+100,000 لاعب</strong> حول العالم</p>
+            <h2 id="welcome-title">🏆 أنت لست لاعبًا عاديًّا... أنت بطل قادم!</h2>
+            <p id="welcome-desc">انضم إلى <strong>+100,000 لاعب</strong> حول العالم</p>
             <button id="close-welcome">ابدأ الآن</button>
         </div>
     </div>
     <div id="particles-js"></div>
-
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
@@ -751,162 +800,199 @@
         const database = firebase.database();
     </script>
     <script>
-        // ============ نظام الترجمة ============
-        const translations = {
-            ar: {
-                welcomeTitle: "احتراف ببجي يبدأ من هنا",
-                welcomeSubtitle: "اختر مستواك لتجد أفضل الحساسيات",
-                proTitle: "حساسيات المحترفين",
-                beginnerTitle: "حساسيات المبتدئين",
-                lootboxTitle: "صندوق الغنائم 🎁",
-                descriptionText: "للمتابعة ID ادخل.",
-                playerIdPlaceholder: " حسابك ID ادخل",
-                saveIdButton: "ببجي ID حفظ",
-                invitationCounter: "لديك {invited} من 3 دعوات. لديك {boxes} صندوق.",
-                inviteLinkTitle: "رابط دعوتك 🔗",
-                copyButton: "نسخ",
-                openBoxButton: "افتح الصندوق",
-                winnersTitle: "🏆 آخر الفائزين",
-                backToMain: "العودة إلى الواجهة الرئيسية",
-                copyCode: "نسخ الكود",
-                vipNotice: "يتم تحديث كود الحساسية المدفوع يومياً كل 24 ساعة",
-                welcomeBannerTitle: "🏆 أنت لست لاعبًا عاديًّا... أنت بطل قادم!",
-                welcomeBannerDesc: "انضم إلى <strong>+100,000 لاعب</strong> حول العالم",
-                startNow: "ابدأ الآن",
-                proChoice: "أنا محترف",
-                beginnerChoice: "أنا مبتدئ",
-                lootboxChoice: "🎁 صندوق الغنائم العشوائي",
-                vipChoice: "حساسية VIP مدفوعة",
-                createChoice: "✨ اصنع حساسيتك ✨",
-                adminPanel: "لوحة التحكم"
-            },
-            en: {
-                welcomeTitle: "PUBG Mastery Starts Here",
-                welcomeSubtitle: "Choose your level to find the best sensitivities",
-                proTitle: "Pro Sensitivities",
-                beginnerTitle: "Beginner Sensitivities",
-                lootboxTitle: "Lootbox 🎁",
-                descriptionText: "Enter your ID to continue.",
-                playerIdPlaceholder: "Enter your PUBG ID",
-                saveIdButton: "Save PUBG ID",
-                invitationCounter: "You have {invited} of 3 invites. You have {boxes} box(es).",
-                inviteLinkTitle: "Your invite link 🔗",
-                copyButton: "Copy",
-                openBoxButton: "Open Box",
-                winnersTitle: "🏆 Latest Winners",
-                backToMain: "Back to Main",
-                copyCode: "Copy Code",
-                vipNotice: "VIP code is updated daily every 24 hours",
-                welcomeBannerTitle: "🏆 You're not just a player... You're a future champion!",
-                welcomeBannerDesc: "Join <strong>100,000+ players</strong> worldwide",
-                startNow: "Start Now",
-                proChoice: "I'm Pro",
-                beginnerChoice: "I'm Beginner",
-                lootboxChoice: "🎁 Random Lootbox",
-                vipChoice: "Paid VIP Sensitivity",
-                createChoice: "✨ Create Your Sensitivity ✨",
-                adminPanel: "Admin Panel"
-            },
-            ru: {
-                welcomeTitle: "Мастерство в PUBG начинается здесь",
-                welcomeSubtitle: "Выберите свой уровень, чтобы найти лучшие настройки",
-                proTitle: "Настройки для про",
-                beginnerTitle: "Настройки для новичков",
-                lootboxTitle: "Лутбокс 🎁",
-                descriptionText: "Введите свой ID для продолжения.",
-                playerIdPlaceholder: "Введите свой ID PUBG",
-                saveIdButton: "Сохранить ID PUBG",
-                invitationCounter: "У вас {invited} из 3 приглашений. У вас {boxes} ящик(ов).",
-                inviteLinkTitle: "Ваша ссылка для приглашения 🔗",
-                copyButton: "Копировать",
-                openBoxButton: "Открыть ящик",
-                winnersTitle: "🏆 Последние победители",
-                backToMain: "Вернуться на главную",
-                copyCode: "Копировать код",
-                vipNotice: "VIP-код обновляется ежедневно каждые 24 часа",
-                welcomeBannerTitle: "🏆 Вы не просто игрок... Вы будущий чемпион!",
-                welcomeBannerDesc: "Присоединяйтесь к <strong>100 000+ игрокам</strong> по всему миру",
-                startNow: "Начать сейчас",
-                proChoice: "Я про",
-                beginnerChoice: "Я новичок",
-                lootboxChoice: "🎁 Случайный лутбокс",
-                vipChoice: "Платная VIP-чувствительность",
-                createChoice: "✨ Создать свою чувствительность ✨",
-                adminPanel: "Панель администратора"
-            }
+        // ============ نظام الترجمة الكامل ============
+        const TEXTS = {
+          ar: {
+            main_title: "احتراف ببجي يبدأ من هنا",
+            main_subtitle: "اختر مستواك لتجد أفضل الحساسيات",
+            pro: "أنا محترف",
+            beginner: "أنا مبتدئ",
+            lootbox: "🎁 صندوق الغنائم العشوائي",
+            vip: "حساسية VIP مدفوعة",
+            create: "✨ اصنع حساسيتك ✨",
+            back: "العودة إلى الواجهة الرئيسية",
+            enter_id: "للمتابعة ID ادخل.",
+            save_id: "ببجي ID حفظ",
+            invite_goal: "قم بدعوة 3 مستخدمين لفتح الصندوق.",
+            invited_count: "لديك <span id='invited-count'>0</span> من 3 دعوات. لديك <span id='lootbox-count'>0</span> صندوق.",
+            copy_link: "نسخ",
+            your_link: "رابط دعوتك 🔗",
+            open_box: "افتح الصندوق",
+            confirm_open: "هل أنت متأكد من فتح الصندوق؟",
+            opening: "يتم فتح الصندوق...",
+            create_title: "🎯 اصنع حساسيتك",
+            device_name: "📱 اسم جهازك",
+            device_type: "🎮 نوع الجهاز",
+            fps: "📊 الفريمات (30-120)",
+            get_sensitivity: "🚀 احصل على حساسيتك",
+            daily_limit: "يمكنك في اليوم صنع حساسية واحدة مجانًا.<br>إذا أردت صناعة حساسية مخصصة أخرى، شاهد الإعلان أولًا.",
+            watch_ad: "👀 شاهد الإعلان",
+            your_custom: "🎯 حساسيتك المخصصة:",
+            copy_code: "📋 نسخ الكود",
+            welcome_title: "🏆 أنت لست لاعبًا عاديًّا... أنت بطل قادم!",
+            welcome_desc: "انضم إلى <strong>+100,000 لاعب</strong> حول العالم",
+            start_now: "ابدأ الآن",
+            ad_label: "(شاهد إعلان)",
+            refresh: "🔄 تحديث العداد",
+            fill_fields: "املأ جميع الحقول.",
+            copied: "تم نسخ الكود بنجاح!",
+            error_copy: "حدث خطأ أثناء نسخ الكود.",
+            no_custom: "لا توجد حساسيات مخصصة بعد.",
+            success_add: "تم الإضافة بنجاح!",
+            success_edit: "تم التعديل بنجاح!",
+            delete_confirm: "هل أنت متأكد من الحذف؟",
+            deleted: "تم الحذف بنجاح!",
+            prize_60uc: "60 UC",
+            prize_golden: "الصندوق الذهبي",
+            prize_luck: "حظ اوفر في المرة القادمة",
+            pro_title: "حساسيات المحترفين",
+            beginner_title: "حساسيات المبتدئين",
+            winners_title: "🏆 آخر الفائزين"
+          },
+          en: {
+            main_title: "PUBG Mastery Starts Here",
+            main_subtitle: "Choose your level to get the best sensitivities",
+            pro: "I'm Pro",
+            beginner: "I'm Beginner",
+            lootbox: "🎁 Random Lootbox",
+            vip: "Paid VIP Sensitivity",
+            create: "✨ Create Your Sensitivity ✨",
+            back: "Back to Main",
+            enter_id: "Enter your ID to continue.",
+            save_id: "Save PUBG ID",
+            invite_goal: "Invite 3 users to unlock the lootbox.",
+            invited_count: "You have <span id='invited-count'>0</span> of 3 invites. You have <span id='lootbox-count'>0</span> boxes.",
+            copy_link: "Copy",
+            your_link: "Your invite link 🔗",
+            open_box: "Open Box",
+            confirm_open: "Are you sure you want to open the box?",
+            opening: "Opening the box...",
+            create_title: "🎯 Create Your Sensitivity",
+            device_name: "📱 Your Device Name",
+            device_type: "🎮 Device Type",
+            fps: "📊 FPS (30-120)",
+            get_sensitivity: "🚀 Get Your Sensitivity",
+            daily_limit: "You can create one free sensitivity per day.<br>To create another, watch an ad first.",
+            watch_ad: "👀 Watch Ad",
+            your_custom: "🎯 Your Custom Sensitivity:",
+            copy_code: "📋 Copy Code",
+            welcome_title: "🏆 You're not an ordinary player... You're a rising champion!",
+            welcome_desc: "Join <strong>+100,000 players</strong> worldwide",
+            start_now: "Start Now",
+            ad_label: "(Watch Ad)",
+            refresh: "🔄 Refresh Counter",
+            fill_fields: "Please fill all fields.",
+            copied: "Code copied successfully!",
+            error_copy: "Error copying code.",
+            no_custom: "No custom sensitivities available yet.",
+            success_add: "Added successfully!",
+            success_edit: "Edited successfully!",
+            delete_confirm: "Are you sure you want to delete?",
+            deleted: "Deleted successfully!",
+            prize_60uc: "60 UC",
+            prize_golden: "Golden Box",
+            prize_luck: "Better luck next time",
+            pro_title: "Pro Sensitivities",
+            beginner_title: "Beginner Sensitivities",
+            winners_title: "🏆 Latest Winners"
+          },
+          ru: {
+            main_title: "Мастерство в PUBG начинается здесь",
+            main_subtitle: "Выберите свой уровень, чтобы получить лучшие настройки",
+            pro: "Я профи",
+            beginner: "Я новичок",
+            lootbox: "🎁 Случайный лутбокс",
+            vip: "Платная VIP-чувствительность",
+            create: "✨ Создать свою чувствительность ✨",
+            back: "Назад на главную",
+            enter_id: "Введите свой ID для продолжения.",
+            save_id: "Сохранить ID PUBG",
+            invite_goal: "Пригласите 3 пользователей, чтобы открыть лутбокс.",
+            invited_count: "У вас <span id='invited-count'>0</span> из 3 приглашений. У вас <span id='lootbox-count'>0</span> ящиков.",
+            copy_link: "Копировать",
+            your_link: "Ваша ссылка для приглашения 🔗",
+            open_box: "Открыть ящик",
+            confirm_open: "Вы уверены, что хотите открыть ящик?",
+            opening: "Открытие ящика...",
+            create_title: "🎯 Создать свою чувствительность",
+            device_name: "📱 Название вашего устройства",
+            device_type: "🎮 Тип устройства",
+            fps: "📊 Частота кадров (30-120)",
+            get_sensitivity: "🚀 Получить настройки",
+            daily_limit: "Вы можете создать одну бесплатную чувствительность в день.<br>Чтобы создать еще одну, сначала посмотрите рекламу.",
+            watch_ad: "👀 Посмотреть рекламу",
+            your_custom: "🎯 Ваши настройки:",
+            copy_code: "📋 Скопировать код",
+            welcome_title: "🏆 Вы не обычный игрок... Вы будущий чемпион!",
+            welcome_desc: "Присоединяйтесь к <strong>+100 000 игрокам</strong> по всему миру",
+            start_now: "Начать сейчас",
+            ad_label: "(Смотреть рекламу)",
+            refresh: "🔄 Обновить счетчик",
+            fill_fields: "Пожалуйста, заполните все поля.",
+            copied: "Код успешно скопирован!",
+            error_copy: "Ошибка при копировании кода.",
+            no_custom: "Пользовательские настройки пока недоступны.",
+            success_add: "Успешно добавлено!",
+            success_edit: "Успешно изменено!",
+            delete_confirm: "Вы уверены, что хотите удалить?",
+            deleted: "Успешно удалено!",
+            prize_60uc: "60 UC",
+            prize_golden: "Золотой ящик",
+            prize_luck: "Повезет в следующий раз",
+            pro_title: "Чувствительность для профи",
+            beginner_title: "Чувствительность для новичков",
+            winners_title: "🏆 Последние победители"
+          }
         };
 
-        // ============ اكتشاف اللغة ============
-        function detectUserLanguage() {
-            const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
-            const lang = user?.language_code || 'ar';
-            if (lang.startsWith('en')) return 'en';
-            if (lang.startsWith('ru')) return 'ru';
-            return 'ar';
+        // اكتشاف لغة المستخدم
+        const detectedLang = window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code || 'ar';
+        const userLang = ['ar', 'en', 'ru'].includes(detectedLang) ? detectedLang : 'ar';
+
+        // دالة الترجمة
+        function t(key) {
+          return TEXTS[userLang][key] || TEXTS.ar[key] || key;
         }
 
-        let currentLang = detectUserLanguage();
+        // تطبيق الترجمة
+        function applyTranslations() {
+          document.getElementById('main-title').textContent = t('main_title');
+          document.getElementById('main-subtitle').textContent = t('main_subtitle');
+          document.getElementById('pro-choice').textContent = t('pro');
+          document.getElementById('beginner-choice').textContent = t('beginner');
+          document.getElementById('open-lootbox-button').textContent = t('lootbox');
+          document.getElementById('open-vip-sensitivity-button').innerHTML = `
+            ${t('vip')}<br>
+            <span class="ad-label">(${t('ad_label')})</span>
+          `;
+          document.getElementById('create-sensitivity-btn').textContent = t('create');
+          document.getElementById('back-to-main-pro').textContent = t('back');
+          document.getElementById('back-to-main-beginner').textContent = t('back');
+          document.getElementById('go-back-btn').textContent = t('back');
+          document.getElementById('hide-lootbox-button').textContent = t('back');
 
-        // ============ تطبيق اللغة ============
-        function applyLanguage(lang) {
-            currentLang = lang;
-            document.body.className = lang;
+          // صندوق الغنائم
+          document.getElementById('lootbox-title').textContent = t('lootbox');
+          document.getElementById('description-text').textContent = t('enter_id');
+          document.getElementById('save-id-button').textContent = t('save_id');
+          document.getElementById('invitation-counter').innerHTML = t('invited_count');
+          document.getElementById('copy-link-button').textContent = t('copy_link');
+          document.getElementById('your-link-text').textContent = t('your_link');
+          document.getElementById('open-box-button').textContent = t('open_box');
+          document.getElementById('winners-title').textContent = t('winners_title');
 
-            document.getElementById('welcome-title').textContent = translations[lang].welcomeTitle;
-            document.getElementById('welcome-subtitle').textContent = translations[lang].welcomeSubtitle;
-            document.getElementById('pro-title').textContent = translations[lang].proTitle;
-            document.getElementById('beginner-title').textContent = translations[lang].beginnerTitle;
-            document.getElementById('lootbox-title').textContent = translations[lang].lootboxTitle;
-            document.getElementById('description-text').textContent = translations[lang].descriptionText;
-            document.getElementById('player-id-input').placeholder = translations[lang].playerIdPlaceholder;
-            document.getElementById('save-id-button').textContent = translations[lang].saveIdButton;
-            document.getElementById('invite-link-title').textContent = translations[lang].inviteLinkTitle;
-            document.getElementById('copy-link-button').textContent = translations[lang].copyButton;
-            document.getElementById('open-box-button').textContent = translations[lang].openBoxButton;
-            document.getElementById('winners-title').textContent = translations[lang].winnersTitle;
-            document.getElementById('back-to-main-pro').textContent = translations[lang].backToMain;
-            document.getElementById('back-to-main-beginner').textContent = translations[lang].backToMain;
-            document.getElementById('hide-lootbox-button').textContent = translations[lang].backToMain;
-            document.getElementById('go-back-btn').textContent = translations[lang].backToMain;
-            document.getElementById('copy-code-btn').textContent = translations[lang].copyCode;
-            document.getElementById('copy-code-btn-vip').textContent = translations[lang].copyCode;
-            document.querySelector('.vip-update-notice').textContent = translations[lang].vipNotice;
-            document.getElementById('welcome-banner-title').textContent = translations[lang].welcomeBannerTitle;
-            document.getElementById('welcome-banner-desc').innerHTML = translations[lang].welcomeBannerDesc;
-            document.getElementById('close-welcome').textContent = translations[lang].startNow;
-            document.getElementById('pro-choice').textContent = translations[lang].proChoice;
-            document.getElementById('beginner-choice').textContent = translations[lang].beginnerChoice;
-            document.getElementById('open-lootbox-button').textContent = translations[lang].lootboxChoice;
-            document.getElementById('open-vip-sensitivity-button').innerHTML = `
-                ${translations[lang].vipChoice}<br>
-                <span class="ad-label">(${lang === 'ar' ? 'شاهد إعلان' : lang === 'en' ? 'Watch ad' : 'Смотреть рекламу'})</span>
-            `;
-            document.getElementById('create-sensitivity-btn').textContent = translations[lang].createChoice;
-            document.getElementById('open-admin-btn').textContent = translations[lang].adminPanel;
+          // البنر الترحيبي
+          document.getElementById('welcome-title').textContent = t('welcome_title');
+          document.getElementById('welcome-desc').innerHTML = t('welcome_desc');
+          document.getElementById('close-welcome').textContent = t('start_now');
 
-            updateCounters();
-        }
+          // عناوين الحساسيات
+          document.getElementById('pro-title').textContent = t('pro_title');
+          document.getElementById('beginner-title').textContent = t('beginner_title');
 
-        function updateCounters() {
-            const invited = window.invitationsCount || 0;
-            const boxes = window.boxesCount || 0;
-            const text = translations[currentLang].invitationCounter
-                .replace('{invited}', invited)
-                .replace('{boxes}', boxes);
-            document.getElementById('invitation-counter').textContent = text;
-        }
-
-        function renderWinnersList(winners) {
-            const container = document.getElementById('winners-list-container');
-            container.innerHTML = '';
-            winners.slice(0, 5).forEach(winner => {
-                const li = document.createElement('li');
-                li.className = 'winner-item';
-                const name = typeof winner.name === 'object' ? (winner.name[currentLang] || winner.name.ar) : winner.name;
-                const prize = typeof winner.prize === 'object' ? (winner.prize[currentLang] || winner.prize.ar) : winner.prize;
-                li.innerHTML = `<span>${name}</span><span>${prize}</span>`;
-                container.appendChild(li);
-            });
+          // اتجاه النص
+          document.body.dir = userLang === 'ar' ? 'rtl' : 'ltr';
+          document.documentElement.lang = userLang;
         }
 
         // === المتغيرات العامة ===
@@ -931,9 +1017,9 @@
         const codeOutput = document.getElementById('code-output');
         const displayImage = document.getElementById('display-image');
         const addSensitivityForm = document.getElementById('add-sensitivity-form');
-        const adminNameInputAr = document.getElementById('admin-name-input-ar');
-        const adminNameInputEn = document.getElementById('admin-name-input-en');
-        const adminNameInputRu = document.getElementById('admin-name-input-ru');
+        const adminNameInputAr = document.getElementById('name_ar');
+        const adminNameInputEn = document.getElementById('name_en');
+        const adminNameInputRu = document.getElementById('name_ru');
         const adminCodeInput = document.getElementById('admin-code-input');
         const adminImageInput = document.getElementById('admin-image-input');
         const adminTypeSelect = document.getElementById('admin-type-select');
@@ -948,12 +1034,17 @@
         let boxesCount = 0;
         const INVITE_GOAL = 3;
         const prizes = [
-            { name: { ar: "60 UC", en: "60 UC", ru: "60 UC" }, imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
-            { name: { ar: "الصندوق الذهبي", en: "Golden Box", ru: "Золотой ящик" }, imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
-            { name: { ar: "حظ اوفر في المرة القادمة", en: "Better luck next time", ru: "Повезёт в следующий раз" }, imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "60 UC", imageUrl: "https://up6.cc/2025/08/175906419026811.png" },
+            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
+            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
+            { name: "حظ اوفر في المرة القادمة", imageUrl: "https://up6.cc/2025/08/175906508044821.png" },
+            { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
 
+        // ============ CACHING لتحسين الأداء ============
         function initAdsGram() {
             if (window.Adsgram && !adController) {
                 try {
@@ -963,13 +1054,13 @@
                 }
             }
         }
+
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", initAdsGram);
         } else {
             initAdsGram();
         }
 
-        // ✅ إصلاح نهائي لمشكلة البنر
         function showWelcomeBanner() {
             const hasSeen = localStorage.getItem('welcome_shown');
             const banner = document.getElementById('welcome-banner');
@@ -979,7 +1070,6 @@
                 localStorage.setItem('welcome_shown', 'true');
                 closeBtn.onclick = () => {
                     banner.classList.add('hidden');
-                    // لا نحتاج لإظهار الواجهة الرئيسية لأنها ظاهرة افتراضيًا
                 };
                 banner.onclick = (e) => {
                     if (e.target === banner) {
@@ -1035,6 +1125,17 @@
             }
         }
 
+        function renderWinnersList(winners) {
+            const container = document.getElementById('winners-list-container');
+            container.innerHTML = '';
+            winners.slice(0, 5).forEach(winner => {
+                const li = document.createElement('li');
+                li.className = 'winner-item';
+                li.innerHTML = `<span>${winner.name}</span><span>ربح ${winner.prize}</span>`;
+                container.appendChild(li);
+            });
+        }
+
         async function checkInvitation() {
             const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param;
             if (!startParam || !startParam.startsWith('inviter_')) return;
@@ -1067,6 +1168,12 @@
             }
         }
 
+        function updateCounters() {
+            document.getElementById('invited-count').textContent = invitationsCount;
+            document.getElementById('lootbox-count').textContent = boxesCount;
+            document.getElementById('open-box-button').disabled = boxesCount < 1;
+        }
+
         function getUserName() {
             const user = window.Telegram.WebApp.initDataUnsafe?.user;
             if (user) return user.first_name || 'مستخدم';
@@ -1074,7 +1181,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            applyLanguage(currentLang);
             if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
                 const adminBtn = document.getElementById('open-admin-btn');
                 if (adminBtn) {
@@ -1099,10 +1205,8 @@
                     showView(initialChoiceView);
                 }
             });
-            showWelcomeBanner(); // ✅ تم إصلاحها
-
-            // ✅ تأكد أن الواجهة الرئيسية ظاهرة عند بدء التطبيق
-            initialChoiceView.classList.remove('hidden');
+            showWelcomeBanner();
+            applyTranslations();
         });
 
         function showView(viewToShow) {
@@ -1149,7 +1253,8 @@
             data.forEach(item => {
                 const button = document.createElement('button');
                 button.classList.add('sensitivity-btn');
-                const name = typeof item.name === 'object' ? (item.name[currentLang] || item.name.ar) : item.name;
+                // ✅ عرض الاسم بلغة المستخدم
+                const name = item[`name_${userLang}`] || item.name_ar || item.name || 'بدون اسم';
                 button.textContent = name;
                 button.addEventListener('click', () => handleSensitivityClick(item));
                 container.appendChild(button);
@@ -1166,9 +1271,9 @@
                 copyBtn.onclick = async () => {
                     try {
                         await navigator.clipboard.writeText(item.code);
-                        Telegram.WebApp.showAlert(translations[currentLang].copyCode + ' ' + (currentLang === 'ar' ? 'بنجاح!' : currentLang === 'en' ? 'successfully!' : 'успешно!'));
+                        Telegram.WebApp.showAlert(t('copied'));
                     } catch (err) {
-                        Telegram.WebApp.showAlert('حدث خطأ أثناء نسخ الكود.');
+                        Telegram.WebApp.showAlert(t('error_copy'));
                     }
                 };
             }
@@ -1176,13 +1281,13 @@
 
         openVipSensitivityButton.onclick = function() {
             openVipSensitivityButton.disabled = true;
-            openVipSensitivityButton.innerHTML = 'جارٍ تحميل الإعلان...';
+            openVipSensitivityButton.innerHTML = t('opening');
             if (!adController) {
                 Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات.');
                 openVipSensitivityButton.disabled = false;
                 openVipSensitivityButton.innerHTML = `
-                    ${translations[currentLang].vipChoice}<br>
-                    <span class="ad-label">(${currentLang === 'ar' ? 'شاهد إعلان' : currentLang === 'en' ? 'Watch ad' : 'Смотреть рекламу'})</span>
+                    ${t('vip')}<br>
+                    <span class="ad-label">(${t('ad_label')})</span>
                 `;
                 return;
             }
@@ -1206,17 +1311,17 @@
                 .finally(() => {
                     openVipSensitivityButton.disabled = false;
                     openVipSensitivityButton.innerHTML = `
-                        ${translations[currentLang].vipChoice}<br>
-                        <span class="ad-label">(${currentLang === 'ar' ? 'شاهد إعلان' : currentLang === 'en' ? 'Watch ad' : 'Смотреть рекламу'})</span>
+                        ${t('vip')}<br>
+                        <span class="ad-label">(${t('ad_label')})</span>
                     `;
                 });
         };
 
         copyVipCodeBtn.onclick = function() {
             const code = vipCodeOutput.textContent;
-            if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== 'جارٍ تحميل الإعلان...') {
+            if (code && code !== 'لا يوجد كود VIP حالياً.' && code !== t('opening')) {
                 navigator.clipboard.writeText(code).then(() => {
-                    Telegram.WebApp.showAlert(translations[currentLang].copyCode + ' ' + (currentLang === 'ar' ? 'بنجاح!' : currentLang === 'en' ? 'successfully!' : 'успешно!'));
+                    Telegram.WebApp.showAlert(t('copied'));
                 }).catch(err => {
                     console.error('فشل في نسخ الكود:', err);
                 });
@@ -1234,19 +1339,19 @@
             customView.style.padding = '20px';
             customView.innerHTML = `
                 <div class="display-container" style="width:100%;max-width:400px;background:rgba(30,10,40,0.7);border:2px solid #ff00ff;border-radius:16px;padding:25px;box-shadow:0 0 20px rgba(138,43,226,0.6);text-align:center;">
-                    <h2 style="color:#e0b0ff;font-size:22px;margin:0 0 20px;font-weight:800;">🎯 ${translations[currentLang].createChoice}</h2>
-                    <input type="text" id="device-name" placeholder="${currentLang === 'ar' ? '📱 اسم جهازك' : currentLang === 'en' ? '📱 Your device name' : '📱 Название вашего устройства'}" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
+                    <h2 style="color:#e0b0ff;font-size:22px;margin:0 0 20px;">${t('create_title')}</h2>
+                    <input type="text" id="device-name" placeholder="${t('device_name')}" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
                     <select id="device-type" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
-                        <option value="">${currentLang === 'ar' ? '🎮 نوع الجهاز' : currentLang === 'en' ? '🎮 Device type' : '🎮 Тип устройства'}</option>
-                        <option value="mobile">${currentLang === 'ar' ? 'موبايل' : currentLang === 'en' ? 'Mobile' : 'Мобильный'}</option>
-                        <option value="tablet">${currentLang === 'ar' ? 'آيباد/تابلت' : currentLang === 'en' ? 'Tablet' : 'Планшет'}</option>
-                        <option value="emulator">${currentLang === 'ar' ? 'محاكي' : currentLang === 'en' ? 'Emulator' : 'Эмулятор'}</option>
+                        <option value="">${t('device_type')}</option>
+                        <option value="mobile">${userLang === 'ar' ? 'موبايل' : userLang === 'en' ? 'Mobile' : 'Мобильный'}</option>
+                        <option value="tablet">${userLang === 'ar' ? 'آيباد/تابلت' : userLang === 'en' ? 'Tablet' : 'Планшет'}</option>
+                        <option value="emulator">${userLang === 'ar' ? 'محاكي' : userLang === 'en' ? 'Emulator' : 'Эмулятор'}</option>
                     </select>
-                    <input type="number" id="fps" placeholder="${currentLang === 'ar' ? '📊 الفريمات (30-120)' : currentLang === 'en' ? '📊 FPS (30-120)' : '📊 FPS (30-120)'}" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
-                    <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;">🚀 ${currentLang === 'ar' ? 'احصل على حساسيتك' : currentLang === 'en' ? 'Get your sensitivity' : 'Получить чувствительность'}</button>
+                    <input type="number" id="fps" placeholder="${t('fps')}" min="30" max="120" style="width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #8a2be2;background:rgba(0,0,0,0.3);color:white;">
+                    <button id="submit-custom" style="background:linear-gradient(135deg,#8a2be2,#ff00ff);color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;">${t('get_sensitivity')}</button>
                     <div id="custom-result" style="margin-top:20px;display:none;"></div>
                     <div style="text-align: center; margin-top: 20px;">
-                        <button id="back-to-main-custom" class="copy-button">${translations[currentLang].backToMain}</button>
+                        <button id="back-to-main-custom" class="copy-button">${t('back')}</button>
                     </div>
                 </div>
             `;
@@ -1259,7 +1364,7 @@
                 const type = document.getElementById('device-type').value;
                 const fps = document.getElementById('fps').value;
                 if (!device || !type || !fps) {
-                    Telegram.WebApp.showAlert(currentLang === 'ar' ? 'املأ جميع الحقول.' : currentLang === 'en' ? 'Fill all fields.' : 'Заполните все поля.');
+                    Telegram.WebApp.showAlert(t('fill_fields'));
                     return;
                 }
                 const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'guest';
@@ -1270,11 +1375,7 @@
                 if (lastTime && (now - parseInt(lastTime)) < ONE_DAY) {
                     document.getElementById('custom-result').innerHTML = `
                         <div style="background:rgba(20,5,30,0.9);border:2px solid #ff5500;border-radius:12px;padding:20px;text-align:center;color:#ffd700;font-weight:bold;">
-                            <p style="font-size:15px;margin:0 0 15px;line-height:1.4;">
-                                ${currentLang === 'ar' ? 'يمكنك في اليوم صنع حساسية واحدة مجانًا.<br>إذا أردت صناعة حساسية مخصصة أخرى، شاهد الإعلان أولًا.' : 
-                                  currentLang === 'en' ? 'You can create one free sensitivity per day.<br>To create another, watch an ad first.' : 
-                                  'Вы можете создавать одну бесплатную чувствительность в день.<br>Чтобы создать еще одну, сначала посмотрите рекламу.'}
-                            </p>
+                            <p style="font-size:15px;margin:0 0 15px;line-height:1.4;">${t('daily_limit')}</p>
                             <button id="watch-ad-btn" style="
                                 background:linear-gradient(135deg, #ff8c00, #ff5500);
                                 color:white;
@@ -1286,7 +1387,7 @@
                                 cursor:pointer;
                                 box-shadow:0 0 12px rgba(255,85,0,0.7);
                                 transition: transform 0.2s;
-                            ">${currentLang === 'ar' ? '👀 شاهد الإعلان' : currentLang === 'en' ? '👀 Watch Ad' : '👀 Посмотреть рекламу'}</button>
+                            ">${t('watch_ad')}</button>
                         </div>
                     `;
                     document.getElementById('custom-result').style.display = 'block';
@@ -1319,7 +1420,7 @@
             const snapshot = await database.ref('sensitivities/customPool').once('value');
             const codes = snapshot.val();
             if (!codes || Object.keys(codes).length === 0) {
-              Telegram.WebApp.showAlert(currentLang === 'ar' ? 'لا توجد حساسيات مخصصة بعد.' : currentLang === 'en' ? 'No custom sensitivities yet.' : 'Пока нет пользовательских настроек.');
+              Telegram.WebApp.showAlert(t('no_custom'));
               return;
             }
             const keys = Object.keys(codes);
@@ -1327,18 +1428,18 @@
             const randomCode = codes[randomKey];
             document.getElementById('custom-result').innerHTML = `
               <div style="background:rgba(20,5,30,0.8);border:2px solid #ff00ff;border-radius:12px;padding:15px;text-align:center;">
-                <p style="color:#ffd700;font-weight:bold;">${currentLang === 'ar' ? '🎯 حساسيتك المخصصة:' : currentLang === 'en' ? '🎯 Your custom sensitivity:' : '🎯 Ваша настройка:'}</p>
+                <p style="color:#ffd700;font-weight:bold;">${t('your_custom')}</p>
                 <pre style="color:#e0e0e0;font-family:monospace;white-space:pre-wrap;">${randomCode}</pre>
-                <button onclick="navigator.clipboard.writeText('${randomCode}').then(()=>Telegram.WebApp.showAlert('${translations[currentLang].copyCode} ${currentLang === 'ar' ? 'بنجاح!' : currentLang === 'en' ? 'successfully!' : 'успешно!'}'))" 
+                <button onclick="navigator.clipboard.writeText('${randomCode}').then(()=>Telegram.WebApp.showAlert('${t('copied')}'))" 
                         style="background:#00c853;color:white;border:none;padding:8px 15px;border-radius:6px;margin-top:10px;">
-                  📋 ${translations[currentLang].copyCode}
+                  ${t('copy_code')}
                 </button>
               </div>
             `;
             document.getElementById('custom-result').style.display = 'block';
             localStorage.setItem(lastCustomTimeKey, Date.now().toString());
           } catch (error) {
-            Telegram.WebApp.showAlert(currentLang === 'ar' ? 'فشل تحميل الحساسية.' : currentLang === 'en' ? 'Failed to load sensitivity.' : 'Ошибка загрузки настроек.');
+            Telegram.WebApp.showAlert('فشل تحميل الحساسية.');
             console.error('خطأ:', error);
           }
         };
@@ -1353,9 +1454,8 @@
               const item = items[id];
               const itemDiv = document.createElement('div');
               itemDiv.classList.add('admin-list-item');
-              const name = typeof item.name === 'object' ? item.name.ar : item.name;
               itemDiv.innerHTML = `
-                <span>${name} (${type})</span>
+                <span>${item.name_ar || item.name || 'بدون اسم'} (${type})</span>
                 <div class="admin-actions">
                   <button class="edit-btn" data-id="${id}" data-type="${type}">تعديل</button>
                   <button class="delete-btn" data-id="${id}" data-type="${type}">حذف</button>
@@ -1408,17 +1508,16 @@
 
         addSensitivityForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          const nameAr = adminNameInputAr.value.trim();
-          const nameEn = adminNameInputEn.value.trim();
-          const nameRu = adminNameInputRu.value.trim();
+          const name_ar = adminNameInputAr.value.trim();
+          const name_en = adminNameInputEn.value.trim();
+          const name_ru = adminNameInputRu.value.trim();
           const code = adminCodeInput.value.trim();
           const imageUrl = adminImageInput.value.trim();
           const type = adminTypeSelect.value;
-          if (!nameAr || !nameEn || !nameRu || !code || (type !== 'custom' && !imageUrl)) {
-            Telegram.WebApp.showAlert('يرجى ملء جميع الحقول المطلوبة.');
+          if (!name_ar || !name_en || !name_ru || !code || (type !== 'custom' && !imageUrl)) {
+            Telegram.WebApp.showAlert(t('fill_fields'));
             return;
           }
-          const name = { ar: nameAr, en: nameEn, ru: nameRu };
           try {
             if (type === 'custom') {
               const newRef = database.ref('sensitivities/customPool').push();
@@ -1427,13 +1526,13 @@
               await database.ref('sensitivities/vip/current').set({ code, updatedAt: Date.now() });
             } else {
               if (editingId) {
-                await database.ref(`sensitivities/${type}/${editingId}`).update({ name, code, imageUrl });
+                await database.ref(`sensitivities/${type}/${editingId}`).update({ name_ar, name_en, name_ru, code, imageUrl });
               } else {
                 const newRef = database.ref(`sensitivities/${type}`).push();
-                await newRef.set({ name, code, imageUrl });
+                await newRef.set({ name_ar, name_en, name_ru, code, imageUrl });
               }
             }
-            Telegram.WebApp.showAlert(editingId ? 'تم التعديل بنجاح!' : 'تم الإضافة بنجاح!');
+            Telegram.WebApp.showAlert(editingId ? t('success_edit') : t('success_add'));
             resetForm();
             fetchSensitivities();
           } catch (error) {
@@ -1470,9 +1569,9 @@
               const snapshot = await database.ref(`sensitivities/${type}/${id}`).once('value');
               const data = snapshot.val();
               if (data) {
-                adminNameInputAr.value = data.name.ar || data.name;
-                adminNameInputEn.value = data.name.en || data.name;
-                adminNameInputRu.value = data.name.ru || data.name;
+                adminNameInputAr.value = data.name_ar || '';
+                adminNameInputEn.value = data.name_en || '';
+                adminNameInputRu.value = data.name_ru || '';
                 adminCodeInput.value = data.code;
                 adminImageInput.value = data.imageUrl;
                 adminTypeSelect.value = type;
@@ -1481,7 +1580,7 @@
               }
             }
           } else if (target.classList.contains('delete-btn')) {
-            if (confirm('هل أنت متأكد من الحذف؟')) {
+            if (confirm(t('delete_confirm'))) {
               try {
                 if (type === 'customPool') {
                   await database.ref(`sensitivities/customPool/${id}`).remove();
@@ -1490,7 +1589,7 @@
                 } else {
                   await database.ref(`sensitivities/${type}/${id}`).remove();
                 }
-                Telegram.WebApp.showAlert('تم الحذف بنجاح!');
+                Telegram.WebApp.showAlert(t('deleted'));
                 fetchSensitivities();
               } catch (error) {
                 Telegram.WebApp.showAlert('فشل الحذف.');
@@ -1506,7 +1605,7 @@
         document.getElementById('save-id-button').onclick = function() {
             const pubgId = document.getElementById('player-id-input').value.trim();
             if (pubgId) {
-                document.getElementById('description-text').textContent = translations[currentLang].descriptionText;
+                document.getElementById('description-text').textContent = t('invite_goal');
                 document.getElementById('player-id-input').style.display = 'none';
                 this.style.display = 'none';
                 document.getElementById('invitation-area').style.display = 'block';
@@ -1515,32 +1614,31 @@
                 updateCounters();
                 document.getElementById('lootbox-image').classList.add('shake');
             } else {
-                alert(currentLang === 'ar' ? 'الرجاء إدخال ID حسابك.' : currentLang === 'en' ? 'Please enter your ID.' : 'Пожалуйста, введите ваш ID.');
+                alert(t('fill_fields'));
             }
         };
 
         let isBoxOpening = false;
         document.getElementById('open-box-button').onclick = function() {
             if (isBoxOpening || boxesCount <= 0) {
-                if (boxesCount <= 0) alert(currentLang === 'ar' ? 'ليس لديك صناديق كافية للفتح.' : currentLang === 'en' ? 'Not enough boxes.' : 'Недостаточно ящиков.');
+                if (boxesCount <= 0) alert('ليس لديك صناديق كافية للفتح.');
                 return;
             }
-            if (!confirm(currentLang === 'ar' ? 'هل أنت متأكد من فتح الصندوق؟' : currentLang === 'en' ? 'Are you sure?' : 'Вы уверены?')) return;
+            if (!confirm(t('confirm_open'))) return;
             isBoxOpening = true;
             const button = this;
             button.disabled = true;
-            document.getElementById('result-area').innerHTML = `<p style="color: #ffd700;">${currentLang === 'ar' ? 'يتم فتح الصندوق...' : currentLang === 'en' ? 'Opening box...' : 'Открытие ящика...'}</p>`;
+            document.getElementById('result-area').innerHTML = `<p style="color: #ffd700;">${t('opening')}</p>`;
             document.getElementById('lootbox-image').classList.remove('shake');
             setTimeout(async () => {
                 const userName = getUserName();
                 const prize = prizes[Math.floor(Math.random() * prizes.length)];
-                const prizeName = typeof prize.name === 'object' ? (prize.name[currentLang] || prize.name.ar) : prize.name;
                 const prizeElement = document.createElement('div');
                 prizeElement.style.textAlign = 'center';
                 prizeElement.style.marginTop = '15px';
                 prizeElement.innerHTML = `
-                    <img src="${prize.imageUrl}" alt="${prizeName}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
-                    <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;">${currentLang === 'ar' ? 'لقد ربحت: ' : currentLang === 'en' ? 'You won: ' : 'Вы выиграли: '}${prizeName}</p>
+                    <img src="${prize.imageUrl}" alt="${prize.name}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
+                    <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;">${t('you_won') || 'لقد ربحت'}: ${prize.name}</p>
                 `;
                 document.getElementById('result-area').innerHTML = '';
                 document.getElementById('result-area').appendChild(prizeElement);
@@ -1549,17 +1647,17 @@
                     await database.ref('users/' + user_id).update({ boxes: boxesCount });
                 }
                 updateCounters();
-                const newWinner = { 
-                    name: userName, 
-                    prize: prize.name,
-                    timestamp: Date.now() 
-                };
+
+                const newWinner = { name: userName, prize: prize.name, timestamp: Date.now() };
                 const globalRef = database.ref('globalLastWinners');
                 const snapshot = await globalRef.once('value');
                 let globalWinners = snapshot.val() || [];
                 globalWinners.unshift(newWinner);
                 if (globalWinners.length > 5) globalWinners = globalWinners.slice(0, 5);
                 await globalRef.set(globalWinners);
+
+                fetchLastLooters();
+
                 isBoxOpening = false;
                 button.disabled = false;
             }, 800);
@@ -1569,7 +1667,7 @@
             const link = document.getElementById('invitation-link').textContent;
             if (link) {
                 navigator.clipboard.writeText(link).then(() => {
-                    Telegram.WebApp.showAlert(translations[currentLang].copyButton + ' ' + (currentLang === 'ar' ? 'بنجاح!' : currentLang === 'en' ? 'successfully!' : 'успешно!'));
+                    Telegram.WebApp.showAlert(t('copied'));
                 });
             }
         };
@@ -1609,10 +1707,7 @@
         setTimeout(() => {
             fetchSensitivities();
             fetchLastLooters();
-            if (user_id && !user_id.startsWith('guest_')) {
-                 loadUserData();
-            }
-        }, Math.random() * 1500);
+        }, Math.random() * 2000);
     </script>
 </body>
 </html>
