@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W1RTXYRFZF"></script>
 <script>
@@ -18,9 +18,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎁 Lootbox</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- خط يدعم العربية + الإنجليزية + الروسية -->
+    <!-- خطوط متعددة اللغات: Cairo للعربية، Roboto للإنجليزية والروسية -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
 <style>
+/* تطبيق الخطوط على جميع العناصر النصية */
 body {
     font-family: 'Cairo', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
@@ -1253,7 +1254,7 @@ button.copy-button:hover,
                 const button = document.createElement('button');
                 button.classList.add('sensitivity-btn');
                 // ✅ عرض الاسم بلغة المستخدم
-                const name = item[`name_${userLang}`] || item.name_ar || 'بدون اسم';
+                const name = item[`name_${userLang}`] || item.name_ar || item.name || 'بدون اسم';
                 button.textContent = name;
                 button.addEventListener('click', () => handleSensitivityClick(item));
                 container.appendChild(button);
@@ -1454,7 +1455,7 @@ button.copy-button:hover,
               const itemDiv = document.createElement('div');
               itemDiv.classList.add('admin-list-item');
               itemDiv.innerHTML = `
-                <span>${item.name_ar || item.name} (${type})</span>
+                <span>${item.name_ar || item.name || 'بدون اسم'} (${type})</span>
                 <div class="admin-actions">
                   <button class="edit-btn" data-id="${id}" data-type="${type}">تعديل</button>
                   <button class="delete-btn" data-id="${id}" data-type="${type}">حذف</button>
