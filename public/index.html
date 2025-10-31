@@ -18,12 +18,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎁 Lootbox</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- خطوط متعددة اللغات: Cairo للعربية، Inter للإنجليزية والروسية -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- خطوط متعددة اللغات: Cairo للعربية، Orbitron و Poppins للإنجليزية والروسية -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Orbitron:wght@500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 /* تطبيق الخطوط على جميع العناصر النصية */
 body {
-    font-family: 'Cairo', 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Cairo', 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
@@ -36,6 +36,24 @@ body {
     position: relative;
     overflow-x: hidden;
 }
+
+/* تطبيق Orbitron للأزرار والعناوين عند اللغة الإنجليزية أو الروسية */
+html[lang="en"] button,
+html[lang="ru"] button,
+html[lang="en"] .title-box h1,
+html[lang="ru"] .title-box h1,
+html[lang="en"] .title-box p,
+html[lang="ru"] .title-box p {
+    font-family: 'Orbitron', 'Poppins', 'Cairo', sans-serif !important;
+}
+
+/* تحسين عرض النصوص داخل الأزرار */
+html[lang="en"] button,
+html[lang="ru"] button {
+    letter-spacing: 0.5px;
+    text-transform: none;
+}
+
 .hidden {
     display: none;
 }
@@ -111,12 +129,6 @@ button {
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
-}
-/* ضمان استخدام خط Cairo للأزرار عند اللغة العربية */
-html[lang="ar"] button,
-html[lang="ar"] input[type="button"],
-html[lang="ar"] input[type="submit"] {
-    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }
 button::before {
     content: '';
@@ -1000,11 +1012,7 @@ button.copy-button:hover,
           document.documentElement.lang = userLang;
         }
 
-        // === باقي الكود كما هو (لم يتم تعديله) ===
-        // ... (كل ما تبقى من الكود كما في الملف الأصلي)
-        // بما في ذلك المتغيرات، الدوال، الأحداث، إلخ.
-
-        // === المتغيرات العامة ===
+        // === باقي المتغيرات والدوال كما هي ===
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
