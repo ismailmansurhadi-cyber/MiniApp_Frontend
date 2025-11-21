@@ -1,5 +1,27 @@
 <!DOCTYPE html>
 <html lang="ar">
+<!-- ✅ تحديث الكاش الآمن -->
+<script>
+  (function() {
+    const CURRENT_VERSION = 'v6'; // ⬅️ غيّر هذا عند كل تحديث
+    const SAVED_VERSION = localStorage.getItem('app_version');
+    if (SAVED_VERSION !== CURRENT_VERSION) {
+      localStorage.setItem('app_version', CURRENT_VERSION);
+      if ('caches' in window) {
+        caches.keys().then(names => {
+          names.forEach(name => {
+            if (name.includes('my-lootbox') || name.includes('mylootbot2')) {
+              caches.delete(name);
+            }
+          });
+        });
+      }
+      if (SAVED_VERSION) {
+        window.location.reload();
+      }
+    }
+  })();
+</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-W1RTXYRFZF"></script>
 <script>
@@ -18,10 +40,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎁 Lootbox</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- خطوط متعددة اللغات: Cairo للعربية، Orbitron و Poppins للإنجليزية والروسية -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Orbitron:wght@500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-/* تطبيق الخطوط على جميع العناصر النصية */
+/* الأنماط كما هي — لا تغيير */
 body {
     font-family: 'Cairo', 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
@@ -36,13 +57,9 @@ body {
     position: relative;
     overflow-x: hidden;
 }
-
-/* ✅ تطبيق خط Cairo على جميع العناصر عند اللغة العربية */
 html[lang="ar"] * {
     font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }
-
-/* تطبيق Orbitron للأزرار والعناوين عند اللغة الإنجليزية أو الروسية */
 html[lang="en"] button,
 html[lang="ru"] button,
 html[lang="en"] .title-box h1,
@@ -51,14 +68,11 @@ html[lang="en"] .title-box p,
 html[lang="ru"] .title-box p {
     font-family: 'Orbitron', 'Poppins', 'Cairo', sans-serif !important;
 }
-
-/* تحسين عرض النصوص داخل الأزرار */
 html[lang="en"] button,
 html[lang="ru"] button {
     letter-spacing: 0.5px;
     text-transform: none;
 }
-
 .hidden {
     display: none;
 }
@@ -525,82 +539,33 @@ button.copy-button:hover,
     font-size: 16px !important;
     border-radius: 8px !important;
 }
-#pro-choice::before,
-#beginner-choice::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, transparent, rgba(0,255,255,0.1), transparent);
-    opacity: 0.3;
-    z-index: 1;
-    animation: glowPulse 4s infinite ease-in-out;
-}
-@keyframes glowPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-    100% { transform: scale(1); }
-}
-#pro-choice:hover::before,
-#beginner-choice:hover::before {
-    opacity: 0.6;
-    animation: none;
-}
-#app-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.05) 0%, transparent 20%);
-    pointer-events: none;
-    z-index: -1;
-}
-#pro-choice::after,
-#beginner-choice::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
-    transition: left 0.6s ease;
-    z-index: 1;
-}
-#pro-choice:hover::after,
-#beginner-choice:hover::after {
-    left: 100%;
-}
+/* ============ بنر ترحيبي ذهبي جديد — متناسق مع التطبيق ============ */
 .welcome-banner {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10000;
-    backdrop-filter: blur(8px);
+    z-index: 9999;
+    animation: fadeIn 0.4s ease;
 }
 .welcome-content {
-    background: linear-gradient(145deg, #0f1b2a, #1a2d47);
-    padding: 32px;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    padding: 30px;
     border-radius: 20px;
     text-align: center;
-    max-width: 360px;
-    width: 92%;
+    max-width: 90%;
+    width: 320px;
     box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(100, 200, 255, 0.2),
-        inset 0 0 20px rgba(0, 180, 255, 0.1);
-    border: 1px solid rgba(100, 200, 255, 0.3);
+        0 0 25px rgba(255, 215, 0, 0.4),
+        0 0 0 2px rgba(255, 215, 0, 0.3);
+    border: 1.5px solid #ffd700;
     position: relative;
     overflow: hidden;
 }
@@ -611,61 +576,57 @@ button.copy-button:hover,
     left: -2px;
     right: -2px;
     bottom: -2px;
-    background: linear-gradient(45deg, #ff8a00, #e52e71, #00c3ff);
+    background: linear-gradient(45deg, #ffd700, #ffaa00, #ffd700);
     z-index: -1;
+    animation: borderGlow 3s ease-in-out infinite;
     border-radius: 22px;
-    animation: borderGlow 3s infinite alternate;
+    opacity: 0.8;
 }
 @keyframes borderGlow {
-    0% { opacity: 0.6; }
-    100% { opacity: 1; }
+    0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.7); }
+    50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
 }
 .welcome-content h2 {
-    font-weight: 800;
     font-size: 22px;
-    margin-bottom: 14px;
-    background: linear-gradient(90deg, #ffd700, #ff8a00, #00c3ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin: 0 0 15px;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+    font-weight: 800;
     line-height: 1.3;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 .welcome-content p {
-    font-weight: 600;
-    color: #e0f7ff;
-    font-size: 16px;
+    color: #e0e0e0;
+    font-size: 15px;
+    margin: 0 0 20px;
     line-height: 1.5;
-    margin-bottom: 24px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-.welcome-content p strong {
-    color: #ffd700;
-    font-weight: 800;
 }
 .welcome-content button {
-    background: linear-gradient(135deg, #00c3ff, #0077ff);
-    color: white;
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    color: #000;
     border: none;
-    padding: 14px 28px;
-    border-radius: 14px;
-    font-size: 17px;
-    font-weight: 800;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 119, 255, 0.4);
-    letter-spacing: 0.5px;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.6);
+    transition: all 0.25s ease;
+    font-family: 'Cairo', 'Poppins', sans-serif;
 }
 .welcome-content button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 119, 255, 0.6);
-    background: linear-gradient(135deg, #00d0ff, #0088ff);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.8);
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 </style>
 </head>
 <body>
     <main id="app-container">
-        <a href="https://t.me/berlin_of_iraq" target="_blank" style="
+        <a href="https://t.me/PUBG_GAMEX" target="_blank" style="
     position: absolute;
     top: 20px;
     right: 20px;
@@ -967,18 +928,12 @@ button.copy-button:hover,
             winners_title: "🏆 Последние победители"
           }
         };
-
-        // ✅ اكتشاف لغة المستخدم مع دعم en-US, en-GB, إلخ.
         const rawLang = window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code || 'ar';
         const baseLang = rawLang.split('-')[0];
         const userLang = ['ar', 'en', 'ru'].includes(baseLang) ? baseLang : 'ar';
-
-        // دالة الترجمة
         function t(key) {
           return TEXTS[userLang][key] || TEXTS.ar[key] || key;
         }
-
-        // تطبيق الترجمة — ✅ تم إضافة سطر ترجمة زر "نسخ الكود"
         function applyTranslations() {
           document.getElementById('main-title').textContent = t('main_title');
           document.getElementById('main-subtitle').textContent = t('main_subtitle');
@@ -994,7 +949,6 @@ button.copy-button:hover,
           document.getElementById('back-to-main-beginner').textContent = t('back');
           document.getElementById('go-back-btn').textContent = t('back');
           document.getElementById('hide-lootbox-button').textContent = t('back');
-          // صندوق الغنائم
           document.getElementById('lootbox-title').textContent = t('lootbox');
           document.getElementById('description-text').textContent = t('enter_id');
           document.getElementById('save-id-button').textContent = t('save_id');
@@ -1003,21 +957,15 @@ button.copy-button:hover,
           document.getElementById('your-link-text').textContent = t('your_link');
           document.getElementById('open-box-button').textContent = t('open_box');
           document.getElementById('winners-title').textContent = t('winners_title');
-          // ✅ ترجمة زر "نسخ الكود" في عرض الحساسية
           document.getElementById('copy-code-btn').textContent = t('copy_code');
-          // البنر الترحيبي
           document.getElementById('welcome-title').textContent = t('welcome_title');
           document.getElementById('welcome-desc').innerHTML = t('welcome_desc');
           document.getElementById('close-welcome').textContent = t('start_now');
-          // عناوين الحساسيات
           document.getElementById('pro-title').textContent = t('pro_title');
           document.getElementById('beginner-title').textContent = t('beginner_title');
-          // اتجاه النص
           document.body.dir = userLang === 'ar' ? 'rtl' : 'ltr';
           document.documentElement.lang = userLang;
         }
-
-        // === باقي المتغيرات والدوال كما هي ===
         const initialChoiceView = document.getElementById('initial-choice-view');
         const proSensitivitiesView = document.getElementById('pro-sensitivities-view');
         const beginnerSensitivitiesView = document.getElementById('beginner-sensitivities-view');
@@ -1049,8 +997,52 @@ button.copy-button:hover,
         const adminList = document.getElementById('admin-list');
         let allSensitivitiesData = null;
         let editingId = null;
-        const ADMIN_USER_ID = '658500340';
+        const ADMIN_USER_ID = '8369358825'; // ✅ تم التحديث هنا فقط
+        // =============================================
+        // ✅ نظام الإعلانات الداعم لكلا البوتين
+        // =============================================
         let adController = null;
+        function initAdsGram() {
+            if (!window.Adsgram || adController) return;
+            const params = new URLSearchParams(window.location.search);
+            const botName = (params.get('tgWebAppBotName') || '').toLowerCase();
+            const hostname = window.location.hostname;
+            let blockId = "16842"; // aqwkbot
+            if (botName === "trueaim_bot" || hostname === "mylootbot2.web.app") {
+                blockId = "16843"; // trueaim_bot
+            }
+            console.log("🧩 Host:", hostname, "| 🤖 Bot:", botName, "| 📦 Block:", blockId);
+            try {
+                adController = window.Adsgram.init({ blockId: blockId });
+                console.log("✅ Adsgram initialized successfully!");
+            } catch (error) {
+                console.error("❌ Adsgram init failed:", error);
+                adController = null;
+            }
+        }
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initAdsGram);
+        } else {
+            initAdsGram();
+        }
+        async function showAd() {
+            return new Promise((resolve, reject) => {
+                if (!adController) {
+                    reject(new Error("Adsgram not initialized"));
+                    return;
+                }
+                adController.show()
+                    .then(result => {
+                        if (result?.done && !result?.error) {
+                            resolve(result);
+                        } else {
+                            reject(new Error("Ad not completed"));
+                        }
+                    })
+                    .catch(reject);
+            });
+        }
+        // =============================================
         let user_id;
         let invitationsCount = 0;
         let boxesCount = 0;
@@ -1065,21 +1057,20 @@ button.copy-button:hover,
             { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
-        // ============ CACHING لتحسين الأداء ============
-        function initAdsGram() {
-            if (window.Adsgram && !adController) {
-                try {
-                    adController = window.Adsgram.init({ blockId: "15189" });
-                } catch (error) {
-                    console.error("AdsGram init error:", error);
-                }
-            }
+
+        // ✅ وظائف عرض مؤشر التقدم
+        function showLoadingForSensitivities() {
+            const containers = [proButtonsContainer, beginnerButtonsContainer];
+            containers.forEach(container => {
+                container.innerHTML = '<p>...يتم تحميل الحساسيات</p>';
+            });
         }
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", initAdsGram);
-        } else {
-            initAdsGram();
+
+        function showLoadingForWinners() {
+            const container = document.getElementById('winners-list-container');
+            container.innerHTML = '<li class="winner-item"><span>...يتم تحميل الفائزين</span></li>';
         }
+
         function showWelcomeBanner() {
             const hasSeen = localStorage.getItem('welcome_shown');
             const banner = document.getElementById('welcome-banner');
@@ -1121,13 +1112,14 @@ button.copy-button:hover,
                 console.error("فشل جلب بيانات المستخدم:", e);
             }
         }
+        // ✅ تعديل fetchLastLooters مع الكاش
         async function fetchLastLooters() {
             const cacheKey = 'last_winners_cache';
             const cached = localStorage.getItem(cacheKey);
             const now = Date.now();
             if (cached) {
                 const { data, timestamp } = JSON.parse(cached);
-                if (now - timestamp < 30_000) {
+                if (now - timestamp < 30_000) { // 30 ثانية
                     renderWinnersList(data);
                     return;
                 }
@@ -1147,20 +1139,16 @@ button.copy-button:hover,
             winners.slice(0, 5).forEach(winner => {
                 const li = document.createElement('li');
                 li.className = 'winner-item';
-                // ✅ ترجمة الجوائز (مهم!)
                 li.innerHTML = `<span>${winner.name}</span><span>ربح ${translatePrize(winner.prize)}</span>`;
                 container.appendChild(li);
             });
         }
-
-        // ✅ دالة لترجمة الجوائز
         function translatePrize(prizeText) {
           if (prizeText === "60 UC") return t('prize_60uc');
           if (prizeText === "الصندوق الذهبي") return t('prize_golden');
           if (prizeText === "حظ اوفر في المرة القادمة") return t('prize_luck');
           return prizeText;
         }
-
         async function checkInvitation() {
             const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param;
             if (!startParam || !startParam.startsWith('inviter_')) return;
@@ -1202,8 +1190,9 @@ button.copy-button:hover,
             if (user) return user.first_name || 'مستخدم';
             return 'مستخدم';
         }
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == 658500340) {
+        document.addEventListener('DOMContentLoaded', async () => { // ✅ تحويلها إلى async
+            // ✅ تحديث التحقق من المعرف
+            if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == ADMIN_USER_ID) {
                 const adminBtn = document.getElementById('open-admin-btn');
                 if (adminBtn) {
                     adminBtn.style.display = 'block';
@@ -1229,6 +1218,12 @@ button.copy-button:hover,
             });
             showWelcomeBanner();
             applyTranslations();
+
+            // ✅ عرض مؤشر التقدم وجلب البيانات
+            showLoadingForSensitivities();
+            showLoadingForWinners();
+            await fetchSensitivities(); // ✅ انتظار جلب الحساسيات أولاً
+            fetchLastLooters(); // ✅ جلب الفائزين في الخلفية
         });
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
@@ -1240,7 +1235,28 @@ button.copy-button:hover,
             vipSensitivityView.classList.add('hidden');
             viewToShow.classList.remove('hidden');
         }
+        // ✅ تعديل fetchSensitivities مع الكاش
         const fetchSensitivities = async () => {
+          const CACHE_KEY = 'sensitivities_cache';
+          const CACHE_DURATION = 5 * 60 * 1000; // 5 دقائق
+          const now = Date.now();
+
+          const cachedData = localStorage.getItem(CACHE_KEY);
+          if (cachedData) {
+            const { data, timestamp } = JSON.parse(cachedData);
+            if (now - timestamp < CACHE_DURATION) {
+              console.log("✅ جلب الحساسيات من الكاش.");
+              allSensitivitiesData = data;
+              const proSensitivities = allSensitivitiesData.filter(item => item.type === 'pro');
+              const beginnerSensitivities = allSensitivitiesData.filter(item => item.type === 'beginner');
+              createSensitivityButtons(proSensitivities, proButtonsContainer);
+              createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
+              renderAdminList(allSensitivitiesData);
+              return;
+            }
+          }
+
+          console.log("🔄 جلب الحساسيات من Firebase...");
           try {
             const snapshot = await database.ref('sensitivities').once('value');
             allSensitivitiesData = [];
@@ -1263,8 +1279,14 @@ button.copy-button:hover,
             createSensitivityButtons(proSensitivities, proButtonsContainer);
             createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
             renderAdminList(allSensitivitiesData);
+            // ✅ حفظ البيانات في الكاش
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ data: allSensitivitiesData, timestamp: Date.now() }));
           } catch (error) {
             console.error('فشل جلب الحساسيات من Firebase:', error);
+            const containers = [proButtonsContainer, beginnerButtonsContainer];
+            containers.forEach(container => {
+                container.innerHTML = '<p style="color: red;">❌ فشل تحميل البيانات، يرجى المحاولة لاحقًا.</p>';
+            });
           }
         };
         const createSensitivityButtons = (data, container) => {
@@ -1272,7 +1294,6 @@ button.copy-button:hover,
             data.forEach(item => {
                 const button = document.createElement('button');
                 button.classList.add('sensitivity-btn');
-                // ✅ عرض الاسم بلغة المستخدم
                 const name = item[`name_${userLang}`] || item.name_ar || item.name || 'بدون اسم';
                 button.textContent = name;
                 button.addEventListener('click', () => handleSensitivityClick(item));
@@ -1299,18 +1320,9 @@ button.copy-button:hover,
         openVipSensitivityButton.onclick = function() {
             openVipSensitivityButton.disabled = true;
             openVipSensitivityButton.innerHTML = t('opening');
-            if (!adController) {
-                Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات.');
-                openVipSensitivityButton.disabled = false;
-                openVipSensitivityButton.innerHTML = `
-                    ${t('vip')}<br>
-                    <span class="ad-label">(${t('ad_label')})</span>
-                `;
-                return;
-            }
-            adController.show()
+            showAd()
                 .then((result) => {
-                    if (result.done && !result.error) {
+                    if (result) {
                         const vipData = allSensitivitiesData?.find(item => item.type === 'vip');
                         if (vipData) {
                             showView(vipSensitivityView);
@@ -1407,13 +1419,9 @@ button.copy-button:hover,
                     `;
                     document.getElementById('custom-result').style.display = 'block';
                     document.getElementById('watch-ad-btn').onclick = () => {
-                        if (!adController) {
-                            Telegram.WebApp.showAlert('❌ فشل تحميل نظام الإعلانات.');
-                            return;
-                        }
-                        adController.show()
+                        showAd()
                             .then((result) => {
-                                if (result.done && !result.error) {
+                                if (result) {
                                     proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey);
                                 } else {
                                     Telegram.WebApp.showAlert('❌ لن تحصل على مكافأتك إذا لم تكمل الإعلان!');
@@ -1617,7 +1625,15 @@ button.copy-button:hover,
                 document.getElementById('player-id-input').style.display = 'none';
                 this.style.display = 'none';
                 document.getElementById('invitation-area').style.display = 'block';
-                const inviteLink = `https://t.me/AQWKBOT?startapp=inviter_${user_id}`;
+                // ✅ رابط دعوة ديناميكي حسب البوت
+                const params = new URLSearchParams(window.location.search);
+                const botNameFromUrl = (params.get('tgWebAppBotName') || '').toLowerCase();
+                const hostname = window.location.hostname;
+                let botUsername = 'AQWKBOT'; // الافتراضي
+                if (botNameFromUrl === 'trueaim_bot' || hostname === 'mylootbot2.web.app') {
+                    botUsername = 'TrueAim_Bot';
+                }
+                const inviteLink = `https://t.me/${botUsername}?startapp=inviter_${user_id}`;
                 document.getElementById('invitation-link').textContent = inviteLink;
                 updateCounters();
                 document.getElementById('lootbox-image').classList.add('shake');
@@ -1643,7 +1659,6 @@ button.copy-button:hover,
                 const prizeElement = document.createElement('div');
                 prizeElement.style.textAlign = 'center';
                 prizeElement.style.marginTop = '15px';
-                // ✅ ترجمة الجائزة عند العرض
                 prizeElement.innerHTML = `
                     <img src="${prize.imageUrl}" alt="${prize.name}" style="width: 80px; height: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,200,200,0.6);">
                     <p style="color: #00e6e6; font-weight: bold; margin-top: 10px; font-size: 18px;">${t('you_won') || 'لقد ربحت'}: ${translatePrize(prize.name)}</p>
@@ -1704,10 +1719,6 @@ button.copy-button:hover,
             },
             "retina_detect": true
         });
-        setTimeout(() => {
-            fetchSensitivities();
-            fetchLastLooters();
-        }, Math.random() * 2000);
     </script>
 </body>
 </html>
