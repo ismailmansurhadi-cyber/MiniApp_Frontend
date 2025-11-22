@@ -3,14 +3,14 @@
 <!-- ✅ تحديث الكاش الآمن -->
 <script>
   (function() {
-    const CURRENT_VERSION = 'v6'; // ⬅️ غيّر هذا عند كل تحديث
+    const CURRENT_VERSION = 'v6';
     const SAVED_VERSION = localStorage.getItem('app_version');
     if (SAVED_VERSION !== CURRENT_VERSION) {
       localStorage.setItem('app_version', CURRENT_VERSION);
       if ('caches' in window) {
         caches.keys().then(names => {
           names.forEach(name => {
-            if (name.includes('my-lootbox') || name.includes('mylootbot2')) {
+            if (name.includes('my-lootbox')) {
               caches.delete(name);
             }
           });
@@ -539,7 +539,6 @@ button.copy-button:hover,
     font-size: 16px !important;
     border-radius: 8px !important;
 }
-/* ============ بنر ترحيبي ذهبي جديد — متناسق مع التطبيق ============ */
 .welcome-banner {
     position: fixed;
     top: 0;
@@ -997,21 +996,17 @@ button.copy-button:hover,
         const adminList = document.getElementById('admin-list');
         let allSensitivitiesData = null;
         let editingId = null;
-        const ADMIN_USER_ID = '8369358825'; // ✅ تم التحديث هنا فقط
+        const ADMIN_USER_ID = '8369358825';
+
         // =============================================
-        // ✅ نظام الإعلانات الداعم لكلا البوتين
+        // ✅ نظام الإعلانات المحدّث — فقط aqwkbot
         // =============================================
         let adController = null;
         function initAdsGram() {
             if (!window.Adsgram || adController) return;
-            const params = new URLSearchParams(window.location.search);
-            const botName = (params.get('tgWebAppBotName') || '').toLowerCase();
-            const hostname = window.location.hostname;
-            let blockId = "16842"; // aqwkbot
-            if (botName === "trueaim_bot" || hostname === "mylootbot2.web.app") {
-                blockId = "16843"; // trueaim_bot
-            }
-            console.log("🧩 Host:", hostname, "| 🤖 Bot:", botName, "| 📦 Block:", blockId);
+            // ✅ حذف كل التمييز بين البوتين
+            const blockId = "18045"; // aqwkbot فقط
+            console.log("🧩 Block ID:", blockId);
             try {
                 adController = window.Adsgram.init({ blockId: blockId });
                 console.log("✅ Adsgram initialized successfully!");
@@ -1042,6 +1037,7 @@ button.copy-button:hover,
                     .catch(reject);
             });
         }
+
         // =============================================
         let user_id;
         let invitationsCount = 0;
@@ -1058,19 +1054,16 @@ button.copy-button:hover,
         ];
         let lastLooters = [];
 
-        // ✅ وظائف عرض مؤشر التقدم
         function showLoadingForSensitivities() {
             const containers = [proButtonsContainer, beginnerButtonsContainer];
             containers.forEach(container => {
                 container.innerHTML = '<p>...يتم تحميل الحساسيات</p>';
             });
         }
-
         function showLoadingForWinners() {
             const container = document.getElementById('winners-list-container');
             container.innerHTML = '<li class="winner-item"><span>...يتم تحميل الفائزين</span></li>';
         }
-
         function showWelcomeBanner() {
             const hasSeen = localStorage.getItem('welcome_shown');
             const banner = document.getElementById('welcome-banner');
@@ -1112,14 +1105,13 @@ button.copy-button:hover,
                 console.error("فشل جلب بيانات المستخدم:", e);
             }
         }
-        // ✅ تعديل fetchLastLooters مع الكاش
         async function fetchLastLooters() {
             const cacheKey = 'last_winners_cache';
             const cached = localStorage.getItem(cacheKey);
             const now = Date.now();
             if (cached) {
                 const { data, timestamp } = JSON.parse(cached);
-                if (now - timestamp < 30_000) { // 30 ثانية
+                if (now - timestamp < 30_000) {
                     renderWinnersList(data);
                     return;
                 }
@@ -1190,8 +1182,7 @@ button.copy-button:hover,
             if (user) return user.first_name || 'مستخدم';
             return 'مستخدم';
         }
-        document.addEventListener('DOMContentLoaded', async () => { // ✅ تحويلها إلى async
-            // ✅ تحديث التحقق من المعرف
+        document.addEventListener('DOMContentLoaded', async () => {
             if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == ADMIN_USER_ID) {
                 const adminBtn = document.getElementById('open-admin-btn');
                 if (adminBtn) {
@@ -1218,12 +1209,10 @@ button.copy-button:hover,
             });
             showWelcomeBanner();
             applyTranslations();
-
-            // ✅ عرض مؤشر التقدم وجلب البيانات
             showLoadingForSensitivities();
             showLoadingForWinners();
-            await fetchSensitivities(); // ✅ انتظار جلب الحساسيات أولاً
-            fetchLastLooters(); // ✅ جلب الفائزين في الخلفية
+            await fetchSensitivities();
+            fetchLastLooters();
         });
         function showView(viewToShow) {
             initialChoiceView.classList.add('hidden');
@@ -1235,12 +1224,10 @@ button.copy-button:hover,
             vipSensitivityView.classList.add('hidden');
             viewToShow.classList.remove('hidden');
         }
-        // ✅ تعديل fetchSensitivities مع الكاش
         const fetchSensitivities = async () => {
           const CACHE_KEY = 'sensitivities_cache';
-          const CACHE_DURATION = 5 * 60 * 1000; // 5 دقائق
+          const CACHE_DURATION = 5 * 60 * 1000;
           const now = Date.now();
-
           const cachedData = localStorage.getItem(CACHE_KEY);
           if (cachedData) {
             const { data, timestamp } = JSON.parse(cachedData);
@@ -1255,7 +1242,6 @@ button.copy-button:hover,
               return;
             }
           }
-
           console.log("🔄 جلب الحساسيات من Firebase...");
           try {
             const snapshot = await database.ref('sensitivities').once('value');
@@ -1279,7 +1265,6 @@ button.copy-button:hover,
             createSensitivityButtons(proSensitivities, proButtonsContainer);
             createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
             renderAdminList(allSensitivitiesData);
-            // ✅ حفظ البيانات في الكاش
             localStorage.setItem(CACHE_KEY, JSON.stringify({ data: allSensitivitiesData, timestamp: Date.now() }));
           } catch (error) {
             console.error('فشل جلب الحساسيات من Firebase:', error);
@@ -1625,15 +1610,8 @@ button.copy-button:hover,
                 document.getElementById('player-id-input').style.display = 'none';
                 this.style.display = 'none';
                 document.getElementById('invitation-area').style.display = 'block';
-                // ✅ رابط دعوة ديناميكي حسب البوت
-                const params = new URLSearchParams(window.location.search);
-                const botNameFromUrl = (params.get('tgWebAppBotName') || '').toLowerCase();
-                const hostname = window.location.hostname;
-                let botUsername = 'AQWKBOT'; // الافتراضي
-                if (botNameFromUrl === 'trueaim_bot' || hostname === 'mylootbot2.web.app') {
-                    botUsername = 'TrueAim_Bot';
-                }
-                const inviteLink = `https://t.me/${botUsername}?startapp=inviter_${user_id}`;
+                // ✅ رابط دعوة ثابت لـ aqwkbot فقط
+                const inviteLink = `https://t.me/AQWKBOT?startapp=inviter_${user_id}`;
                 document.getElementById('invitation-link').textContent = inviteLink;
                 updateCounters();
                 document.getElementById('lootbox-image').classList.add('shake');
