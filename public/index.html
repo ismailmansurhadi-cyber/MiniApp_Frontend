@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ar">
-<!-- ✅ تحديث الكاش الآمن -->
+<!-- ✅ تحديث الكاش الآمن عند تغيير الإصدار -->
 <script>
   (function() {
-    const CURRENT_VERSION = 'v6';
+    const CURRENT_VERSION = 'v7'; // ⬅️ غيّر هذا عند كل تحديث
     const SAVED_VERSION = localStorage.getItem('app_version');
     if (SAVED_VERSION !== CURRENT_VERSION) {
       localStorage.setItem('app_version', CURRENT_VERSION);
@@ -42,7 +42,6 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Orbitron:wght@500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-/* الأنماط كما هي — لا تغيير */
 body {
     font-family: 'Cairo', 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: url('https://i.imgur.com/7Q9YzLX.jpg') no-repeat center center fixed;
@@ -783,7 +782,6 @@ button.copy-button:hover,
         const database = firebase.database();
     </script>
     <script>
-        // ============ نظام الترجمة الكامل ============
         const TEXTS = {
           ar: {
             main_title: "احتراف ببجي يبدأ من هنا",
@@ -997,15 +995,10 @@ button.copy-button:hover,
         let allSensitivitiesData = null;
         let editingId = null;
         const ADMIN_USER_ID = '8369358825';
-
-        // =============================================
-        // ✅ نظام الإعلانات المحدّث — فقط aqwkbot
-        // =============================================
         let adController = null;
         function initAdsGram() {
             if (!window.Adsgram || adController) return;
-            // ✅ حذف كل التمييز بين البوتين
-            const blockId = "18045"; // aqwkbot فقط
+            const blockId = "18045";
             console.log("🧩 Block ID:", blockId);
             try {
                 adController = window.Adsgram.init({ blockId: blockId });
@@ -1037,8 +1030,6 @@ button.copy-button:hover,
                     .catch(reject);
             });
         }
-
-        // =============================================
         let user_id;
         let invitationsCount = 0;
         let boxesCount = 0;
@@ -1053,7 +1044,6 @@ button.copy-button:hover,
             { name: "الصندوق الذهبي", imageUrl: "https://up6.cc/2025/08/175906383900841.png" },
         ];
         let lastLooters = [];
-
         function showLoadingForSensitivities() {
             const containers = [proButtonsContainer, beginnerButtonsContainer];
             containers.forEach(container => {
@@ -1182,6 +1172,16 @@ button.copy-button:hover,
             if (user) return user.first_name || 'مستخدم';
             return 'مستخدم';
         }
+        // ✅ دالة التحقق من الحد اليومي لصنع الحساسيات
+        function canCreateFreeSensitivity(userId) {
+            const lastUse = localStorage.getItem(`last_free_sensitivity_${userId}`);
+            if (!lastUse) return true;
+            const now = Date.now();
+            return (now - parseInt(lastUse)) >= 24 * 60 * 60 * 1000;
+        }
+        function markFreeSensitivityUsed(userId) {
+            localStorage.setItem(`last_free_sensitivity_${userId}`, Date.now().toString());
+        }
         document.addEventListener('DOMContentLoaded', async () => {
             if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id == ADMIN_USER_ID) {
                 const adminBtn = document.getElementById('open-admin-btn');
@@ -1224,25 +1224,26 @@ button.copy-button:hover,
             vipSensitivityView.classList.add('hidden');
             viewToShow.classList.remove('hidden');
         }
-        const fetchSensitivities = async () => {
-          const CACHE_KEY = 'sensitivities_cache';
-          const CACHE_DURATION = 5 * 60 * 1000;
-          const now = Date.now();
-          const cachedData = localStorage.getItem(CACHE_KEY);
-          if (cachedData) {
-            const { data, timestamp } = JSON.parse(cachedData);
-            if (now - timestamp < CACHE_DURATION) {
-              console.log("✅ جلب الحساسيات من الكاش.");
-              allSensitivitiesData = data;
-              const proSensitivities = allSensitivitiesData.filter(item => item.type === 'pro');
-              const beginnerSensitivities = allSensitivitiesData.filter(item => item.type === 'beginner');
-              createSensitivityButtons(proSensitivities, proButtonsContainer);
-              createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
-              renderAdminList(allSensitivitiesData);
-              return;
+        const fetchSensitivities = async (bypassCache = false) => {
+          if (!bypassCache) {
+            const CACHE_KEY = 'sensitivities_cache';
+            const CACHE_DURATION = 5 * 60 * 1000;
+            const now = Date.now();
+            const cachedData = localStorage.getItem(CACHE_KEY);
+            if (cachedData) {
+              const { data, timestamp } = JSON.parse(cachedData);
+              if (now - timestamp < CACHE_DURATION) {
+                console.log("✅ جلب من الكاش");
+                allSensitivitiesData = data;
+                const proSensitivities = allSensitivitiesData.filter(item => item.type === 'pro');
+                const beginnerSensitivities = allSensitivitiesData.filter(item => item.type === 'beginner');
+                createSensitivityButtons(proSensitivities, proButtonsContainer);
+                createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
+                renderAdminList(allSensitivitiesData);
+                return;
+              }
             }
           }
-          console.log("🔄 جلب الحساسيات من Firebase...");
           try {
             const snapshot = await database.ref('sensitivities').once('value');
             allSensitivitiesData = [];
@@ -1254,23 +1255,18 @@ button.copy-button:hover,
               });
             });
             if (data.vip && data.vip.current) {
-              allSensitivitiesData.push({
-                id: 'vip',
-                type: 'vip',
-                code: data.vip.current.code
-              });
+              allSensitivitiesData.push({ id: 'vip', type: 'vip', code: data.vip.current.code });
             }
             const proSensitivities = allSensitivitiesData.filter(item => item.type === 'pro');
             const beginnerSensitivities = allSensitivitiesData.filter(item => item.type === 'beginner');
             createSensitivityButtons(proSensitivities, proButtonsContainer);
             createSensitivityButtons(beginnerSensitivities, beginnerButtonsContainer);
             renderAdminList(allSensitivitiesData);
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ data: allSensitivitiesData, timestamp: Date.now() }));
+            localStorage.setItem('sensitivities_cache', JSON.stringify({  allSensitivitiesData, timestamp: Date.now() }));
           } catch (error) {
-            console.error('فشل جلب الحساسيات من Firebase:', error);
-            const containers = [proButtonsContainer, beginnerButtonsContainer];
-            containers.forEach(container => {
-                container.innerHTML = '<p style="color: red;">❌ فشل تحميل البيانات، يرجى المحاولة لاحقًا.</p>';
+            console.error('❌ خطأ في جلب الحساسيات:', error);
+            [proButtonsContainer, beginnerButtonsContainer].forEach(c => {
+              c.innerHTML = '<p style="color:red;">فشل التحميل</p>';
             });
           }
         };
@@ -1380,11 +1376,10 @@ button.copy-button:hover,
                     return;
                 }
                 const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'guest';
-                const lastCustomTimeKey = `last_custom_sensitivity_${userId}`;
-                const lastTime = localStorage.getItem(lastCustomTimeKey);
-                const now = Date.now();
-                const ONE_DAY = 24 * 60 * 60 * 1000;
-                if (lastTime && (now - parseInt(lastTime)) < ONE_DAY) {
+                if (canCreateFreeSensitivity(userId)) {
+                    await proceedToCreateCustomSensitivity(device, type, fps, userId);
+                    markFreeSensitivityUsed(userId);
+                } else {
                     document.getElementById('custom-result').innerHTML = `
                         <div style="background:rgba(20,5,30,0.9);border:2px solid #ff5500;border-radius:12px;padding:20px;text-align:center;color:#ffd700;font-weight:bold;">
                             <p style="font-size:15px;margin:0 0 15px;line-height:1.4;">${t('daily_limit')}</p>
@@ -1403,26 +1398,18 @@ button.copy-button:hover,
                         </div>
                     `;
                     document.getElementById('custom-result').style.display = 'block';
-                    document.getElementById('watch-ad-btn').onclick = () => {
-                        showAd()
-                            .then((result) => {
-                                if (result) {
-                                    proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey);
-                                } else {
-                                    Telegram.WebApp.showAlert('❌ لن تحصل على مكافأتك إذا لم تكمل الإعلان!');
-                                }
-                            })
-                            .catch((error) => {
-                                console.error('AdsGram error:', error);
-                                Telegram.WebApp.showAlert('❌ فشل في عرض الإعلان.');
-                            });
+                    document.getElementById('watch-ad-btn').onclick = async () => {
+                        try {
+                            await showAd();
+                            await proceedToCreateCustomSensitivity(device, type, fps, userId);
+                        } catch (error) {
+                            Telegram.WebApp.showAlert('❌ يجب مشاهدة الإعلان كاملاً للحصول على الحساسية.');
+                        }
                     };
-                } else {
-                    proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey);
                 }
             };
         };
-        async function proceedToCreateCustomSensitivity(device, type, fps, userId, lastCustomTimeKey) {
+        async function proceedToCreateCustomSensitivity(device, type, fps, userId) {
           try {
             const snapshot = await database.ref('sensitivities/customPool').once('value');
             const codes = snapshot.val();
@@ -1444,10 +1431,8 @@ button.copy-button:hover,
               </div>
             `;
             document.getElementById('custom-result').style.display = 'block';
-            localStorage.setItem(lastCustomTimeKey, Date.now().toString());
           } catch (error) {
             Telegram.WebApp.showAlert('فشل تحميل الحساسية.');
-            console.error('خطأ:', error);
           }
         };
         const renderAdminList = async () => {
@@ -1538,7 +1523,7 @@ button.copy-button:hover,
             }
             Telegram.WebApp.showAlert(editingId ? t('success_edit') : t('success_add'));
             resetForm();
-            fetchSensitivities();
+            fetchSensitivities(true); // ✅ تجاوز الكاش بعد الإضافة
           } catch (error) {
             console.error('خطأ في الحفظ:', error);
             Telegram.WebApp.showAlert('فشل في الحفظ. يرجى المحاولة لاحقًا.');
@@ -1593,7 +1578,7 @@ button.copy-button:hover,
                   await database.ref(`sensitivities/${type}/${id}`).remove();
                 }
                 Telegram.WebApp.showAlert(t('deleted'));
-                fetchSensitivities();
+                fetchSensitivities(true); // ✅ تجاوز الكاش بعد الحذف
               } catch (error) {
                 Telegram.WebApp.showAlert('فشل الحذف.');
               }
@@ -1610,7 +1595,6 @@ button.copy-button:hover,
                 document.getElementById('player-id-input').style.display = 'none';
                 this.style.display = 'none';
                 document.getElementById('invitation-area').style.display = 'block';
-                // ✅ رابط دعوة ثابت لـ aqwkbot فقط
                 const inviteLink = `https://t.me/AQWKBOT?startapp=inviter_${user_id}`;
                 document.getElementById('invitation-link').textContent = inviteLink;
                 updateCounters();
